@@ -1,0 +1,17 @@
+# prod
+dist/
+
+# dev
+.wrangler
+.dev.vars
+
+# env
+.env
+.env.production
+
+# logs
+logs/
+*.log
+
+# react-email
+.react-email/

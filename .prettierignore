@@ -1,0 +1,29 @@
+# Build output
+dist
+build
+.next
+out
+
+# Dependencies
+node_modules
+.pnpm-store
+
+# Environment
+.env*
+.vercel
+
+# Misc
+.DS_Store
+.vscode
+coverage
+*.log
+
+# Prisma
+prisma/migrations
+
+# Wrangler
+.wrangler
+wrangler.toml
+
+# React Email
+.react-email

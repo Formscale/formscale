@@ -1,0 +1,48 @@
+{
+  "name": "@formhook/api",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev src/index.ts",
+    "deploy": "wrangler deploy --minify src/index.ts",
+    "list": "wrangler d1 migrations list formhook-db",
+    "apply": "wrangler d1 migrations apply formhook-db",
+    "generate": "npx wrangler d1 migrations create formhook-db update_migration",
+    "update": "npx prisma migrate diff --from-local-d1 --to-schema-datamodel ./prisma/schema.prisma --script --output migrations/0002_update_migration.sql",
+    "lint": "eslint . --ext .ts,.tsx",
+    "format": "prettier --write .",
+    "cf-types": "wrangler types",
+    "email": "email dev --dir src/lib/emails --port 3030"
+  },
+  "dependencies": {
+    "@hono/zod-validator": "^0.2.2",
+    "@prisma/adapter-d1": "^5.15.0",
+    "@prisma/client": "^5.15.0",
+    "@react-email/components": "^0.0.32",
+    "@react-email/render": "^1.0.4",
+    "bcrypt-edge": "^0.0.6",
+    "hono": "^4.4.2",
+    "nanoid": "^5.0.9",
+    "react": "^19.0.0",
+    "react-email": "^3.0.6",
+    "resend": "^4.1.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240529.0",
+    "@types/bcrypt": "^5.0.2",
+    "@types/eslint": "^9.6.1",
+    "@types/react": "^19.0.8",
+    "@typescript-eslint/eslint-plugin": "^8.22.0",
+    "@typescript-eslint/parser": "^8.22.0",
+    "eslint": "^9",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-import-resolver-typescript": "^3.7.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-prettier": "^5.2.3",
+    "eslint-plugin-react": "^7.37.4",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "prettier": "^3.2.5",
+    "wrangler": "^3.57.2"
+  }
+}

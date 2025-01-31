@@ -1,0 +1,56 @@
+{
+  "folders": [
+    {
+      "path": ".",
+      "name": "root",
+    },
+    {
+      "path": "formhook-frontend",
+      "name": "frontend",
+    },
+    {
+      "path": "formhook-api",
+      "name": "api",
+    },
+  ],
+  "settings": {
+    "extensions.ignoreRecommendations": false,
+
+    "editor.tabSize": 4,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+    "files.autoSave": "off",
+
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.removeUnusedImports": "always",
+    },
+
+    "eslint.run": "onType",
+    "eslint.workingDirectories": [
+      {
+        "mode": "auto",
+      },
+    ],
+
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+    "typescript.preferences.importModuleSpecifier": "relative",
+    "files.eol": "\n",
+    "[prisma]": {
+      "editor.defaultFormatter": "Prisma.prisma",
+    },
+  },
+  "extensions": {
+    "recommendations": [
+      "esbenp.prettier-vscode",
+      "dbaeumer.vscode-eslint",
+      "Prisma.prisma",
+      "bradlc.vscode-tailwindcss",
+      "ms-vscode.vscode-typescript-next",
+      "yoavbls.pretty-ts-errors",
+    ],
+    "unwantedRecommendations": [],
+  },
+}
