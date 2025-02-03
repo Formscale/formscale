@@ -1,10 +1,9 @@
 {
-    "files.exclude": {
-      "formhook-api": true,
-      "formhook-frontend": true,
-    },
-  
-    "autoOpenWorkspace.enableAutoOpenIfSingleWorkspace": true,
-    "autoOpenWorkspace.enableAutoOpenAlwaysFirst": true
-  }
-  
+  "files.exclude": {
+    "api": true,
+    "frontend": true,
+    "packages": true
+  },
+  "autoOpenWorkspace.enableAutoOpenIfSingleWorkspace": true,
+  "autoOpenWorkspace.enableAutoOpenAlwaysFirst": true
+}

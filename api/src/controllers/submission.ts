@@ -2,11 +2,11 @@ import App from "@/app";
 import validator from "@/middleware/validation";
 import Response from "@/utils/response";
 import db from "@/db";
-import { schema, schemaValidation } from "../validations/submission";
+import { schemaSubmission } from "@formhook/validations";
 
 export const SubmissionController = App.basePath("/").post(
   ":id",
-  validator(schema, (error, ctx) => {
+  validator(schemaSubmission, (error, ctx) => {
     return new Response(ctx).error(error);
   }),
   async (ctx) => {
@@ -25,17 +25,21 @@ export const SubmissionController = App.basePath("/").post(
       return new Response(ctx).error("Form not found", 404);
     }
 
-    if (form.settings.validation.enabled) {
-      const validation = schemaValidation.safeParse(formData);
+    const formSettings = JSON.parse(form.settings);
+
+    if (formSettings.validation.enabled) {
+      const validation = schemaSubmission.safeParse(formData);
       if (!validation.success) {
         return new Response(ctx).error(validation.error.message, 400);
       }
     }
 
+    const submissionData = JSON.stringify(formData);
+
     const submission = await db(ctx.env).submission.create({
       data: {
         formId: id,
-        data: formData,
+        data: submissionData,
       },
     });
 

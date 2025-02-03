@@ -2,14 +2,20 @@
   "name": "formhook",
   "version": "1.0.0",
   "private": true,
+  "workspaces": [
+    "frontend",
+    "api",
+    "packages/*"
+  ],
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
-    "lint": "eslint \"**/*.{ts,tsx}\"",
-    "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix",
-    "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
-    "prepare": "husky install",
-    "clean": "pnpm -r exec rm -rf node_modules && rm -rf node_modules"
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
+    "format": "turbo run format",
+    "test": "echo \"No tests yet\" && exit 0",
+    "clean": "turbo run clean",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@types/eslint": "^9.6.1",
@@ -28,6 +34,7 @@
     "lint-staged": "^15.4.3",
     "prettier": "^3.4.2",
     "turbo": "^1.12.4",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "tsup": "^8.0.2"
   }
 }

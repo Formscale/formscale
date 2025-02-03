@@ -7,6 +7,7 @@
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["driverAdapters"]
+  output          = "../../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -38,7 +39,7 @@ model Form {
   name        String
   userId      String
   user        User         @relation(fields: [userId], references: [id])
-  settings    Json         @default("{}")
+  settings    String       @default("{}")
   submissions Submission[]
   updatedAt   DateTime     @updatedAt
   createdAt   DateTime     @default(now())
@@ -50,7 +51,7 @@ model Submission {
   id        String   @id @default(cuid())
   formId    String
   form      Form     @relation(fields: [formId], references: [id])
-  data      Json
+  data      String   @default("{}")
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { FormSettings } from "@/types";
+import { FormSettings } from "@formhook/types";
 
 export const DefaultFormSettings: FormSettings = {
   isPublic: true,
@@ -13,6 +13,12 @@ export const DefaultFormSettings: FormSettings = {
   reCaptcha: {
     enabled: false,
     siteKey: "",
+  },
+  webhook: {
+    enabled: false,
+    url: "",
+    method: "POST",
+    headers: {},
   },
   successUrl: "",
   customDomain: "",

@@ -1,4 +1,4 @@
-import { SubscriptionTier } from "@/types";
+import { SubscriptionTier } from "@formhook/types";
 
 const baseFeatures = {
   customSlug: false,
@@ -7,6 +7,7 @@ const baseFeatures = {
   successUrl: false,
   emailNotifications: false,
   reCaptcha: false,
+  webhook: false,
   fileUploads: false,
   customTheme: false,
 };
@@ -19,6 +20,7 @@ const fullFeatures = {
   successUrl: true,
   emailNotifications: true,
   reCaptcha: true,
+  webhook: true,
   fileUploads: true,
   customTheme: true,
 };
@@ -38,11 +40,21 @@ export const TierLimits: Record<
       ...baseFeatures,
       emailNotifications: true,
       fileUploads: true,
+      webhook: true,
     },
   },
   [SubscriptionTier.PRO]: {
     maxForms: 20,
     maxSubmissionsPerMonth: 5000,
+    features: {
+      ...baseFeatures,
+      ...fullFeatures,
+      customDomain: false,
+    },
+  },
+  [SubscriptionTier.BUSINESS]: {
+    maxForms: 100,
+    maxSubmissionsPerMonth: 100000,
     features: {
       ...baseFeatures,
       ...fullFeatures,
@@ -61,6 +73,9 @@ export const TierLimits: Record<
   },
 };
 
-export function isFeatureAvailable(tier: SubscriptionTier, feature: keyof (typeof TierLimits)[SubscriptionTier]["features"]) {
+export function isFeatureAvailable(
+  tier: SubscriptionTier,
+  feature: keyof (typeof TierLimits)[SubscriptionTier]["features"]
+) {
   return TierLimits[tier].features[feature];
 }

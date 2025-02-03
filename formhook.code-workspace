@@ -5,12 +5,16 @@
       "name": "root",
     },
     {
-      "path": "formhook-frontend",
+      "path": "frontend",
       "name": "frontend",
     },
     {
-      "path": "formhook-api",
+      "path": "api",
       "name": "api",
+    },
+    {
+      "path": "packages",
+      "name": "packages",
     },
   ],
   "settings": {

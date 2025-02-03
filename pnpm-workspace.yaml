@@ -1,4 +1,4 @@
 packages:
-  - "formhook-frontend"
-  - "formhook-api"
+  - "api"
+  - "frontend"
   - "packages/*"
