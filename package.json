@@ -13,7 +13,7 @@
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "format": "turbo run format",
-    "test": "echo \"No tests yet\" && exit 0",
+    "test": "echo \"No tests specified\" && exit 0",
     "clean": "turbo run clean",
     "prepare": "husky"
   },

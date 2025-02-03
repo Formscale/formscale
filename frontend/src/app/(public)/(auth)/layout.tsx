@@ -3,5 +3,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <div>{children}</div>;
+  return <div className="flex flex-col items-start justify-center gap-1 w-full max-w-md">{children}</div>;
 }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import localFont from "next/font/local";
 import { Inter } from "next/font/google";
+import { Providers } from "@/components/providers";
 
 const headingPro = localFont({
   src: [
@@ -59,6 +60,8 @@ export const metadata: Metadata = {
   description: "FormHook",
 };
 
+export const runtime = "edge";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -66,8 +69,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${headingPro.variable} ${inter.variable} antialiased`}>
-      <body className="font-heading-pro bg-background text-foreground relative tracking-tight min-h-screen">
-        {children}
+      <body className="font-heading-pro bg-background text-foreground relative tracking-tight w-full min-h-screen">
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

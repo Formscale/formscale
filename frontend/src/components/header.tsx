@@ -15,7 +15,41 @@ const socialLinks = [
   // { label: "Discord", href: "/discord", icon: DiscordLogoIcon },
 ];
 
-export default function Header() {
+const dashboardLinks = [
+  { label: "Feedback", href: "/feedback" },
+  { label: "Templates", href: "/templates" },
+  { label: "Docs", href: "/docs" },
+];
+
+export function HeaderDashboard() {
+  return (
+    <div className="w-full bg-background overflow-hidden p-3 px-4 border-b-[0.5px] border-border">
+      <div className="flex flex-row items-center justify-between max-w-6xl mx-auto">
+        <Logo />
+
+        <div className="flex flex-row items-center gap-2">
+          {dashboardLinks.map((link, index) => (
+            <Button variant={index === 0 ? "outline" : "ghost"} size="sm" className="font-bold" key={link.href}>
+              <Link href={link.href}>{link.label}</Link>
+            </Button>
+          ))}
+
+          <div className="w-px h-6 bg-border ml-2" />
+
+          {socialLinks.map((link) => (
+            <Button variant="ghost" size="icon" key={link.href}>
+              <Link href={link.href}>
+                <link.icon className="w-4 h-4" />
+              </Link>
+            </Button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function Header() {
   return (
     <div className="z-50 fixed top-0 left-0 w-full bg-background overflow-hidden p-3 px-4 border-b-[0.5px] border-border">
       <div className="flex flex-row items-center justify-between max-w-6xl mx-auto">

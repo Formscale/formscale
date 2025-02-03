@@ -4,7 +4,7 @@ import { jwt } from "hono/jwt";
 
 const app = App;
 
-const guestPage = ["/auth/login", "/auth/register"];
+const guestPage = ["/auth/login", "/auth/signup"];
 
 app.use("*", (ctx, next) => {
   const path = ctx.req.path;
