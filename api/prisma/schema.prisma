@@ -20,7 +20,6 @@ model User {
   email                String  @unique
   name                 String
   password             String
-  avatar               String?
   role                 String  @default("user")
   verified             Boolean @default(false)
   stripeCustomerId     String?
@@ -36,7 +35,7 @@ model User {
 
 model Form {
   id          String       @id
-  name        String
+  name        String       @default("Untitled Form")
   userId      String
   user        User         @relation(fields: [userId], references: [id])
   settings    String       @default("{}")

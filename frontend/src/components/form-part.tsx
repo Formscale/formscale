@@ -34,7 +34,7 @@ export default function FormPart<T extends FieldValues>({
               <Input type={type} placeholder={placeholder} {...field} />
             ) : (
               <InputOTP className="w-full" maxLength={6} {...field}>
-                <InputOTPGroup>
+                <InputOTPGroup className="w-full">
                   <InputOTPSlot index={0} />
                   <InputOTPSlot index={1} />
                   <InputOTPSlot index={2} />
@@ -45,7 +45,7 @@ export default function FormPart<T extends FieldValues>({
               </InputOTP>
             )}
           </FormControl>
-          <FormMessage />
+          <FormMessage className="text-xs" />
         </FormItem>
       )}
     />

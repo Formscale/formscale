@@ -6,6 +6,14 @@
   border: 1px solid red;
 } */
 
+::selection {
+  background-color: #ffce00 !important;
+}
+
+::-moz-selection {
+  background-color: #ffce00 !important;
+}
+
 body {
   font-family: "Heading Pro", "Inter", Arial, Helvetica, sans-serif;
 }

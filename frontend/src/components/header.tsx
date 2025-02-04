@@ -24,12 +24,15 @@ const dashboardLinks = [
 export function HeaderDashboard() {
   return (
     <div className="w-full bg-background overflow-hidden p-3 px-4 border-b-[0.5px] border-border">
-      <div className="flex flex-row items-center justify-between max-w-6xl mx-auto">
-        <Logo />
-
+      <div className="flex flex-row items-center justify-end mx-auto">
         <div className="flex flex-row items-center gap-2">
           {dashboardLinks.map((link, index) => (
-            <Button variant={index === 0 ? "outline" : "ghost"} size="sm" className="font-bold" key={link.href}>
+            <Button
+              variant={index === 0 ? "outline" : "ghost"}
+              size="sm"
+              className={index === 0 ? "" : "text-muted-foreground"}
+              key={link.href}
+            >
               <Link href={link.href}>{link.label}</Link>
             </Button>
           ))}
@@ -66,7 +69,7 @@ export function Header() {
         </div>
 
         <div className="flex flex-row items-center gap-2">
-          <Button variant="ghost" size="sm" className="font-bold">
+          <Button variant="ghost" size="sm">
             <Link href="/login">Log In</Link>
           </Button>
           <Button variant="action" size="sm" className="font-bold">
