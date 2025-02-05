@@ -2,11 +2,11 @@ import App from "@/app";
 import validator from "@/middleware/validation";
 import Response from "@/utils/response";
 import db from "@/db";
-import { schemaSubmission } from "@formhook/validations";
+import { SubmissionSchema } from "@formhook/types";
 
 export const SubmissionController = App.basePath("/").post(
   ":id",
-  validator(schemaSubmission, (error, ctx) => {
+  validator(SubmissionSchema, (error, ctx) => {
     return new Response(ctx).error(error);
   }),
   async (ctx) => {
@@ -28,7 +28,7 @@ export const SubmissionController = App.basePath("/").post(
     const formSettings = JSON.parse(form.settings);
 
     if (formSettings.validation.enabled) {
-      const validation = schemaSubmission.safeParse(formData);
+      const validation = SubmissionSchema.safeParse(formData);
       if (!validation.success) {
         return new Response(ctx).error(validation.error.message, 400);
       }

@@ -3,7 +3,7 @@ export enum SubscriptionTier {
   PRO = "pro",
   BUSINESS = "business",
   ENTERPRISE = "enterprise",
-  BENEFIT = "benefit",
+  TEAM = "team",
 }
 
 export enum Roles {

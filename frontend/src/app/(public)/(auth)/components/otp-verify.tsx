@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { schemaOtpVerify, OtpVerifySchema } from "@formhook/validations";
+import { OtpSchema, Otp } from "@formhook/types";
 
 import { Form } from "@/components/ui/form";
 import FormPart from "@/components/form-part";
@@ -13,14 +13,14 @@ import { useAuth } from "@/providers/auth-provider";
 export default function OtpVerify() {
   const { email } = useAuth();
 
-  const form = useForm<OtpVerifySchema>({
-    resolver: zodResolver(schemaOtpVerify),
+  const form = useForm<Otp>({
+    resolver: zodResolver(OtpSchema),
     defaultValues: {
       otp: "",
     },
   });
 
-  function onSubmit(values: OtpVerifySchema) {
+  function onSubmit(values: Otp) {
     console.log(values);
   }
 

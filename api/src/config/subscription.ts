@@ -66,7 +66,7 @@ export const TierLimits: Record<
     maxSubmissionsPerMonth: -1,
     features: fullFeatures,
   },
-  [SubscriptionTier.BENEFIT]: {
+  [SubscriptionTier.TEAM]: {
     maxForms: -1,
     maxSubmissionsPerMonth: -1,
     features: fullFeatures,

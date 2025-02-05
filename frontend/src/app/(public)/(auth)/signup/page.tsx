@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { schemaRegister, RegisterSchema } from "@formhook/validations";
+import { RegisterSchema, Register } from "@formhook/types";
 
 import { Form } from "@/components/ui/form";
 import FormPart from "@/components/form-part";
@@ -23,8 +23,8 @@ const formFields = [
 export default function SignupPage() {
   const { isVerifying, startVerification, setEmail } = useAuth();
 
-  const form = useForm<RegisterSchema>({
-    resolver: zodResolver(schemaRegister),
+  const form = useForm<Register>({
+    resolver: zodResolver(RegisterSchema),
     defaultValues: {
       name: "",
       email: "",
@@ -33,7 +33,7 @@ export default function SignupPage() {
     },
   });
 
-  async function onSubmit(values: RegisterSchema) {
+  async function onSubmit(values: Register) {
     setEmail(values.email);
     startVerification();
   }

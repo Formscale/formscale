@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { schemaLogin, LoginSchema } from "@formhook/validations";
+import { LoginSchema, Login } from "@formhook/types";
 
 import { Form } from "@/components/ui/form";
 import FormPart from "@/components/form-part";
@@ -15,15 +15,15 @@ const formFields = [
 ];
 
 export default function LoginPage() {
-  const form = useForm<LoginSchema>({
-    resolver: zodResolver(schemaLogin),
+  const form = useForm<Login>({
+    resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  function onSubmit(values: LoginSchema) {
+  function onSubmit(values: Login) {
     console.log(values);
   }
 

@@ -4,7 +4,7 @@ import { PlusCircledIcon } from "@radix-ui/react-icons";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { schemaForm, FormSchema } from "@formhook/validations";
+import { CreateFormSchema, CreateForm } from "@formhook/types";
 
 import { Button } from "@/components/ui/button";
 import DefaultDialog from "@/components/default-dialog";
@@ -12,14 +12,14 @@ import DefaultDialog from "@/components/default-dialog";
 const fields = [{ name: "name", type: "text", description: "Name", placeholder: "FormHook" }];
 
 export default function FormButton({ variant = "action" }: { variant?: "action" | "default" }) {
-  const form = useForm<FormSchema>({
-    resolver: zodResolver(schemaForm),
+  const form = useForm<CreateForm>({
+    resolver: zodResolver(CreateFormSchema),
     defaultValues: {
       name: "",
     },
   });
 
-  async function onSubmit(values: FormSchema) {
+  async function onSubmit(values: CreateForm) {
     console.log(values);
   }
 
