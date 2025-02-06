@@ -23,7 +23,7 @@ const dashboardLinks = [
 
 export function HeaderDashboard() {
   return (
-    <div className="w-full bg-background overflow-hidden p-3 px-4 border-b border-sidebar-border">
+    <div className="w-full bg-background overflow-hidden p-3 px-4 border-b-[0.5px] border-border">
       <div className="flex flex-row items-center justify-end mx-auto">
         <div className="flex flex-row items-center gap-2">
           {dashboardLinks.map((link, index) => (

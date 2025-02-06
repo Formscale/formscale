@@ -1,5 +1,5 @@
-import DashTitle from "../components/dash-title";
-import DashCard from "../components/dash-card";
+import DashTitle from "../components/title";
+import DashCard from "../components/card";
 import FormButton from "@/components/form-button";
 
 export default function IntegrationsPage() {

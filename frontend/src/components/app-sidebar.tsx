@@ -131,11 +131,11 @@ export function AppSidebar() {
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent side="top" className="w-[--radix-popper-anchor-width]">
-                {footerItems.map((item) => (
-                  <Link href={item.url} key={item.title}>
+                {footerItems.map((item, index) => (
+                  <Link href={item.url} key={index}>
                     <DropdownMenuItem className="cursor-pointer">
                       <item.icon />
-                      <span className="text-xs font-bold text-muted-foreground">{item.title}</span>
+                      <span className="text-xs text-muted-foreground">{item.title}</span>
                     </DropdownMenuItem>
                   </Link>
                 ))}

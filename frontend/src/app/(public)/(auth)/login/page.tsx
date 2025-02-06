@@ -6,8 +6,8 @@ import { LoginSchema, Login } from "@formhook/types";
 
 import { Form } from "@/components/ui/form";
 import FormPart from "@/components/form-part";
-import AuthHeader from "../components/auth-header";
-import AuthButton from "../components/auth-button";
+import AuthHeader from "../components/header";
+import AuthButton from "../components/button";
 
 const formFields = [
   { name: "email", description: "Email", placeholder: "dris@formhook.com", type: "email" },

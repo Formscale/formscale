@@ -11,7 +11,7 @@ import DefaultDialog from "@/components/default-dialog";
 
 const fields = [{ name: "name", type: "text", description: "Name", placeholder: "FormHook" }];
 
-export default function FormButton({ variant = "action" }: { variant?: "action" | "default" }) {
+export default function FormButton({ variant = "action" }: { variant?: "action" | "secondary" | "default" }) {
   const form = useForm<CreateForm>({
     resolver: zodResolver(CreateFormSchema),
     defaultValues: {

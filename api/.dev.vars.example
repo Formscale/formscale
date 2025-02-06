@@ -1,0 +1,2 @@
+RESEND_API_KEY="re_XXX"
+JWT_SECRET = "my-secret"

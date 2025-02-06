@@ -1,5 +1,5 @@
-import DashTitle from "../components/dash-title";
-import { DashCardSkeleton } from "../components/dash-card";
+import DashTitle from "../components/title";
+import { DashCardSkeleton } from "../components/card";
 
 export default function SettingsPage() {
   return (

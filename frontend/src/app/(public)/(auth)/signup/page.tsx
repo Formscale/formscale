@@ -8,8 +8,8 @@ import { RegisterSchema, Register } from "@formhook/types";
 
 import { Form } from "@/components/ui/form";
 import FormPart from "@/components/form-part";
-import AuthHeader from "../components/auth-header";
-import AuthButton from "../components/auth-button";
+import AuthHeader from "../components/header";
+import AuthButton from "../components/button";
 import OtpVerify from "../components/otp-verify";
 import { useAuth } from "@/providers/auth-provider";
 

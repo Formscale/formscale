@@ -6,8 +6,8 @@ import { OtpSchema, Otp } from "@formhook/types";
 
 import { Form } from "@/components/ui/form";
 import FormPart from "@/components/form-part";
-import AuthHeader from "./auth-header";
-import AuthButton from "./auth-button";
+import AuthHeader from "./header";
+import AuthButton from "./button";
 import { useAuth } from "@/providers/auth-provider";
 
 export default function OtpVerify() {

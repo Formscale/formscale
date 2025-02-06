@@ -1,4 +1,4 @@
-import DashTitle from "../components/dash-title";
+import DashTitle from "../components/title";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 // import { Button } from "@/components/ui/button";
 

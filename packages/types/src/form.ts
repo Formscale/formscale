@@ -1,45 +1,45 @@
 import { z } from "zod";
-import { SubmissionSchema } from "./submission";
+import { SubmissionSentSchema } from "./submission";
 
 export const FormSettingsSchema = z.object({
-  isPublic: z.boolean().optional(),
-  allowAnonymous: z.boolean().optional(),
+  isPublic: z.boolean().optional().default(true),
+  allowAnonymous: z.boolean().optional().default(true),
   emailNotifications: z
     .object({
-      enabled: z.boolean(),
-      to: z.array(z.string()).optional(),
-      template: z.string().optional(),
+      enabled: z.boolean().default(true),
+      to: z.array(z.string()).optional().default([]),
+      template: z.string().optional().default(""),
     })
     .optional(),
-  admins: z.array(z.string()).optional(),
+  admins: z.array(z.string()).optional().default([]),
   reCaptcha: z
     .object({
-      enabled: z.boolean(),
-      siteKey: z.string().optional(),
+      enabled: z.boolean().default(false),
+      siteKey: z.string().optional().default(""),
     })
     .optional(),
   webhook: z
     .object({
-      enabled: z.boolean(),
-      url: z.string().url().optional(),
-      method: z.enum(["GET", "POST"]).optional(),
-      headers: z.record(z.string()).optional(),
+      enabled: z.boolean().default(false),
+      url: z.string().url().optional().default(""),
+      method: z.enum(["GET", "POST"]).optional().default("POST"),
+      headers: z.record(z.string()).optional().default({}),
     })
     .optional(),
-  successUrl: z.string().url().optional(),
-  customDomain: z.string().optional(),
+  successUrl: z.string().url().optional().default(""),
+  customDomain: z.string().optional().default(""),
   validation: z
     .object({
-      enabled: z.boolean(),
-      schema: z.any(),
+      enabled: z.boolean().default(false),
+      schema: z.any().default({}),
     })
     .optional(),
   theme: z
     .object({
-      primary: z.string(),
-      background: z.string(),
-      logo: z.string(),
-      icon: z.string(),
+      primary: z.string().default("#000000"),
+      background: z.string().default("#FFFFFF"),
+      logo: z.string().default(""),
+      icon: z.string().default(""),
     })
     .optional(),
 });
@@ -47,9 +47,8 @@ export const FormSettingsSchema = z.object({
 export const FormSchema = z.object({
   id: z.string(),
   name: z.string().min(3).max(60),
-  userId: z.string(),
   settings: FormSettingsSchema,
-  submissions: z.array(SubmissionSchema),
+  submissions: z.array(SubmissionSentSchema),
   updatedAt: z.date(),
   createdAt: z.date(),
 });
