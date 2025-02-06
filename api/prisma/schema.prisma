@@ -51,6 +51,7 @@ model Submission {
   formId    String
   form      Form     @relation(fields: [formId], references: [id])
   data      String   @default("{}")
+  status    String   @default("pending")
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 

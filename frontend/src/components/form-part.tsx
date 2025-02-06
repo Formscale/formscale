@@ -11,7 +11,9 @@ interface FormPartProps<T extends FieldValues> {
   type: string;
   description?: string;
   placeholder: string;
+  muted?: boolean;
   isOtp?: boolean;
+  className?: string;
 }
 
 export default function FormPart<T extends FieldValues>({
@@ -21,6 +23,8 @@ export default function FormPart<T extends FieldValues>({
   description,
   placeholder,
   isOtp = false,
+  muted = false,
+  className,
 }: FormPartProps<T>) {
   return (
     <FormField
@@ -28,10 +32,14 @@ export default function FormPart<T extends FieldValues>({
       name={name as Path<T>}
       render={({ field }) => (
         <FormItem>
-          {description && <FormDescription className="text-foreground">{description}</FormDescription>}
+          {description && (
+            <FormDescription className={muted ? "text-muted-foreground text-xs" : "text-foreground"}>
+              {description}
+            </FormDescription>
+          )}
           <FormControl>
             {!isOtp ? (
-              <Input type={type} placeholder={placeholder} {...field} />
+              <Input type={type} placeholder={placeholder} {...field} className={className} />
             ) : (
               <InputOTP className="w-full" maxLength={6} {...field}>
                 <InputOTPGroup className="w-full">

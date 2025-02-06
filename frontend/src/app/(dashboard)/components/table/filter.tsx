@@ -5,23 +5,31 @@ import { Dropdown } from "./dropdown";
 import { Input } from "@/components/ui/input";
 import { Table } from "@tanstack/react-table";
 
+interface FilterProps<T> {
+  table: Table<T>;
+  items: FilterGroup[];
+  column?: string;
+}
+
 interface FilterItem {
   title: string;
   value: string | boolean | undefined;
 }
 
-interface FilterGroup {
+export interface FilterGroup {
   itemColumn: string;
   items: FilterItem[];
 }
 
-export function Filter<T>({ table, column, items }: { table: Table<T>; column: string; items: FilterGroup[] }) {
+export function Filter<T>({ table, items, column }: FilterProps<T>) {
   const [selectedTitles, setSelectedTitles] = useState<Record<string, string>>(
     Object.fromEntries(items.map((group) => [group.itemColumn, group.items[0].title]))
   );
 
   const handleSearch = (value: string) => {
-    table.getColumn(column)?.setFilterValue(value);
+    if (column) {
+      table.getColumn(column)?.setFilterValue(value);
+    }
   };
 
   const handleFilterSelect = (columnName: string, value: string | boolean | undefined, itemTitle: string) => {
@@ -55,13 +63,15 @@ export function Filter<T>({ table, column, items }: { table: Table<T>; column: s
   };
 
   return (
-    <div className="flex w-full justify-between gap-2 items-center">
-      <Input
-        placeholder="Search..."
-        value={(table.getColumn(column)?.getFilterValue() as string) ?? ""}
-        onChange={(e) => handleSearch(e.target.value)}
-        className="w-full max-w-md"
-      />
+    <div className={`flex w-full gap-2 items-center ${column ? "justify-between" : "justify-end"}`}>
+      {column && (
+        <Input
+          placeholder="Search..."
+          value={(table.getColumn(column)?.getFilterValue() as string) ?? ""}
+          onChange={(e) => handleSearch(e.target.value)}
+          className="w-full max-w-md"
+        />
+      )}
       {items.map((group) => (
         <Dropdown
           key={group.itemColumn}

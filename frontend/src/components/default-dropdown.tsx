@@ -9,6 +9,8 @@ import {
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
+/* this code is cooked */
+
 export interface DefaultDropdownProps {
   items: {
     title: string;
@@ -18,6 +20,8 @@ export interface DefaultDropdownProps {
   }[];
   children?: React.ReactNode;
   muted?: boolean;
+  side?: "top" | "bottom" | "left" | "right";
+  className?: string;
 }
 
 function Wrapper({ children, href }: { children: React.ReactNode; href: string }) {
@@ -44,18 +48,26 @@ export function DropdownItem({
   );
 }
 
-export function DropdownSkeleton({ button, children }: { button: React.ReactNode; children: React.ReactNode }) {
+export function DropdownSkeleton({
+  button,
+  children,
+  ...props
+}: {
+  button: React.ReactNode;
+  children: React.ReactNode;
+  props?: React.ComponentProps<typeof DropdownMenuContent>;
+}) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{button}</DropdownMenuTrigger>
-      <DropdownMenuContent>{children}</DropdownMenuContent>
+      <DropdownMenuContent {...props}>{children}</DropdownMenuContent>
     </DropdownMenu>
   );
 }
 
-export default function DefaultDropdown({ items, children, muted }: DefaultDropdownProps) {
+export default function DefaultDropdown({ items, children, muted, ...props }: DefaultDropdownProps) {
   return (
-    <DropdownSkeleton button={children}>
+    <DropdownSkeleton button={children} {...props}>
       {items.map((item, index) => (
         <DropdownItem item={item} muted={muted} key={index} />
       ))}

@@ -9,7 +9,7 @@ import { CreateFormSchema, CreateForm } from "@formhook/types";
 import { Button } from "@/components/ui/button";
 import DefaultDialog from "@/components/default-dialog";
 
-const fields = [{ name: "name", type: "text", description: "Name", placeholder: "FormHook" }];
+const fields = [{ name: "name", type: "text", description: "Name", placeholder: "Untitled Form" }];
 
 export default function FormButton({ variant = "action" }: { variant?: "action" | "secondary" | "default" }) {
   const form = useForm<CreateForm>({

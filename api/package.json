@@ -8,7 +8,7 @@
     "list": "wrangler d1 migrations list formhook-db",
     "apply": "wrangler d1 migrations apply formhook-db",
     "generate": "npx wrangler d1 migrations create formhook-db update_migration",
-    "update": "npx prisma migrate diff --from-local-d1 --to-schema-datamodel ./prisma/schema.prisma --script --output migrations/0002_update_migration.sql",
+    "update": "npx prisma migrate diff --from-local-d1 --to-schema-datamodel ./prisma/schema.prisma --script --output migrations/0003_updated_schemas.sql",
     "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --write .",
     "cf-types": "wrangler types",

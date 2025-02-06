@@ -23,11 +23,13 @@ export const FormSettingsSchema = z.object({
       enabled: z.boolean().default(false),
       url: z.string().url().optional().default(""),
       method: z.enum(["GET", "POST"]).optional().default("POST"),
+      secret: z.string().optional().default(""),
       headers: z.record(z.string()).optional().default({}),
     })
     .optional(),
   successUrl: z.string().url().optional().default(""),
   customDomain: z.string().optional().default(""),
+  allowedOrigins: z.array(z.string()).optional().default([]),
   validation: z
     .object({
       enabled: z.boolean().default(false),

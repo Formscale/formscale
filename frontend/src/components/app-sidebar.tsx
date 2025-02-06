@@ -32,12 +32,7 @@ import {
   SidebarFooter,
 } from "@/components/ui/sidebar";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import DefaultDropdown from "@/components/default-dropdown";
 
 const items = [
   {
@@ -107,7 +102,7 @@ export function AppSidebar() {
               </SidebarMenuItem>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={pathname.endsWith(item.url.replace("/", ""))}>
+                  <SidebarMenuButton asChild isActive={pathname.includes(item.url.replace("/", ""))}>
                     <Link href={item.url}>
                       <item.icon />
                       <span className="text-xs">{item.title}</span>
@@ -122,25 +117,13 @@ export function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuButton>
-                  <PersonIcon />
-                  <span className="text-xs font-bold">Dris Elamri</span>
-                  <DotsHorizontalIcon className="ml-auto" />
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent side="top" className="w-[--radix-popper-anchor-width]">
-                {footerItems.map((item, index) => (
-                  <Link href={item.url} key={index}>
-                    <DropdownMenuItem className="cursor-pointer">
-                      <item.icon />
-                      <span className="text-xs text-muted-foreground">{item.title}</span>
-                    </DropdownMenuItem>
-                  </Link>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <DefaultDropdown items={footerItems} side="top" className="w-[--radix-popper-anchor-width]">
+              <SidebarMenuButton>
+                <PersonIcon />
+                <span className="text-xs text-foreground">Dris Elamri</span>
+                <DotsHorizontalIcon className="ml-auto" />
+              </SidebarMenuButton>
+            </DefaultDropdown>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

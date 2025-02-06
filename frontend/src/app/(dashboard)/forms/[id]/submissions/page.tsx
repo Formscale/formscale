@@ -1,0 +1,60 @@
+"use client";
+
+import { SubmissionSent } from "@formhook/types";
+
+import DashCard from "@/app/(dashboard)/components/card";
+import FormButton from "@/components/form-button";
+import { DataTable } from "@/app/(dashboard)/components/table/table";
+import { formData } from "@/lib/test-data";
+import { getColumns } from "./columns";
+
+const handleRowClick = (row: SubmissionSent) => {
+  console.log(row);
+};
+
+const getFirstDataField = (submissions: SubmissionSent[]) => {
+  if (submissions.length === 0) return "data.name";
+  const firstSubmission = submissions[0];
+  const firstField = Object.keys(firstSubmission.data || {})[0];
+  return `data.${firstField}`;
+};
+
+export default function FormsPage() {
+  const submissions = formData.find((form) => form.id === "1")?.submissions || [];
+  const columns = getColumns(submissions);
+
+  const filterProps = {
+    column: getFirstDataField(submissions),
+    items: [
+      {
+        itemColumn: "status",
+        items: [
+          { title: "All statuses", value: undefined },
+          { title: "Pending", value: "pending" },
+          { title: "Completed", value: "completed" },
+          { title: "Failed", value: "failed" },
+        ],
+      },
+      {
+        itemColumn: "createdAt",
+        items: [
+          { title: "All time", value: undefined },
+          { title: "Last 30 days", value: "last_30_days" },
+          { title: "Last 7 days", value: "last_7_days" },
+          { title: "Last 24 hours", value: "last_24_hours" },
+        ],
+      },
+    ],
+  };
+
+  return (
+    <>
+      {!formData && (
+        <DashCard title="No forms yet." description="Create and manage your forms here.">
+          <FormButton variant="default" />
+        </DashCard>
+      )}
+      <DataTable columns={columns} data={submissions} onClickAction={handleRowClick} filterProps={filterProps} />
+    </>
+  );
+}

@@ -20,12 +20,12 @@ interface FormField {
   type: string;
 }
 
-interface DefaultDialogProps<T extends FieldValues> {
+export interface DefaultFormProps<T extends FieldValues> {
   title: string;
   description: string;
   form: UseFormReturn<T>;
   onSubmitAction: (values: T) => void;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   fields: FormField[];
 }
 
@@ -36,7 +36,7 @@ export default function DefaultDialog<T extends FieldValues>({
   onSubmitAction,
   children,
   fields,
-}: DefaultDialogProps<T>) {
+}: DefaultFormProps<T>) {
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>

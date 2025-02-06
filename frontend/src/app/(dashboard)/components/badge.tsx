@@ -4,7 +4,7 @@ export default function DashBadge({
   variant = "default",
   children,
 }: {
-  variant?: "default" | "action" | "secondary";
+  variant?: "default" | "action" | "secondary" | "success" | "destructive";
   children: React.ReactNode;
 }) {
   return (
