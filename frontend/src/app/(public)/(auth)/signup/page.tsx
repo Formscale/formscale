@@ -11,7 +11,7 @@ import FormPart from "@/components/form-part";
 import AuthHeader from "../components/header";
 import AuthButton from "../components/button";
 import OtpVerify from "../components/otp-verify";
-import { useAuth } from "@/providers/auth-provider";
+import { useAuth } from "@/providers/auth";
 
 const formFields = [
   { name: "name", description: "Name", placeholder: "Dris Elamri", type: "text" },

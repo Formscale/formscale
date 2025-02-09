@@ -39,17 +39,17 @@ export function getColumns(submissions: SubmissionSent[]): ColumnDef<SubmissionS
         return <StatusBadge status={submission.status} />;
       },
     },
-    {
-      accessorKey: "createdAt",
-      header: ({ column }) => <div className="text-right">{SortButton("Created", column)}</div>,
-      cell: ({ row }) => {
-        const submission = row.original;
-        return FormatDate(submission.createdAt);
-      },
-    },
+    // {
+    //   accessorKey: "createdAt",
+    //   header: ({ column }) => <div className="text-right">{SortButton("Created", column)}</div>,
+    //   cell: ({ row }) => {
+    //     const submission = row.original;
+    //     return FormatDate(submission.createdAt);
+    //   },
+    // },
     {
       accessorKey: "updatedAt",
-      header: ({ column }) => <div className="text-right">{SortButton("Last modified", column)}</div>,
+      header: ({ column }) => <div className="text-right">{SortButton("Last updated", column)}</div>,
       cell: ({ row }) => {
         const submission = row.original;
         return FormatDate(submission.updatedAt);

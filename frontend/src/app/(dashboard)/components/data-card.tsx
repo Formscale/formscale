@@ -45,16 +45,14 @@ export function DataCardSkeleton<T extends FieldValues>({
 }) {
   return (
     <Card className="w-full shadow-sm">
-      <CardHeader className="py-4 pb-3 border-b-[0.5px] border-border">
+      <CardHeader className="py-4 pb-3 border-b border-border">
         <CardTitle className="text-md font-bold">{title}</CardTitle>
       </CardHeader>
       <Wrapper form={form} onSubmitAction={onSubmitAction || (() => {})}>
         <CardContent className="py-6 pt-5">
           <div className="flex flex-col gap-4">{children}</div>
         </CardContent>
-        <CardFooter className="py-3 border-t-[0.5px] border-border flex justify-start items-center gap-2">
-          {button}
-        </CardFooter>
+        <CardFooter className="py-3 border-t border-border flex justify-start items-center gap-2">{button}</CardFooter>
       </Wrapper>
     </Card>
   );
@@ -82,7 +80,7 @@ export default function DataCard<T extends FieldValues>({
       >
         {children}
         {fields.map((field) => (
-          <FormPart key={field.name} form={form} {...field} className="max-w-sm" muted />
+          <FormPart key={field.name} form={form} {...field} className="max-w-sm" />
         ))}
       </DataCardSkeleton>
     </Form>

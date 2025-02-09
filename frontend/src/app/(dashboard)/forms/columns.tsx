@@ -68,7 +68,7 @@ export const columns: ColumnDef<Form>[] = [
   },
   {
     accessorKey: "updatedAt",
-    header: ({ column }) => <div className="text-right">{SortButton("Last modified", column)}</div>,
+    header: ({ column }) => <div className="text-right">{SortButton("Last updated", column)}</div>,
     cell: ({ row }) => {
       const form = row.original;
       return FormatDate(form.updatedAt);

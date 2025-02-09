@@ -8,6 +8,7 @@ interface UserContext {
   setUser: (user: User | null) => void;
   isLoading: boolean;
   logout: () => void;
+  updateUser: (updates: Partial<User>) => void;
 }
 
 const UserContext = createContext<UserContext | undefined>(undefined);
@@ -20,12 +21,17 @@ export function UserProvider({ children }: { children: ReactNode }) {
     setUser(null);
   };
 
+  const updateUser = (updates: Partial<User>) => {
+    setUser((currentUser) => (currentUser ? { ...currentUser, ...updates } : null));
+  };
+
   const value = {
     user,
     setUser,
     isLoading,
     setIsLoading,
     logout,
+    updateUser,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

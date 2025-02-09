@@ -14,7 +14,8 @@ export default function Pagination<T>({ table }: PaginationProps<T>) {
     <div className="flex w-full justify-between items-start gap-4">
       {table.getPageCount() !== 0 && (
         <span className="text-xs text-muted-foreground">
-          Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+          {/* Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()} */}
+          Showing {table.getRowModel().rows.length} of {table.getFilteredRowModel().rows.length}
         </span>
       )}
       <div className="flex items-center justify-end gap-2">

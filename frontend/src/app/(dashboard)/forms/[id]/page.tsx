@@ -3,9 +3,12 @@
 import { Button } from "@/components/ui/button";
 import { DataCardSkeleton } from "@/app/(dashboard)/components/data-card";
 import { Input } from "@/components/ui/input";
+import { useForm } from "@/providers/form";
 
 export default function FormPage() {
-  const form = { id: "123" };
+  const { form } = useForm();
+
+  if (!form) return null;
 
   return (
     <DataCardSkeleton
@@ -15,7 +18,7 @@ export default function FormPage() {
           type="submit"
           size="sm"
           onClick={() => {
-            navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_API_URL}/forms/${form.id}`);
+            navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_API_URL}/${form.id}`);
           }}
         >
           <span className="text-xs font-bold">Copy Endpoint</span>
@@ -27,7 +30,7 @@ export default function FormPage() {
         <Input
           type="text"
           placeholder="https://api.formhook.com/123"
-          value={`https://api.formhook.com/forms/${form.id}`}
+          value={`https://api.formhook.com/${form.id}`}
           disabled
           className="max-w-sm"
         />

@@ -64,4 +64,9 @@ export default function FormsPage() {
 
 // /forms/id
 // - add metrics/live monitor to form
-// - submissions table
+// x submissions table
+// - filter submissions table headers
+// - webhook & zod/schema validation
+// - sheet for full submission data
+// - special formatting for data (ex: left align numbers, etc)
+// - search submissions from all parameters

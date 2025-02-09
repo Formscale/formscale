@@ -5,9 +5,8 @@ import { SubmissionSent } from "@formhook/types";
 import DashCard from "@/app/(dashboard)/components/card";
 import FormButton from "@/components/form-button";
 import { DataTable } from "@/app/(dashboard)/components/table/table";
-import { formData } from "@/lib/test-data";
 import { getColumns } from "./columns";
-
+import { useForm } from "@/providers/form";
 const handleRowClick = (row: SubmissionSent) => {
   console.log(row);
 };
@@ -20,7 +19,11 @@ const getFirstDataField = (submissions: SubmissionSent[]) => {
 };
 
 export default function FormsPage() {
-  const submissions = formData.find((form) => form.id === "1")?.submissions || [];
+  const { form } = useForm();
+
+  if (!form) return null;
+
+  const submissions = form.submissions || [];
   const columns = getColumns(submissions);
 
   const filterProps = {
@@ -49,7 +52,7 @@ export default function FormsPage() {
 
   return (
     <>
-      {!formData && (
+      {!submissions && (
         <DashCard title="No forms yet." description="Create and manage your forms here.">
           <FormButton variant="default" />
         </DashCard>

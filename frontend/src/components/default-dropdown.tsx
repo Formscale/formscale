@@ -11,13 +11,15 @@ import { cn } from "@/lib/utils";
 
 /* this code is cooked */
 
+export interface DefaultDropdownItem {
+  title: string;
+  url?: string;
+  onClick?: () => void;
+  icon?: React.ComponentType;
+}
+
 export interface DefaultDropdownProps {
-  items: {
-    title: string;
-    url?: string;
-    onClick?: () => void;
-    icon?: React.ComponentType;
-  }[];
+  items: DefaultDropdownItem[];
   children?: React.ReactNode;
   muted?: boolean;
   side?: "top" | "bottom" | "left" | "right";
@@ -31,13 +33,7 @@ function Wrapper({ children, href }: { children: React.ReactNode; href: string }
   return <>{children}</>;
 }
 
-export function DropdownItem({
-  item,
-  muted,
-}: {
-  item: { title: string; url?: string; icon?: React.ComponentType; onClick?: () => void };
-  muted?: boolean;
-}) {
+export function DropdownItem({ item, muted }: { item: DefaultDropdownItem; muted?: boolean }) {
   return (
     <Wrapper href={item.url ?? ""}>
       <DropdownMenuItem className="cursor-pointer" onClick={item.onClick}>

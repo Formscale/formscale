@@ -1,6 +1,19 @@
 import { z } from "zod";
 import { SubmissionSentSchema } from "./submission";
 
+export const WebhookSchema = z.object({
+  enabled: z.boolean().default(false),
+  url: z.string().url().default(""),
+  method: z.enum(["GET", "POST"]).optional().default("POST"),
+  secret: z.string().optional().default(""),
+  headers: z.record(z.string()).optional().default({}),
+});
+
+export const ValidationSchema = z.object({
+  enabled: z.boolean().default(false),
+  schema: z.any().default({}),
+});
+
 export const FormSettingsSchema = z.object({
   isPublic: z.boolean().optional().default(true),
   allowAnonymous: z.boolean().optional().default(true),
@@ -18,24 +31,11 @@ export const FormSettingsSchema = z.object({
       siteKey: z.string().optional().default(""),
     })
     .optional(),
-  webhook: z
-    .object({
-      enabled: z.boolean().default(false),
-      url: z.string().url().optional().default(""),
-      method: z.enum(["GET", "POST"]).optional().default("POST"),
-      secret: z.string().optional().default(""),
-      headers: z.record(z.string()).optional().default({}),
-    })
-    .optional(),
+  webhooks: z.array(WebhookSchema).optional().default([]),
   successUrl: z.string().url().optional().default(""),
   customDomain: z.string().optional().default(""),
   allowedOrigins: z.array(z.string()).optional().default([]),
-  validation: z
-    .object({
-      enabled: z.boolean().default(false),
-      schema: z.any().default({}),
-    })
-    .optional(),
+  validation: ValidationSchema.optional(),
   theme: z
     .object({
       primary: z.string().default("#000000"),
@@ -62,3 +62,5 @@ export const CreateFormSchema = z.object({
 export type Form = z.infer<typeof FormSchema>;
 export type CreateForm = z.infer<typeof CreateFormSchema>;
 export type FormSettings = z.infer<typeof FormSettingsSchema>;
+export type Webhook = z.infer<typeof WebhookSchema>;
+export type Validation = z.infer<typeof ValidationSchema>;

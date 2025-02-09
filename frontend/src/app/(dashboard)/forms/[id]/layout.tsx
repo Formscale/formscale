@@ -6,6 +6,7 @@ import { formData } from "@/lib/test-data";
 import DashCard from "@/app/(dashboard)/components/card";
 import { Button } from "@/components/ui/button";
 import { ChevronLeftIcon } from "@radix-ui/react-icons";
+import { FormProvider } from "@/providers/form";
 
 export default async function FormLayout({ children, params }: { children: React.ReactNode; params: { id: string } }) {
   const { id } = await params;
@@ -37,10 +38,10 @@ export default async function FormLayout({ children, params }: { children: React
   ];
 
   return (
-    <>
+    <FormProvider initialForm={form}>
       <DashTitle title={form?.name || "Your form"} />
       <Tabs tabs={tabs} />
       {children}
-    </>
+    </FormProvider>
   );
 }

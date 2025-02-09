@@ -11,6 +11,7 @@ export const formData: Form[] = [
       successUrl: "https://formhook.com",
       customDomain: "https://formhook.com",
       allowedOrigins: ["https://formhook.com"],
+      webhooks: [],
     },
     submissions: [
       {
@@ -51,6 +52,7 @@ export const formData: Form[] = [
       successUrl: "https://formhook.com",
       customDomain: "https://formhook.com",
       allowedOrigins: ["https://formhook.com"],
+      webhooks: [],
     },
     submissions: [
       {

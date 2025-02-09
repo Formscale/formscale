@@ -7,7 +7,7 @@ export default function IntegrationsPage() {
       <DashTitle title="Integrations" />
       <DashCard
         // title="No services added."
-        title="Integrations coming soon."
+        title="More integrations coming soon."
         description="Connect your forms to 30+ external services to automate your workflows."
       ></DashCard>
     </>

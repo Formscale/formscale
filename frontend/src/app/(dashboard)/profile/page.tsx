@@ -4,7 +4,7 @@ import DashTitle from "../components/title";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { EditUserSchema, EditUser } from "@formhook/types";
-import { useUser } from "@/providers/user-provider";
+import { useUser } from "@/providers/user";
 import DataCard from "../components/data-card";
 
 export default function ProfilePage() {

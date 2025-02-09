@@ -8,7 +8,7 @@ import { Form } from "@/components/ui/form";
 import FormPart from "@/components/form-part";
 import AuthHeader from "./header";
 import AuthButton from "./button";
-import { useAuth } from "@/providers/auth-provider";
+import { useAuth } from "@/providers/auth";
 
 export default function OtpVerify() {
   const { email } = useAuth();
