@@ -3,6 +3,7 @@ import { CaretSortIcon } from "@radix-ui/react-icons";
 import { Column } from "@tanstack/react-table";
 import { format, formatDistanceToNow } from "date-fns";
 import DashBadge from "../badge";
+// import { FieldValues } from "react-hook-form";
 import { DotsHorizontalIcon, CheckIcon, Cross2Icon } from "@radix-ui/react-icons";
 
 export function FormatDate(date: Date) {
@@ -11,6 +12,12 @@ export function FormatDate(date: Date) {
       {formatDistanceToNow(date, { addSuffix: true }).replace("about ", "")}
     </div>
   );
+}
+
+export function FormatNumber(number: number) {
+  const formatNumber = (num: number) => new Intl.NumberFormat().format(num);
+
+  return <div className="text-right">{formatNumber(number)}</div>;
 }
 
 export function SortButton<T>(title: string, column: Column<T>) {
@@ -22,11 +29,34 @@ export function SortButton<T>(title: string, column: Column<T>) {
   );
 }
 
-export function FormatNumber(number: number) {
-  const formatNumber = (num: number) => new Intl.NumberFormat().format(num);
+// export function FormatCell(value: FieldValues[keyof FieldValues], type?: string) {
+//   switch (type) {
+//     case "number":
+//       return <div className="text-right font-mono tabular-nums">{new Intl.NumberFormat().format(value)}</div>;
 
-  return <div className="text-right">{formatNumber(number)}</div>;
-}
+//     case "currency":
+//       return (
+//         <div className="text-right font-mono tabular-nums">
+//           {new Intl.NumberFormat("en-US", {
+//             style: "currency",
+//             currency: "USD",
+//           }).format(value)}
+//         </div>
+//       );
+
+//     case "percentage":
+//       return <div className="text-right font-mono tabular-nums">{value}%</div>;
+
+//     case "code":
+//       return <div className="font-mono text-xs bg-muted p-1 rounded">{value}</div>;
+
+//     case "email":
+//       return <div className="font-mono text-xs text-muted-foreground">{value}</div>;
+
+//     default:
+//       return <div>{value}</div>;
+//   }
+// }
 
 export function StatusBadge({ status }: { status: string }) {
   switch (status) {

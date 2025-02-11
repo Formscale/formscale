@@ -5,18 +5,16 @@ import { WebhookSchema, Webhook } from "@formhook/types";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-export default function WebhookEditDialog() {
+export default function WebhookEditDialog(webhook: Webhook) {
   const form = useForm<Webhook>({
     resolver: zodResolver(WebhookSchema),
     defaultValues: {
-      type: "webhook",
-      url: "",
-      method: "POST",
-      enabled: true,
-      secret: "",
-      headers: {},
+      ...webhook,
+      enabled: webhook.enabled || true,
     },
   });
+
+  if (!webhook) return null;
 
   async function onSubmit(values: Webhook) {
     console.log(values);
@@ -36,15 +34,8 @@ export default function WebhookEditDialog() {
   ];
 
   return (
-    <DialogContentSkeleton title="Edit Webhook" description="Edit your webhook">
-      <FormSkeleton
-        form={form}
-        onSubmitAction={onSubmit}
-        fields={fields}
-        buttonText="Save"
-        title="Edit"
-        description="Edit your webhook"
-      />
+    <DialogContentSkeleton title="Edit webhook" description="Form data will be sent to this webhook.">
+      <FormSkeleton form={form} onSubmitAction={onSubmit} fields={fields} buttonText="Save" />
     </DialogContentSkeleton>
   );
 }

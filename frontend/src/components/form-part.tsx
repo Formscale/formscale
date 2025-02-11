@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import TagInput from "./tag-input";
 
 interface FormPartProps<T extends FieldValues> {
   form: UseFormReturn<T>;
@@ -16,6 +17,14 @@ interface FormPartProps<T extends FieldValues> {
   muted?: boolean;
   className?: string;
   options?: string[];
+}
+
+function Wrapper({ children, type }: { children: React.ReactNode; type: string }) {
+  if (type === "switch") {
+    return <div className="w-full flex justify-between items-start mt-0.5 mb-1">{children}</div>;
+  }
+
+  return <>{children}</>;
 }
 
 export default function FormPart<T extends FieldValues>({
@@ -53,6 +62,16 @@ export default function FormPart<T extends FieldValues>({
             </SelectContent>
           </Select>
         );
+      case "tags":
+        return (
+          <TagInput
+            field={{
+              value: Array.isArray(field.value) ? field.value : [],
+              onChange: field.onChange,
+            }}
+            placeholder={placeholder}
+          />
+        );
       case "otp":
         return (
           <InputOTP className="w-full" maxLength={6} {...field}>
@@ -69,21 +88,13 @@ export default function FormPart<T extends FieldValues>({
     }
   }
 
-  function Wrapper({ children }: { children: React.ReactNode }) {
-    if (type === "switch") {
-      return <div className="w-full flex justify-between items-start mt-0.5 mb-1">{children}</div>;
-    }
-
-    return <>{children}</>;
-  }
-
   return (
     <FormField
       control={form.control}
       name={name as Path<T>}
       render={({ field }) => (
         <FormItem>
-          <Wrapper>
+          <Wrapper type={type}>
             {description && (
               <FormDescription className={muted ? "text-muted-foreground text-xs" : "text-foreground"}>
                 {description}

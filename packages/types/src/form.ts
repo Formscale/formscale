@@ -10,22 +10,48 @@ export const WebhookSchema = z.object({
   headers: z.record(z.string()).optional().default({}),
 });
 
+export const DiscordSchema = WebhookSchema.extend({
+  type: z.literal("discord").default("discord"),
+  url: z
+    .string()
+    .url()
+    .regex(/^https:\/\/discord\.com\/api\/webhooks\/\d+\/[\w-]+$/, "Please enter a valid Discord webhook URL")
+    .default(""),
+});
+
 export const ValidationSchema = z.object({
   enabled: z.boolean().default(false),
   schema: z.any().default({}),
 });
 
+export const EmailSettingsSchema = z.object({
+  enabled: z.boolean().default(true),
+  to: z
+    .array(z.string().email({ message: "Please enter a valid email address" }))
+    .optional()
+    .default([]),
+  template: z.enum(["default", "custom"]).optional().default("default"),
+  theme: z
+    .object({
+      primary: z.string().default("#000000"),
+      background: z.string().default("#FFFFFF"),
+      logo: z.string().default(""),
+      icon: z.string().default(""),
+      text: z.string().default(""),
+    })
+    .optional(),
+});
+
+export const AdminSchema = z.object({
+  email: z.string().email(),
+  role: z.enum(["admin", "owner"]).default("admin"),
+});
+
 export const FormSettingsSchema = z.object({
   isPublic: z.boolean().optional().default(true),
   allowAnonymous: z.boolean().optional().default(true),
-  emailNotifications: z
-    .object({
-      enabled: z.boolean().default(true),
-      to: z.array(z.string()).optional().default([]),
-      template: z.string().optional().default(""),
-    })
-    .optional(),
-  admins: z.array(z.string()).optional().default([]),
+  emailSettings: EmailSettingsSchema.optional().default({}),
+  admins: z.array(AdminSchema).optional().default([]),
   reCaptcha: z
     .object({
       enabled: z.boolean().default(false),
@@ -37,14 +63,6 @@ export const FormSettingsSchema = z.object({
   customDomain: z.string().optional().default(""),
   allowedOrigins: z.array(z.string()).optional().default([]),
   validation: ValidationSchema.optional(),
-  theme: z
-    .object({
-      primary: z.string().default("#000000"),
-      background: z.string().default("#FFFFFF"),
-      logo: z.string().default(""),
-      icon: z.string().default(""),
-    })
-    .optional(),
 });
 
 export const FormSchema = z.object({
@@ -64,4 +82,7 @@ export type Form = z.infer<typeof FormSchema>;
 export type CreateForm = z.infer<typeof CreateFormSchema>;
 export type FormSettings = z.infer<typeof FormSettingsSchema>;
 export type Webhook = z.infer<typeof WebhookSchema>;
+export type Discord = z.infer<typeof DiscordSchema>;
+export type EmailSettings = z.infer<typeof EmailSettingsSchema>;
+export type Admin = z.infer<typeof AdminSchema>;
 export type Validation = z.infer<typeof ValidationSchema>;

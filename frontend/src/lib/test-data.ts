@@ -7,11 +7,43 @@ export const formData: Form[] = [
     settings: {
       isPublic: true,
       allowAnonymous: true,
-      admins: ["dris@formhook.com"],
+      admins: [
+        { email: "dris@formhook.com", role: "owner" },
+        { email: "john@doe.com", role: "admin" },
+      ],
       successUrl: "https://formhook.com",
       customDomain: "https://formhook.com",
       allowedOrigins: ["https://formhook.com"],
-      webhooks: [],
+      webhooks: [
+        {
+          type: "discord",
+          url: "https://discord.com/api/webhooks",
+          enabled: true,
+          method: "POST",
+          secret: "",
+          headers: {},
+        },
+        {
+          type: "webhook",
+          url: "https://formhook.com/webhook",
+          enabled: true,
+          method: "POST",
+          secret: "MY-SECRET",
+          headers: {},
+        },
+      ],
+      emailSettings: {
+        enabled: true,
+        to: ["dris@formhook.com"],
+        template: "default",
+        theme: {
+          primary: "#000000",
+          background: "#FFFFFF",
+          logo: "",
+          icon: "",
+          text: "",
+        },
+      },
     },
     submissions: [
       {
@@ -48,11 +80,23 @@ export const formData: Form[] = [
     settings: {
       isPublic: false,
       allowAnonymous: true,
-      admins: ["dris@formhook.com"],
+      admins: [{ email: "dris@formhook.com", role: "admin" }],
       successUrl: "https://formhook.com",
       customDomain: "https://formhook.com",
       allowedOrigins: ["https://formhook.com"],
       webhooks: [],
+      emailSettings: {
+        enabled: true,
+        to: ["dris@formhook.com"],
+        template: "default",
+        theme: {
+          primary: "#000000",
+          background: "#FFFFFF",
+          logo: "",
+          icon: "",
+          text: "",
+        },
+      },
     },
     submissions: [
       {

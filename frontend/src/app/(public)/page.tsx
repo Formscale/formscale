@@ -10,15 +10,15 @@ export default function Home() {
         <h1 className="text-5xl font-extrabold">
           The Most Powerful Form Builder For <span className="italic">Any</span> Site.
         </h1>
-        <p className="text-md text-muted-foreground">
+        <p className="text-md text-muted-foreground max-w-xl">
           With FormHook, create beautiful forms that seamlessly integrate with your website in seconds - from static
           sites to full-stack apps.
         </p>
         <div className="flex flex-row items-center justify-center gap-2">
-          <Button variant="action" size="lg">
+          <Button variant="action" size="lg" className="font-bold">
             Get Started
           </Button>
-          <Button variant="outline" size="lg">
+          <Button variant="outline" size="lg" className="font-bold">
             Browse Templates
           </Button>
         </div>
