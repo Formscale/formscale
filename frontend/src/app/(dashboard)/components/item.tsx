@@ -16,7 +16,7 @@ interface ItemProps {
 function Wrapper({ children, onClick, button }: { children: React.ReactNode; onClick?: () => void; button?: boolean }) {
   if (button && onClick) {
     return (
-      <Button variant="ghost" className="w-full justify-start h-auto px-0 py-2" onClick={onClick}>
+      <Button variant="ghost" className="w-full justify-start h-auto px-2 -ml-2 py-2" onClick={onClick}>
         {children}
       </Button>
     );

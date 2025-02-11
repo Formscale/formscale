@@ -18,60 +18,97 @@ interface FormField {
   description: string;
   placeholder: string;
   type: string;
+  options?: string[];
 }
 
-export interface DefaultFormProps<T extends FieldValues> {
+export interface DialogBaseProps {
   title: string;
-  description: string;
+  description?: string;
+  children?: React.ReactNode;
+}
+
+export interface DialogSkeletonProps extends DialogBaseProps {
+  button: React.ReactNode;
+  props?: React.ComponentProps<typeof Dialog>;
+}
+
+export interface DialogContentSkeletonProps extends DialogBaseProps {
+  props?: React.ComponentProps<typeof DialogContent>;
+}
+
+export interface DeleteDialogProps extends DialogBaseProps {
+  onDeleteAction: () => void;
+  buttonText?: string;
+}
+
+export interface DefaultFormProps<T extends FieldValues> extends DialogBaseProps {
   form: UseFormReturn<T>;
   onSubmitAction: (values: T) => void;
-  children?: React.ReactNode;
   fields: FormField[];
+  buttonText?: string;
 }
 
-export interface DialogSkeletonProps {
-  title: string;
-  description: string;
-  button: React.ReactNode;
-  children: React.ReactNode;
-  props?: React.ComponentProps<typeof Dialog>;
+export function DialogContentSkeleton({ title, description, children, props }: DialogContentSkeletonProps) {
+  return (
+    <DialogContent className="sm:max-w-[425px]" {...props}>
+      <DialogHeader>
+        <DialogTitle>{title}</DialogTitle>
+        {description && <DialogDescription className="text-xs text-muted-foreground">{description}</DialogDescription>}
+      </DialogHeader>
+      {children}
+    </DialogContent>
+  );
+}
+
+export function DeleteDialog({
+  title,
+  description,
+  onDeleteAction,
+  buttonText = "Delete",
+  children,
+}: DeleteDialogProps) {
+  return (
+    <DialogContentSkeleton title={title} description={description}>
+      {children}
+      <Button variant="destructive" className="text-xs font-bold mt-1" onClick={onDeleteAction}>
+        {buttonText}
+      </Button>
+    </DialogContentSkeleton>
+  );
 }
 
 export function DialogSkeleton({ title, description, button, children, props }: DialogSkeletonProps) {
   return (
     <Dialog {...props}>
       <DialogTrigger asChild>{button}</DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription className="text-xs text-muted-foreground">{description}</DialogDescription>
-        </DialogHeader>
+      <DialogContentSkeleton title={title} description={description}>
         {children}
-      </DialogContent>
+      </DialogContentSkeleton>
     </Dialog>
   );
 }
 
-export default function DefaultDialog<T extends FieldValues>({
-  title,
-  description,
-  form,
-  onSubmitAction,
-  children,
-  fields,
-}: DefaultFormProps<T>) {
+export function FormSkeleton<T extends FieldValues>({ form, onSubmitAction, fields, buttonText }: DefaultFormProps<T>) {
   return (
-    <DialogSkeleton title={title} description={description} button={children}>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmitAction)} className="w-full flex flex-col gap-4">
-          {fields.map((field: FormField) => (
-            <FormPart key={field.name} form={form} {...field} />
-          ))}
-          <Button type="submit" variant="action" className="text-xs font-bold">
-            Create
-          </Button>
-        </form>
-      </Form>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmitAction)} className="w-full flex flex-col gap-4">
+        {fields.map((field: FormField) => (
+          <FormPart key={field.name} form={form} {...field} />
+        ))}
+        <Button type="submit" variant="action" className="text-xs font-bold">
+          {buttonText}
+        </Button>
+      </form>
+    </Form>
+  );
+}
+
+export default function DefaultDialog<T extends FieldValues>(props: DefaultFormProps<T>) {
+  const { children, buttonText = "Create", ...formProps } = props;
+
+  return (
+    <DialogSkeleton title={props.title} description={props.description} button={children}>
+      <FormSkeleton {...formProps} buttonText={buttonText} />
     </DialogSkeleton>
   );
 }

@@ -7,9 +7,6 @@ import FormButton from "@/components/form-button";
 import { DataTable } from "@/app/(dashboard)/components/table/table";
 import { getColumns } from "./columns";
 import { useForm } from "@/providers/form";
-const handleRowClick = (row: SubmissionSent) => {
-  console.log(row);
-};
 
 const getFirstDataField = (submissions: SubmissionSent[]) => {
   if (submissions.length === 0) return "data.name";
@@ -25,6 +22,10 @@ export default function FormsPage() {
 
   const submissions = form.submissions || [];
   const columns = getColumns(submissions);
+
+  const handleRowClick = (row: SubmissionSent) => {
+    console.log(row);
+  };
 
   const filterProps = {
     column: getFirstDataField(submissions),

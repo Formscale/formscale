@@ -2,6 +2,7 @@ import { z } from "zod";
 import { SubmissionSentSchema } from "./submission";
 
 export const WebhookSchema = z.object({
+  type: z.enum(["webhook", "discord", "slack"]).default("webhook"),
   enabled: z.boolean().default(false),
   url: z.string().url().default(""),
   method: z.enum(["GET", "POST"]).optional().default("POST"),

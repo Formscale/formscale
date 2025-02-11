@@ -29,7 +29,7 @@ export default function OtpVerify() {
       <AuthHeader title="Verify your email" description={`Enter the OTP sent to ${email}`} />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-full flex flex-col gap-4 mt-3 ">
-          <FormPart form={form} name="otp" type="text" placeholder="123456" isOtp={true} />
+          <FormPart form={form} name="otp" type="otp" placeholder="123456" />
           <AuthButton text="Verify Email" />
         </form>
       </Form>

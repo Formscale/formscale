@@ -3,14 +3,16 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { Link1Icon, EnvelopeOpenIcon, DiscordLogoIcon } from "@radix-ui/react-icons";
+import { Link1Icon, EnvelopeOpenIcon, DiscordLogoIcon, TrashIcon, Pencil1Icon } from "@radix-ui/react-icons";
 
 import { useForm } from "@/providers/form";
 import { DialogSkeleton } from "@/components/default-dialog";
-// import { Pencil1Icon, TrashIcon } from "@radix-ui/react-icons";
 
 import { DataCardSkeleton } from "@/app/(dashboard)/components/data-card";
 import Item from "@/app/(dashboard)/components/item";
+import { DeleteDialog } from "@/components/default-dialog";
+
+import WebhookEditDialog from "./webhook";
 
 export default function HooksPage() {
   const { form } = useForm();
@@ -25,6 +27,27 @@ export default function HooksPage() {
       onClick: () => {
         console.log("webhook");
       },
+      dropdownItems: [
+        {
+          title: "Edit",
+          icon: Pencil1Icon,
+          dialog: <WebhookEditDialog />,
+        },
+        {
+          title: "Delete",
+          icon: TrashIcon,
+          dialog: (
+            <DeleteDialog
+              title="Delete Webhook"
+              description="This action cannot be undone."
+              buttonText="Delete Webhook"
+              onDeleteAction={() => {
+                console.log("delete");
+              }}
+            />
+          ),
+        },
+      ],
     },
     {
       title: "Email",
