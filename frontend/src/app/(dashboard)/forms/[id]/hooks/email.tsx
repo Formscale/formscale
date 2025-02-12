@@ -31,7 +31,7 @@ export default function EmailEditDialog({ emailSettings, admins }: EmailEditDial
       name: "to",
       type: "tags",
       description: "Recipients",
-      placeholder: "dris@formhook.com, ryan@example.com",
+      placeholder: "dris@example.com, ryan@example.com",
     },
     {
       name: "template",

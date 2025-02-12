@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { DropdownItem, DropdownSkeleton } from "@/components/default-dropdown";
 import { SortButton, FormatDate, StatusBadge } from "@/app/(dashboard)/components/table/columns";
 
-const getDataFields = (submissions: SubmissionSent[]) => {
+export const getDataFields = (submissions: SubmissionSent[]) => {
   const fields = new Set<string>();
   submissions.forEach((submission) => {
     Object.keys(submission.data || {}).forEach((key) => fields.add(key));

@@ -1,14 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { Dropdown } from "./dropdown";
 import { Input } from "@/components/ui/input";
 import { Table } from "@tanstack/react-table";
+import { Dropdown, DropdownSelect } from "./dropdown";
 
 interface FilterProps<T> {
   table: Table<T>;
   items: FilterGroup[];
   column?: string;
+  select?: boolean;
+  children?: React.ReactNode;
 }
 
 interface FilterItem {
@@ -21,7 +23,7 @@ export interface FilterGroup {
   items: FilterItem[];
 }
 
-export function Filter<T>({ table, items, column }: FilterProps<T>) {
+export function Filter<T>({ table, items, column, select, children }: FilterProps<T>) {
   const [selectedTitles, setSelectedTitles] = useState<Record<string, string>>(
     Object.fromEntries(items.map((group) => [group.itemColumn, group.items[0].title]))
   );
@@ -69,19 +71,23 @@ export function Filter<T>({ table, items, column }: FilterProps<T>) {
           placeholder="Search..."
           value={(table.getColumn(column)?.getFilterValue() as string) ?? ""}
           onChange={(e) => handleSearch(e.target.value)}
-          className="w-full max-w-md"
+          // className={`w-full max-w-sm ${children || select ? "md:min-w-[400px]" : "w-auto"}`}
         />
       )}
-      {items.map((group) => (
-        <Dropdown
-          key={group.itemColumn}
-          title={selectedTitles[group.itemColumn] ?? group.items[0].title}
-          items={group.items.map((item) => ({
-            title: item.title,
-            onClick: () => handleFilterSelect(group.itemColumn, item.value, item.title),
-          }))}
-        />
-      ))}
+      <div className="flex gap-2 w-full">
+        {items.map((group) => (
+          <Dropdown
+            key={group.itemColumn}
+            title={selectedTitles[group.itemColumn] ?? group.items[0].title}
+            items={group.items.map((item) => ({
+              title: item.title,
+              onClick: () => handleFilterSelect(group.itemColumn, item.value, item.title),
+            }))}
+          />
+        ))}
+        {select && <DropdownSelect table={table} />}
+        {children}
+      </div>
     </div>
   );
 }

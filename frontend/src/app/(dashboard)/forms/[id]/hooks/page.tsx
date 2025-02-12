@@ -62,7 +62,7 @@ export default function HooksPage() {
         icon: LinkBreak2Icon,
         dialog: (
           <DeleteDialog
-            title={`Disconnect ${service.title.toLowerCase()}`}
+            title={`Disconnect ${service.title === "Discord" ? "Discord" : service.title.toLowerCase()}?`}
             description="This action cannot be undone."
             buttonText={`Disconnect ${service.title}`}
             onDeleteAction={() => console.log(`disconnect ${service.type}`)}

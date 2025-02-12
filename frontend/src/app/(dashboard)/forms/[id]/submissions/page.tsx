@@ -5,6 +5,7 @@ import { SubmissionSent } from "@formhook/types";
 import DashCard from "@/app/(dashboard)/components/card";
 import FormButton from "@/components/form-button";
 import { DataTable } from "@/app/(dashboard)/components/table/table";
+import { ExportButton } from "./export-button";
 import { getColumns } from "./columns";
 import { useForm } from "@/providers/form";
 
@@ -29,16 +30,19 @@ export default function FormsPage() {
 
   const filterProps = {
     column: getFirstDataField(submissions),
+    select: true,
+    children: <ExportButton form={form} />,
     items: [
-      {
-        itemColumn: "status",
-        items: [
-          { title: "All statuses", value: undefined },
-          { title: "Pending", value: "pending" },
-          { title: "Completed", value: "completed" },
-          { title: "Failed", value: "failed" },
-        ],
-      },
+      // {
+      //   itemColumn: "status",
+      //   items: [
+      //     { title: "All statuses", value: undefined },
+      //     { title: "Pending", value: "pending" },
+      //     { title: "Completed", value: "completed" },
+      //     { title: "Failed", value: "failed" },
+      //     { title: "Blocked", value: "blocked" },
+      //   ],
+      // },
       {
         itemColumn: "createdAt",
         items: [

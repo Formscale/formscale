@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const SubmissionStatusSchema = z.enum(["pending", "completed", "failed"]);
+export const SubmissionStatusSchema = z.enum(["pending", "completed", "failed", "blocked"]);
 
 export const SubmissionSchema = z.object({
   formId: z.string().min(1),

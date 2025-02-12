@@ -1,10 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { CaretSortIcon } from "@radix-ui/react-icons";
 import { Column } from "@tanstack/react-table";
 import { format, formatDistanceToNow } from "date-fns";
 import DashBadge from "../badge";
 // import { FieldValues } from "react-hook-form";
-import { DotsHorizontalIcon, CheckIcon, Cross2Icon } from "@radix-ui/react-icons";
+import { DotsHorizontalIcon, CheckIcon, Cross2Icon, CaretSortIcon, CrossCircledIcon } from "@radix-ui/react-icons";
 
 export function FormatDate(date: Date) {
   return (
@@ -79,6 +78,13 @@ export function StatusBadge({ status }: { status: string }) {
         <DashBadge variant="destructive">
           <Cross2Icon className="h-4 w-4" />
           Failed
+        </DashBadge>
+      );
+    case "blocked":
+      return (
+        <DashBadge variant="destructive">
+          <CrossCircledIcon className="h-4 w-4" />
+          Blocked
         </DashBadge>
       );
   }

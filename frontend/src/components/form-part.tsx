@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import TagInput from "./tag-input";
 
 interface FormPartProps<T extends FieldValues> {
@@ -20,7 +21,7 @@ interface FormPartProps<T extends FieldValues> {
 }
 
 function Wrapper({ children, type }: { children: React.ReactNode; type: string }) {
-  if (type === "switch") {
+  if (["switch", "checkbox"].includes(type)) {
     return <div className="w-full flex justify-between items-start mt-0.5 mb-1">{children}</div>;
   }
 
@@ -47,6 +48,8 @@ export default function FormPart<T extends FieldValues>({
         return <Input type={type} placeholder={placeholder} {...field} className={className} />;
       case "switch":
         return <Switch {...field} checked={field.value} onCheckedChange={field.onChange} />;
+      case "checkbox":
+        return <Checkbox {...field} checked={field.value} onCheckedChange={field.onChange} />;
       case "select":
         return (
           <Select {...field} onValueChange={field.onChange}>
