@@ -17,6 +17,7 @@ interface FormPartProps<T extends FieldValues> {
   placeholder: string;
   muted?: boolean;
   className?: string;
+  children?: React.ReactNode;
   options?: string[];
 }
 
@@ -36,6 +37,7 @@ export default function FormPart<T extends FieldValues>({
   placeholder,
   muted = false,
   className,
+  children,
   options,
 }: FormPartProps<T>) {
   function renderInput({ field }: { field: FieldValues }) {
@@ -105,6 +107,7 @@ export default function FormPart<T extends FieldValues>({
             )}
             <FormControl>{renderInput({ field })}</FormControl>
           </Wrapper>
+          {children}
           <FormMessage className="text-xs" />
         </FormItem>
       )}

@@ -12,7 +12,7 @@ interface TagInputProps {
 
 export default function TagInput({ field, placeholder }: TagInputProps) {
   return (
-    <div className="flex flex-wrap gap-2 items-center justify-start rounded-md border border-input bg-transparent px-3 py-0 text-xs shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
+    <div className="flex flex-wrap gap-2 max-w-xl items-center justify-start rounded-md border border-input bg-transparent px-3 py-0 text-xs shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
       {Array.isArray(field.value) &&
         field.value.map((tag: string) => (
           <Badge key={tag} variant="secondary" className="flex items-center gap-1 font-normal text-xs py-1">

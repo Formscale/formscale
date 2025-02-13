@@ -30,7 +30,7 @@ export const EmailSettingsSchema = z.object({
     .array(z.string().email({ message: "Please enter a valid email address" }))
     .optional()
     .default([]),
-  template: z.enum(["default", "custom"]).optional().default("default"),
+  template: z.enum(["Default", "Custom"]).optional().default("Default"),
   theme: z
     .object({
       primary: z.string().default("#000000"),
@@ -47,17 +47,25 @@ export const AdminSchema = z.object({
   role: z.enum(["admin", "owner"]).default("admin"),
 });
 
+export const UTMSettingsSchema = z.object({
+  enabled: z.boolean().optional().default(false),
+  source: z.string().optional().default(""),
+  medium: z.string().optional().default(""),
+  campaign: z.string().optional().default(""),
+});
+
 export const FormSettingsSchema = z.object({
   isPublic: z.boolean().optional().default(true),
   allowAnonymous: z.boolean().optional().default(true),
+  spamProtection: z.boolean().optional().default(false),
   emailSettings: EmailSettingsSchema.optional().default({}),
   admins: z.array(AdminSchema).optional().default([]),
+  utm: UTMSettingsSchema.optional().default({}),
   reCaptcha: z
-    .object({
-      enabled: z.boolean().default(false),
-      siteKey: z.string().optional().default(""),
-    })
-    .optional(),
+    .string()
+    .regex(/^[0-9a-f]{32}$/, "Please enter a valid ReCaptcha site key")
+    .optional()
+    .default(""),
   webhooks: z.array(WebhookSchema).optional().default([]),
   successUrl: z.string().url().optional().default(""),
   customDomain: z.string().optional().default(""),

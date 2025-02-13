@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 
 import { DropdownItem, DropdownSkeleton } from "@/components/default-dropdown";
 import { SortButton, FormatDate, StatusBadge } from "@/app/(dashboard)/components/table/columns";
+// import CheckboxColumn from "@/app/(dashboard)/components/table/checkbox";
 
 export const getDataFields = (submissions: SubmissionSent[]) => {
   const fields = new Set<string>();
@@ -28,6 +29,7 @@ export function getColumns(submissions: SubmissionSent[]): ColumnDef<SubmissionS
   }));
 
   return [
+    // CheckboxColumn(),
     ...dataColumns,
     {
       id: "status",

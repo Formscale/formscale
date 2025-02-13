@@ -50,7 +50,7 @@ export function DataCardSkeleton<T extends FieldValues>({
       </CardHeader>
       <Wrapper form={form} onSubmitAction={onSubmitAction || (() => {})}>
         <CardContent className="py-6 pt-5">
-          <div className="flex flex-col gap-4">{children}</div>
+          <div className="flex flex-col gap-5">{children}</div>
         </CardContent>
         <CardFooter className="py-3 border-t border-border flex justify-start items-center gap-2">{button}</CardFooter>
       </Wrapper>
@@ -71,7 +71,7 @@ export default function DataCard<T extends FieldValues>({
       <DataCardSkeleton
         button={
           <Button type="submit" size="sm">
-            <span className="text-xs font-bold">{description}</span>
+            <span className="text-xs font-bold">{description || "Save"}</span>
           </Button>
         }
         title={title}

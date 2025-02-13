@@ -23,7 +23,7 @@ export function ExportButton({ form }: { form: Form }) {
 
     if (type === "json") {
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-      downloadBlob(blob, `${filename}-submissions.json`);
+      downloadBlob(blob, `${filename}.json`);
     } else {
       const csv = [
         headers.join(","),
@@ -31,7 +31,7 @@ export function ExportButton({ form }: { form: Form }) {
       ].join("\n");
 
       const blob = new Blob([csv], { type: "text/csv" });
-      downloadBlob(blob, `${filename}-submissions.csv`);
+      downloadBlob(blob, `${filename}.csv`);
     }
   };
 

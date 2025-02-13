@@ -24,7 +24,7 @@ const columnLabels: Record<string, string> = {
   updatedAt: "Last updated",
 };
 
-const hiddenColumns = ["actions"];
+const hiddenColumns = ["actions", "select"];
 
 export function DropdownSelect<T>({ table }: { table: Table<T> }) {
   return (

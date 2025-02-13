@@ -14,6 +14,8 @@ export const formData: Form[] = [
       successUrl: "https://formhook.com",
       customDomain: "https://formhook.com",
       allowedOrigins: ["https://formhook.com"],
+      reCaptcha: "MY_SITE_KEY",
+      spamProtection: true,
       webhooks: [
         {
           type: "discord",
@@ -32,10 +34,16 @@ export const formData: Form[] = [
           headers: {},
         },
       ],
+      utm: {
+        enabled: true,
+        source: "formhook",
+        medium: "email",
+        campaign: "formhook",
+      },
       emailSettings: {
         enabled: true,
         to: ["dris@formhook.com"],
-        template: "default",
+        template: "Default",
         theme: {
           primary: "#000000",
           background: "#FFFFFF",
@@ -79,16 +87,18 @@ export const formData: Form[] = [
     name: "Dris Elamri's Form 2",
     settings: {
       isPublic: false,
+      reCaptcha: "MY_SITE_KEY",
       allowAnonymous: true,
       admins: [{ email: "dris@formhook.com", role: "admin" }],
       successUrl: "https://formhook.com",
       customDomain: "https://formhook.com",
       allowedOrigins: ["https://formhook.com"],
+      spamProtection: true,
       webhooks: [],
       emailSettings: {
         enabled: true,
         to: ["dris@formhook.com"],
-        template: "default",
+        template: "Default",
         theme: {
           primary: "#000000",
           background: "#FFFFFF",
@@ -96,6 +106,12 @@ export const formData: Form[] = [
           icon: "",
           text: "",
         },
+      },
+      utm: {
+        enabled: true,
+        source: "formhook",
+        medium: "email",
+        campaign: "formhook",
       },
     },
     submissions: [
