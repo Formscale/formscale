@@ -38,6 +38,9 @@ export default function Settings({ form }: { form: Form }) {
       description: "Success URL",
       placeholder: "https://formhook.com/success",
       type: "text",
+      children: (
+        <p className="text-xs text-muted-foreground">Users will be redirected to this URL after submitting the form.</p>
+      ),
     },
     // {
     //   name: "settings.utm.enabled",
