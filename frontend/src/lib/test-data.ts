@@ -1,4 +1,16 @@
 import { Form } from "@formhook/types";
+import { User, Roles, SubscriptionTier } from "@formhook/types";
+
+export const userData: User[] = [
+  {
+    id: "1",
+    name: "Dris Elamri",
+    email: "dris@formhook.com",
+    role: Roles.ADMIN,
+    subscriptionTier: SubscriptionTier.FREE,
+    verified: true,
+  },
+];
 
 export const formData: Form[] = [
   {
@@ -14,7 +26,7 @@ export const formData: Form[] = [
       successUrl: "https://formhook.com",
       customDomain: "https://formhook.com",
       allowedOrigins: ["https://formhook.com"],
-      reCaptcha: "MY_SITE_KEY",
+      reCaptcha: "1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d",
       spamProtection: true,
       webhooks: [
         {
@@ -87,7 +99,7 @@ export const formData: Form[] = [
     name: "Dris Elamri's Form 2",
     settings: {
       isPublic: false,
-      reCaptcha: "MY_SITE_KEY",
+      reCaptcha: "7f8e9d0c1b2a3f4e5d6c7b8a9f0e1d2c",
       allowAnonymous: true,
       admins: [{ email: "dris@formhook.com", role: "admin" }],
       successUrl: "https://formhook.com",

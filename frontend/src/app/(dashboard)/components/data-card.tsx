@@ -39,7 +39,7 @@ export function DataCardSkeleton<T extends FieldValues>({
 }: {
   children: React.ReactNode;
   title: string;
-  button: React.ReactNode;
+  button?: React.ReactNode;
   form?: UseFormReturn<T>;
   onSubmitAction?: (values: T) => void;
 }) {
@@ -52,7 +52,11 @@ export function DataCardSkeleton<T extends FieldValues>({
         <CardContent className="py-6 pt-5">
           <div className="flex flex-col gap-5">{children}</div>
         </CardContent>
-        <CardFooter className="py-3 border-t border-border flex justify-start items-center gap-2">{button}</CardFooter>
+        {button && (
+          <CardFooter className="py-3 border-t border-border flex justify-start items-center gap-2">
+            {button}
+          </CardFooter>
+        )}
       </Wrapper>
     </Card>
   );

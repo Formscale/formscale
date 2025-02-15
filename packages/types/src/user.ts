@@ -13,6 +13,16 @@ export enum Roles {
   USER = "user",
 }
 
+export const TierLimitsSchema = z.object({
+  maxForms: z.number(),
+  maxSubmissionsPerMonth: z.number(),
+});
+
+export const UsageSchema = z.object({
+  forms: z.number(),
+  submissions: z.number(),
+});
+
 export const EditUserSchema = z.object({
   name: z.string().min(3).max(60),
   email: z.string().min(3).max(60).email(),
@@ -29,3 +39,5 @@ export const UserSchema = z.object({
 
 export type User = z.infer<typeof UserSchema>;
 export type EditUser = z.infer<typeof EditUserSchema>;
+export type TierLimits = z.infer<typeof TierLimitsSchema>;
+export type Usage = z.infer<typeof UsageSchema>;

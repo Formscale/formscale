@@ -102,7 +102,7 @@ export function AppSidebar() {
               </SidebarMenuItem>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={pathname.includes(item.url.replace("/", ""))}>
+                  <SidebarMenuButton asChild isActive={pathname.split("/")[1] === item.url.split("/")[1]}>
                     <Link href={item.url}>
                       <item.icon />
                       <span className="text-xs">{item.title}</span>
