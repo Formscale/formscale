@@ -4,32 +4,32 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import {
-  StackIcon,
+  ArrowTopRightIcon,
   BarChartIcon,
+  CircleIcon,
   ClockIcon,
+  DotsHorizontalIcon,
+  ExitIcon,
   GearIcon,
   GlobeIcon,
-  ArrowTopRightIcon,
-  PersonIcon,
-  DotsHorizontalIcon,
   LinkNone2Icon,
-  CircleIcon,
-  ExitIcon,
+  PersonIcon,
+  StackIcon,
 } from "@radix-ui/react-icons";
 
-import Logo from "@/components/logo";
 import FormButton from "@/components/form-button";
+import Logo from "@/components/logo";
 
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarHeader,
-  SidebarFooter,
 } from "@/components/ui/sidebar";
 
 import DefaultDropdown from "@/components/default-dropdown";
@@ -96,7 +96,7 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="flex flex-col gap-2">
               <SidebarMenuItem className="mb-2">
                 <FormButton />
               </SidebarMenuItem>

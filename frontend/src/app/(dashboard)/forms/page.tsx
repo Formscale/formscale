@@ -2,13 +2,13 @@
 
 import { Form } from "@formhook/types";
 
-import DashTitle from "../components/title";
-import DashCard from "../components/card";
 import FormButton from "@/components/form-button";
-import { DataTable } from "../components/table/table";
-import { columns } from "./columns";
 import { formData } from "@/lib/test-data";
 import { useRouter } from "next/navigation";
+import DashCard from "../components/card";
+import { DataTable } from "../components/table/table";
+import DashTitle from "../components/title";
+import { columns } from "./columns";
 const filterProps = {
   column: "name",
   items: [
@@ -61,6 +61,8 @@ export default function FormsPage() {
 // x finish template card for data & use in settings
 // - replace button & link with link inside button asChild
 // - add form settings to the schema instead of saved as json string
+// - dark mode light mode
+// - work on mobile
 
 // /forms/id
 // - add metrics/live monitor to form
@@ -70,3 +72,9 @@ export default function FormsPage() {
 // - sheet for full submission data
 // - special formatting for data (ex: left align numbers, etc)
 // - search submissions from all parameters
+// - disable "save changes" button if no changes
+// - add delete section in form settings
+
+// settings
+// - add members to settings - add/remove members, see status, etc
+// - addons?

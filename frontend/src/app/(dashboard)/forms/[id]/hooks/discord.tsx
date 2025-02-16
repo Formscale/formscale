@@ -1,9 +1,9 @@
 "use client";
 
 import { DialogContentSkeleton, FormSkeleton } from "@/components/default-dialog";
-import { DiscordSchema, Discord } from "@formhook/types";
-import { useForm } from "react-hook-form";
+import { Discord, DiscordSchema } from "@formhook/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 export default function DiscordEditDialog(discord: Discord) {
   const form = useForm<Discord>({

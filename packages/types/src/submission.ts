@@ -18,3 +18,4 @@ export const SubmissionSentSchema = z.object({
 
 export type Submission = z.infer<typeof SubmissionSchema>;
 export type SubmissionSent = z.infer<typeof SubmissionSentSchema>;
+export type SubmissionStatus = z.infer<typeof SubmissionStatusSchema>;

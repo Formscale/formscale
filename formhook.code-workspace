@@ -29,6 +29,9 @@
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
       "source.removeUnusedImports": "always",
+      "source.removeUnusedVariables": "always",
+      "source.fixAll": "always",
+      "source.organizeImports": "always",
     },
 
     "eslint.run": "onType",

@@ -54,19 +54,25 @@ git clone https://github.com/dris-e/formhook.git
 pnpm install
 ```
 
-3. Build packages:
+3. Generate Prisma client:
+
+```bash
+pnpm generate
+```
+
+4. Build packages:
 
 ```bash
 pnpm build
 ```
 
-4. Start development servers:
+5. Start development servers:
 
 ```bash
 pnpm dev
 ```
 
-5. Configure environment:
+6. Configure environment:
 
 - Add your own bucket and database from Cloudflare to `api/wrangler.toml`.
 - Add your own Resend API key and JWT secret to `api/.dev.vars.example` and rename it to `.dev.vars`.

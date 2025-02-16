@@ -3,19 +3,19 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { Link1Icon, EnvelopeOpenIcon, DiscordLogoIcon, Pencil1Icon, LinkBreak2Icon } from "@radix-ui/react-icons";
+import { DiscordLogoIcon, EnvelopeOpenIcon, Link1Icon, LinkBreak2Icon, Pencil1Icon } from "@radix-ui/react-icons";
 
-import { useForm } from "@/providers/form";
 import { DialogSkeleton } from "@/components/default-dialog";
+import { useForm } from "@/providers/form";
 
 import { DataCardSkeleton } from "@/app/(dashboard)/components/data-card";
 import Item from "@/app/(dashboard)/components/item";
 import { DeleteDialog } from "@/components/default-dialog";
 
-import WebhookEditDialog from "./webhook";
+import { Discord } from "@formhook/types";
 import DiscordEditDialog from "./discord";
 import EmailEditDialog from "./email";
-import { Discord } from "@formhook/types";
+import WebhookEditDialog from "./webhook";
 
 export default function HooksPage() {
   const { form } = useForm();

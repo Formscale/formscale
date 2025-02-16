@@ -1,5 +1,4 @@
-import { Form } from "@formhook/types";
-import { User, Roles, SubscriptionTier } from "@formhook/types";
+import { Form, Roles, SubscriptionTier, User } from "@formhook/types";
 
 export const userData: User[] = [
   {
@@ -130,18 +129,26 @@ export const formData: Form[] = [
       {
         formId: "2",
         id: "1",
-        createdAt: new Date("2024-01-01"),
-        updatedAt: new Date("2024-01-01"),
-        data: {},
+        createdAt: new Date("2024-03-01"),
+        updatedAt: new Date("2024-05-01"),
+        data: {
+          name: "John Doe",
+          email: "john@doe.com",
+          message: "Hello, world!",
+        },
         status: "pending",
       },
       {
         formId: "2",
         id: "2",
-        createdAt: new Date("2024-01-02"),
-        updatedAt: new Date("2024-01-02"),
-        data: {},
-        status: "pending",
+        createdAt: new Date("2024-05-02"),
+        updatedAt: new Date("2024-05-02"),
+        data: {
+          name: "Jane Doe",
+          email: "jane@doe.com",
+          age: 25,
+        },
+        status: "completed",
       },
     ],
     createdAt: new Date("2024-01-01"),

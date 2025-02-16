@@ -1,27 +1,11 @@
 import { z } from "zod";
-
-export enum SubscriptionTier {
-  FREE = "free",
-  PRO = "pro",
-  BUSINESS = "business",
-  ENTERPRISE = "enterprise",
-  TEAM = "team",
-}
+import { SubscriptionTier } from "./subscription";
 
 export enum Roles {
   ADMIN = "admin",
   USER = "user",
+  DEMO = "demo",
 }
-
-export const TierLimitsSchema = z.object({
-  maxForms: z.number(),
-  maxSubmissionsPerMonth: z.number(),
-});
-
-export const UsageSchema = z.object({
-  forms: z.number(),
-  submissions: z.number(),
-});
 
 export const EditUserSchema = z.object({
   name: z.string().min(3).max(60),
@@ -32,12 +16,10 @@ export const UserSchema = z.object({
   id: z.string(),
   name: z.string().min(3).max(60),
   email: z.string().min(3).max(60).email(),
-  role: z.nativeEnum(Roles),
-  subscriptionTier: z.nativeEnum(SubscriptionTier),
-  verified: z.boolean(),
+  role: z.nativeEnum(Roles).default(Roles.USER),
+  subscriptionTier: z.nativeEnum(SubscriptionTier).default(SubscriptionTier.FREE),
+  verified: z.boolean().default(false),
 });
 
 export type User = z.infer<typeof UserSchema>;
 export type EditUser = z.infer<typeof EditUserSchema>;
-export type TierLimits = z.infer<typeof TierLimitsSchema>;
-export type Usage = z.infer<typeof UsageSchema>;

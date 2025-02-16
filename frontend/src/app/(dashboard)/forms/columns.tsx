@@ -2,16 +2,16 @@
 
 import Link from "next/link";
 
-import { ColumnDef } from "@tanstack/react-table";
 import { Form } from "@formhook/types";
-import { DotsHorizontalIcon, EyeOpenIcon, EyeNoneIcon, StackIcon, Link1Icon } from "@radix-ui/react-icons";
+import { DotsHorizontalIcon, EyeNoneIcon, EyeOpenIcon, Link1Icon, StackIcon } from "@radix-ui/react-icons";
+import { ColumnDef } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
 import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 
 import { DropdownItem, DropdownSkeleton } from "@/components/default-dropdown";
 import DashBadge from "../components/badge";
-import { SortButton, FormatDate, FormatNumber } from "../components/table/columns";
+import { FormatDate, FormatNumber, SortButton } from "../components/table/columns";
 
 export const columns: ColumnDef<Form>[] = [
   {
@@ -40,12 +40,12 @@ export const columns: ColumnDef<Form>[] = [
       return form.settings.isPublic ? (
         <DashBadge variant="action">
           <EyeOpenIcon className="h-4 w-4" />
-          Public
+          Active
         </DashBadge>
       ) : (
         <DashBadge variant="secondary">
           <EyeNoneIcon className="h-4 w-4" />
-          Private
+          Disabled
         </DashBadge>
       );
     },

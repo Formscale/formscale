@@ -1,12 +1,12 @@
 "use client";
 
-import { FieldValues, Path, UseFormReturn } from "react-hook-form";
+import { Checkbox } from "@/components/ui/checkbox";
 import { FormControl, FormDescription, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
+import { FieldValues, Path, UseFormReturn } from "react-hook-form";
 import TagInput from "./tag-input";
 
 interface FormPartProps<T extends FieldValues> {
@@ -23,7 +23,7 @@ interface FormPartProps<T extends FieldValues> {
 
 function Wrapper({ children, type }: { children: React.ReactNode; type: string }) {
   if (["switch", "checkbox"].includes(type)) {
-    return <div className="w-full flex justify-between items-start mt-0.5 mb-1">{children}</div>;
+    return <div className="w-full flex justify-between items-start mt-0.5 -mb-0.5">{children}</div>;
   }
 
   return <>{children}</>;
@@ -107,7 +107,7 @@ export default function FormPart<T extends FieldValues>({
             )}
             <FormControl>{renderInput({ field })}</FormControl>
           </Wrapper>
-          {children}
+          {children && <div className="flex pt-1">{children}</div>}
           <FormMessage className="text-xs" />
         </FormItem>
       )}

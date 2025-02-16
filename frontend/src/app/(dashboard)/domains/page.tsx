@@ -1,5 +1,5 @@
-import DashTitle from "../components/title";
 import DashCard from "../components/card";
+import DashTitle from "../components/title";
 
 export default function DomainsPage() {
   return (

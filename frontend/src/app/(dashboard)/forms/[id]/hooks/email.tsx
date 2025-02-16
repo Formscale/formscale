@@ -1,9 +1,9 @@
 "use client";
 
 import { DialogContentSkeleton, FormSkeleton } from "@/components/default-dialog";
-import { EmailSettingsSchema, EmailSettings, Admin } from "@formhook/types";
-import { useForm } from "react-hook-form";
+import { Admin, EmailSettings, EmailSettingsSchema } from "@formhook/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 interface EmailEditDialogProps {
   emailSettings: EmailSettings;
@@ -32,6 +32,9 @@ export default function EmailEditDialog({ emailSettings, admins }: EmailEditDial
       type: "tags",
       description: "Recipients",
       placeholder: "dris@example.com, ryan@example.com",
+      children: (
+        <span className="text-xs text-muted-foreground">Recipients will recieve an invitation to receive emails.</span>
+      ),
     },
     {
       name: "template",

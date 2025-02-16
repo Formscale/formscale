@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 
-import { DefaultDropdownItem, DropdownSkeleton } from "@/components/default-dropdown";
-import { DropdownItem } from "@/components/default-dropdown";
+import { DefaultDropdownItem, DropdownItem, DropdownSkeleton } from "@/components/default-dropdown";
+
 interface ItemProps {
   title: string;
   icon: React.ComponentType<{ className?: string }>;
