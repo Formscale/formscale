@@ -6,8 +6,5 @@
   "pages_build_output_dir": ".vercel/output/static",
   "observability": {
     "enabled": true
-  },
-  "vars": {
-    "NEXT_PUBLIC_API_URL": "http://localhost:3001"
   }
 }

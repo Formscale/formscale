@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 import {
   ArrowTopRightIcon,
+  AvatarIcon,
   BarChartIcon,
   CircleIcon,
   ClockIcon,
@@ -13,7 +14,6 @@ import {
   GearIcon,
   GlobeIcon,
   LinkNone2Icon,
-  PersonIcon,
   StackIcon,
 } from "@radix-ui/react-icons";
 
@@ -119,7 +119,7 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <DefaultDropdown items={footerItems} side="top" className="w-[--radix-popper-anchor-width]">
               <SidebarMenuButton>
-                <PersonIcon />
+                <AvatarIcon />
                 <span className="text-xs text-foreground">Dris Elamri</span>
                 <DotsHorizontalIcon className="ml-auto" />
               </SidebarMenuButton>

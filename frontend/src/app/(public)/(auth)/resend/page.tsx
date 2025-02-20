@@ -1,6 +1,8 @@
 "use client";
 
-import { Login, LoginSchema } from "@formhook/types";
+import { useEffect } from "react";
+
+import { ResendOtp, ResendOtpSchema } from "@formhook/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -12,38 +14,37 @@ import { useAuth } from "@/providers/auth";
 import AuthButton from "../components/button";
 import AuthHeader from "../components/header";
 import OtpVerify from "../components/otp-verify";
-
-const formFields = [
-  { name: "email", description: "Email", placeholder: "dris@formhook.com", type: "email" },
-  { name: "password", description: "Password", placeholder: "********", type: "password" },
-];
+const formFields = [{ name: "email", description: "Email", placeholder: "dris@formhook.com", type: "email" }];
 
 export default function LoginPage() {
-  const { setEmail, startVerification, isVerifying } = useAuth();
-  const { post, isLoading } = useFetch<Login>();
+  const { setEmail, startVerification, isVerifying, resetAuth } = useAuth();
+  const { post, isLoading } = useFetch<ResendOtp>();
   const { handleError } = useError();
 
-  const form = useForm<Login>({
-    resolver: zodResolver(LoginSchema),
+  useEffect(() => {
+    resetAuth();
+  }, [resetAuth]);
+
+  const form = useForm<ResendOtp>({
+    resolver: zodResolver(ResendOtpSchema),
     defaultValues: {
       email: "",
-      password: "",
     },
   });
 
-  async function onSubmit(values: Login) {
+  async function onSubmit(values: ResendOtp) {
     try {
-      const data = await post("auth/login", values);
-    } catch (error) {
-      if ((error as any).status === 403) {
+      const data = await post("auth/resend", values);
+
+      if (data.success) {
         setEmail(values.email);
         startVerification();
-      } else {
-        handleError({
-          message: "Login failed",
-          description: (error as Error).message,
-        });
       }
+    } catch (error) {
+      handleError({
+        message: "Resend failed",
+        description: (error as Error).message,
+      });
     }
   }
 
@@ -53,13 +54,13 @@ export default function LoginPage() {
 
   return (
     <>
-      <AuthHeader title="Log in to FormHook" description="Don't have an account?" link="/signup" linkText="Sign Up." />
+      <AuthHeader title="Resend OTP" description="Don't have an account?" link="/signup" linkText="Sign Up." />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-full flex flex-col gap-4 mt-3 ">
           {formFields.map((field) => (
             <FormPart key={field.name} form={form} {...field} />
           ))}
-          <AuthButton text="Log In" props={{ disabled: isLoading }} />
+          <AuthButton text="Resend OTP" props={{ disabled: isLoading }} />
         </form>
       </Form>
     </>

@@ -3,7 +3,7 @@
 import Link from "next/link";
 
 import { Form } from "@formhook/types";
-import { DotsHorizontalIcon, EyeNoneIcon, EyeOpenIcon, Link1Icon, StackIcon } from "@radix-ui/react-icons";
+import { DotsHorizontalIcon, EyeNoneIcon, EyeOpenIcon, Link1Icon } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
@@ -21,8 +21,8 @@ export const columns: ColumnDef<Form>[] = [
       const form = row.original;
 
       return (
-        <div className="flex items-center gap-3">
-          <StackIcon className="min-w-4 min-h-4 w-4 h-4 text-muted-foreground" />
+        <div className="flex items-center gap-3 pl-2">
+          {/* <StackIcon className="min-w-4 min-h-4 w-4 h-4 text-muted-foreground" /> */}
           <Link href={`/forms/${form.id}`} className="hover:underline">
             {form.name}
           </Link>

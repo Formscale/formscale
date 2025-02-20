@@ -1,5 +1,5 @@
 {
-  "name": "@formhook/validations",
+  "name": "@formhook/utils",
   "version": "0.0.1",
   "private": true,
   "main": "./dist/index.js",
@@ -12,13 +12,19 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "lint": "eslint src/",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@formhook/types": "workspace:*",
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
     "typescript": "^5.3.3",
     "tsup": "^8.0.2"
   }

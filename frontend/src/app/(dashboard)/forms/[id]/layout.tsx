@@ -1,12 +1,12 @@
 import Link from "next/link";
 
+import DashCard from "@/app/(dashboard)/components/card";
 import DashTitle from "@/app/(dashboard)/components/title";
 import Tabs from "@/components/tabs";
-import { formData } from "@/lib/test-data";
-import DashCard from "@/app/(dashboard)/components/card";
 import { Button } from "@/components/ui/button";
-import { ChevronLeftIcon } from "@radix-ui/react-icons";
+import { formData } from "@/lib/test-data";
 import { FormProvider } from "@/providers/form";
+import { ChevronLeftIcon } from "@radix-ui/react-icons";
 
 export default async function FormLayout({ children, params }: { children: React.ReactNode; params: { id: string } }) {
   const { id } = await params;
@@ -32,8 +32,8 @@ export default async function FormLayout({ children, params }: { children: React
   const tabs = [
     { title: "Overview", href: basePath },
     { title: "Submissions", href: `${basePath}/submissions` },
+    { title: "Builder", href: `${basePath}/builder` },
     { title: "Hooks", href: `${basePath}/hooks` },
-    { title: "Rules", href: `${basePath}/rules` },
     { title: "Settings", href: `${basePath}/settings` },
   ];
 

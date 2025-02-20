@@ -5,29 +5,49 @@ interface FetchOptions<T> extends RequestInit {
   onError?: (error: Error) => void;
 }
 
-export function useFetch<T>(baseUrl: string = "/api") {
+interface ApiResponse<T> {
+  success: boolean;
+  data?: T;
+  error?: string | { field: string; message: string }[];
+}
+
+export function useFetch<T>() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
   const fetchData = async (endpoint: string, options: FetchOptions<T> = {}) => {
+    if (!baseUrl) {
+      const error = new Error("API_URL is not set");
+      setError(error);
+      throw error;
+    }
+
     try {
       setIsLoading(true);
       setError(null);
 
-      const response = await fetch(`${baseUrl}${endpoint}`, {
+      const response = await fetch(`${baseUrl}/${endpoint}`, {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
           ...options.headers,
         },
         ...options,
       });
 
+      const data = (await response.json()) as ApiResponse<T>;
+      console.log("data", data);
+
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorMessage = Array.isArray(data.error) ? data.error.map((e) => e.message).join(", ") : data.error;
+        const error = new Error(errorMessage || `HTTP error! status: ${response.status}`);
+        (error as any).status = response.status;
+        throw error;
       }
 
-      const data = await response.json();
       options.onSuccess?.(data as T);
       return data;
     } catch (err) {

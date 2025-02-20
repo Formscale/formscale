@@ -1,7 +1,7 @@
 import App from "@/app";
+import db from "@/db";
 import validator from "@/middleware/validation";
 import Response from "@/utils/response";
-import db from "@/db";
 import { SubmissionSchema } from "@formhook/types";
 
 export const SubmissionController = App.basePath("/").post(

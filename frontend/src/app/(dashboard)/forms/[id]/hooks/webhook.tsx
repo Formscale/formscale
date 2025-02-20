@@ -1,9 +1,9 @@
 "use client";
 
 import { DialogContentSkeleton, FormSkeleton } from "@/components/default-dialog";
-import { WebhookSchema, Webhook } from "@formhook/types";
-import { useForm } from "react-hook-form";
+import { Webhook, WebhookSchema } from "@formhook/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 export default function WebhookEditDialog(webhook: Webhook) {
   const form = useForm<Webhook>({

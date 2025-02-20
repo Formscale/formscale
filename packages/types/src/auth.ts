@@ -1,12 +1,7 @@
 import { z } from "zod";
 
-export const AuthSettingsSchema = z.object({
-  tokenExpiry: z.number().default(3600),
-  maxLoginAttempts: z.number().default(3),
-});
-
 export const LoginSchema = z.object({
-  email: z.string().min(3).max(60).email(),
+  email: z.string().email(),
   password: z
     .string()
     .min(8)
@@ -16,10 +11,10 @@ export const LoginSchema = z.object({
     }),
 });
 
-export const RegisterSchema = z
+export const SignupSchema = z
   .object({
     name: z.string().min(3).max(60),
-    email: z.string().min(3).max(60).email(),
+    email: z.string().email(),
     password: z
       .string()
       .min(8)
@@ -35,12 +30,17 @@ export const RegisterSchema = z
   });
 
 export const OtpSchema = z.object({
+  email: z.string().email(),
   otp: z.string().length(6).regex(/^\d+$/, {
-    message: "OTP must be a number",
+    message: "OTP must be a 6 digit number",
   }),
 });
 
-export type AuthSettings = z.infer<typeof AuthSettingsSchema>;
-export type Register = z.infer<typeof RegisterSchema>;
+export const ResendOtpSchema = z.object({
+  email: z.string().email(),
+});
+
+export type Signup = z.infer<typeof SignupSchema>;
 export type Login = z.infer<typeof LoginSchema>;
 export type Otp = z.infer<typeof OtpSchema>;
+export type ResendOtp = z.infer<typeof ResendOtpSchema>;

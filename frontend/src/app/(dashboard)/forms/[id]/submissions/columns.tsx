@@ -21,11 +21,13 @@ export const getDataFields = (submissions: SubmissionSent[]) => {
 export function getColumns(submissions: SubmissionSent[]): ColumnDef<SubmissionSent>[] {
   const dataFields = getDataFields(submissions);
 
-  const dataColumns: ColumnDef<SubmissionSent>[] = dataFields.map((field) => ({
+  const dataColumns: ColumnDef<SubmissionSent>[] = dataFields.map((field, index) => ({
     id: `data.${field}`,
     accessorKey: `data.${field}`,
     header: ({ column }) => SortButton(field.substring(0, 1).toUpperCase() + field.substring(1), column),
-    cell: ({ row }) => row.original.data[field],
+    cell: ({ row }) => (
+      <div className={index === 0 ? "pl-2" : undefined}>{row.original.data[field]?.toLocaleString()}</div>
+    ),
   }));
 
   return [

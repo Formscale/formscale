@@ -37,7 +37,7 @@ The most powerful form builder for any site.
   - `ui/*` - UI components
   - `templates/*` - UI templates
   - `utils/*` - Shared utilities
-- `cli` - CLI for managing Formhook
+- `cli` - CLI for managing FormHook
 - `react` - React SDK
 
 ## Getting Started
@@ -110,7 +110,7 @@ git commit -m "docs: updated readme"
 ```bash
 pnpm lint        # lint
 pnpm build       # see if it builds
-pnpm test        # run tests (not yet added)
+pnpm test        # run tests
 ```
 
 4. Push and create PR:

@@ -37,7 +37,7 @@ export default function HooksPage() {
       type: "email",
       title: "Email",
       icon: EnvelopeOpenIcon,
-      description: "Forward submissions to an email address",
+      description: "Forward submissions to email addresses",
       dialog: <EmailEditDialog emailSettings={form.settings.emailSettings} admins={form.settings?.admins || []} />,
       onClick: () => console.log("email"),
     },
@@ -80,13 +80,7 @@ export default function HooksPage() {
           title="Add a service"
           description="Connect your form to automate your workflow."
           button={
-            <Button
-              type="submit"
-              size="sm"
-              onClick={() => {
-                navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_API_URL}/forms/${form.id}`);
-              }}
-            >
+            <Button type="submit" size="sm">
               <span className="text-xs font-bold">Add Service</span>
             </Button>
           }
@@ -103,7 +97,7 @@ export default function HooksPage() {
       }
     >
       <div className="space-y-2">
-        <div className="mb-4">
+        <div className="mb-4 flex">
           <span className="text-[0.8rem]">
             Connect your form to other services.{" "}
             <Link href="/integrations" className="text-muted-foreground underline">

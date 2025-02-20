@@ -92,12 +92,14 @@ export default function FormPage() {
         }
       >
         <div className="space-y-2">
-          <span className="text-[0.8rem]">
-            Copy this endpoint to use in your form.{" "}
-            <Link target="_blank" href="/onboarding" className="underline text-muted-foreground">
-              See guide.
-            </Link>{" "}
-          </span>
+          <div className="flex">
+            <span className="text-[0.8rem]">
+              Copy this endpoint to use in your form.{" "}
+              <Link target="_blank" href="/onboarding" className="underline text-muted-foreground">
+                See guide.
+              </Link>{" "}
+            </span>
+          </div>
           <Input
             type="text"
             placeholder="https://api.formhook.com/123"

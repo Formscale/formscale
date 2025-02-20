@@ -32,16 +32,14 @@ export default function EmailEditDialog({ emailSettings, admins }: EmailEditDial
       type: "tags",
       description: "Recipients",
       placeholder: "dris@example.com, ryan@example.com",
-      children: (
-        <span className="text-xs text-muted-foreground">Recipients will recieve an invitation to receive emails.</span>
-      ),
+      children: <span className="text-xs text-muted-foreground">Recipients will be invited to receive emails.</span>,
     },
     {
       name: "template",
       type: "select",
       description: "Template",
-      placeholder: "default",
-      options: ["default", "custom"],
+      placeholder: "Default",
+      options: ["Default", "Custom"],
     },
     { name: "enabled", type: "switch", description: "Email Enabled", placeholder: "true" },
   ];

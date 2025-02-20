@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { SubmissionSentSchema } from "./submission";
+import { ValidationSchema } from "./validations";
 
 export const WebhookSchema = z.object({
   type: z.enum(["webhook", "discord", "slack"]).default("webhook"),
@@ -17,11 +18,6 @@ export const DiscordSchema = WebhookSchema.extend({
     .url()
     .regex(/^https:\/\/discord\.com\/api\/webhooks\/\d+\/[\w-]+$/, "Please enter a valid Discord webhook URL")
     .default(""),
-});
-
-export const ValidationSchema = z.object({
-  enabled: z.boolean().default(false),
-  schema: z.any().default({}),
 });
 
 export const EmailSettingsSchema = z.object({
@@ -93,4 +89,3 @@ export type Webhook = z.infer<typeof WebhookSchema>;
 export type Discord = z.infer<typeof DiscordSchema>;
 export type EmailSettings = z.infer<typeof EmailSettingsSchema>;
 export type Admin = z.infer<typeof AdminSchema>;
-export type Validation = z.infer<typeof ValidationSchema>;

@@ -29,6 +29,16 @@ export async function findOne<T extends keyof PrismaClient>(
   return await (prisma[model] as any).findFirst(params);
 }
 
+export async function findUnique<T extends keyof PrismaClient>(
+  prisma: PrismaClient,
+  model: T,
+  params: {
+    where: any;
+  }
+) {
+  return await (prisma[model] as any).findUnique(params);
+}
+
 export async function update<T extends keyof PrismaClient>(
   prisma: PrismaClient,
   model: T,
@@ -37,7 +47,13 @@ export async function update<T extends keyof PrismaClient>(
     data: any;
   }
 ) {
-  return await (prisma[model] as any).update(params);
+  return await (prisma[model] as any).update({
+    ...params,
+    data: {
+      ...params.data,
+      updatedAt: new Date(),
+    },
+  });
 }
 
 export async function remove<T extends keyof PrismaClient>(prisma: PrismaClient, model: T, where: any) {
@@ -46,7 +62,12 @@ export async function remove<T extends keyof PrismaClient>(prisma: PrismaClient,
   });
 }
 
-export async function secureFind<T extends keyof PrismaClient>(prisma: PrismaClient, model: T, userId: string, id: string) {
+export async function secureFind<T extends keyof PrismaClient>(
+  prisma: PrismaClient,
+  model: T,
+  userId: string,
+  id: string
+) {
   return await (prisma[model] as any).findFirst({
     where: {
       id,
@@ -55,7 +76,13 @@ export async function secureFind<T extends keyof PrismaClient>(prisma: PrismaCli
   });
 }
 
-export async function secureUpdate<T extends keyof PrismaClient>(prisma: PrismaClient, model: T, userId: string, id: string, data: any) {
+export async function secureUpdate<T extends keyof PrismaClient>(
+  prisma: PrismaClient,
+  model: T,
+  userId: string,
+  id: string,
+  data: any
+) {
   return await (prisma[model] as any).update({
     where: {
       id,
@@ -65,7 +92,12 @@ export async function secureUpdate<T extends keyof PrismaClient>(prisma: PrismaC
   });
 }
 
-export async function secureDelete<T extends keyof PrismaClient>(prisma: PrismaClient, model: T, userId: string, id: string) {
+export async function secureDelete<T extends keyof PrismaClient>(
+  prisma: PrismaClient,
+  model: T,
+  userId: string,
+  id: string
+) {
   return await (prisma[model] as any).delete({
     where: {
       id,

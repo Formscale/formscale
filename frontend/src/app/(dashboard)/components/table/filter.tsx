@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Table } from "@tanstack/react-table";
+import { useState } from "react";
 import { Dropdown, DropdownSelect } from "./dropdown";
 
 interface FilterProps<T> {
@@ -11,6 +11,7 @@ interface FilterProps<T> {
   column?: string;
   select?: boolean;
   children?: React.ReactNode;
+  globalSearch?: boolean;
 }
 
 interface FilterItem {
@@ -23,13 +24,17 @@ export interface FilterGroup {
   items: FilterItem[];
 }
 
-export function Filter<T>({ table, items, column, select, children }: FilterProps<T>) {
+export function Filter<T>({ table, items, column, select, children, globalSearch }: FilterProps<T>) {
   const [selectedTitles, setSelectedTitles] = useState<Record<string, string>>(
     Object.fromEntries(items.map((group) => [group.itemColumn, group.items[0].title]))
   );
 
+  const hasSearch = globalSearch || column;
+
   const handleSearch = (value: string) => {
-    if (column) {
+    if (globalSearch) {
+      table.setGlobalFilter(value);
+    } else if (column) {
       table.getColumn(column)?.setFilterValue(value);
     }
   };
@@ -65,11 +70,15 @@ export function Filter<T>({ table, items, column, select, children }: FilterProp
   };
 
   return (
-    <div className={`flex w-full gap-2 items-center ${column ? "justify-between" : "justify-end"}`}>
-      {column && (
+    <div className={`flex w-full gap-2 items-center ${hasSearch ? "justify-between" : "justify-end"}`}>
+      {hasSearch && (
         <Input
-          placeholder="Search..."
-          value={(table.getColumn(column)?.getFilterValue() as string) ?? ""}
+          placeholder={globalSearch ? "Search all..." : "Search..."}
+          value={
+            globalSearch
+              ? ((table.getState().globalFilter as string) ?? "")
+              : ((table.getColumn(column!)?.getFilterValue() as string) ?? "")
+          }
           onChange={(e) => handleSearch(e.target.value)}
           // className={`w-full max-w-sm ${children || select ? "md:min-w-[400px]" : "w-auto"}`}
         />

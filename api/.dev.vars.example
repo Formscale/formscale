@@ -1,2 +1,3 @@
+FRONTEND_URL="http://localhost:3000"
 RESEND_API_KEY="re_XXX"
 JWT_SECRET = "my-secret"

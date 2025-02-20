@@ -18,15 +18,6 @@ export function Filter({ onFilterChangeAction, forms }: FilterProps) {
 
   const filterGroups = [
     {
-      itemColumn: "dateRange",
-      items: [
-        { title: "All time", value: undefined },
-        { title: "Last 30 days", value: "last_30_days" },
-        { title: "Last 7 days", value: "last_7_days" },
-        { title: "Last 24 hours", value: "last_24_hours" },
-      ],
-    },
-    {
       itemColumn: "status",
       items: [
         { title: "All statuses", value: undefined },
@@ -34,6 +25,15 @@ export function Filter({ onFilterChangeAction, forms }: FilterProps) {
         { title: "Completed", value: "completed" },
         { title: "Failed", value: "failed" },
         { title: "Blocked", value: "blocked" },
+      ],
+    },
+    {
+      itemColumn: "dateRange",
+      items: [
+        { title: "All time", value: undefined },
+        { title: "Last 30 days", value: "last_30_days" },
+        { title: "Last 7 days", value: "last_7_days" },
+        { title: "Last 24 hours", value: "last_24_hours" },
       ],
     },
     {

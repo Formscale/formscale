@@ -1,6 +1,6 @@
 "use client";
 
-import { Progress } from "@/components/ui/progress";
+import { Progress, ProgressVariant } from "@/components/ui/progress";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
@@ -8,7 +8,7 @@ export interface Limits {
   name: string;
   value: number;
   total: number;
-  variant?: "default" | "success" | "secondary" | "destructive" | "blocked";
+  variant?: ProgressVariant;
 }
 
 interface UsageProps {
@@ -36,6 +36,10 @@ export function UsageSection({ limits, title, children, muted }: UsageProps) {
   );
 }
 
+function getProgressValue(value: number, total: number) {
+  return total === 0 ? 0 : (value / total) * 100;
+}
+
 export default function UsageItems({ limits }: { limits: Limits[] }) {
   return (
     <>
@@ -53,12 +57,12 @@ export default function UsageItems({ limits }: { limits: Limits[] }) {
                 <TooltipTrigger className="w-full max-w-[100px]">
                   <Progress
                     variant={!lim.variant ? (lim.value >= lim.total ? "blocked" : "default") : lim.variant}
-                    value={(lim.value / lim.total) * 100}
+                    value={getProgressValue(lim.value, lim.total)}
                   />
                 </TooltipTrigger>
                 <TooltipContent side="bottom" className="opacity-80 mt-0.5">
                   <span className="text-xs text-secondary-foreground">
-                    {Math.round((lim.value / lim.total) * 100).toLocaleString()}%
+                    {Math.round(getProgressValue(lim.value, lim.total)).toLocaleString()}%
                   </span>
                 </TooltipContent>
               </Tooltip>

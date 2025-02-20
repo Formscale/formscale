@@ -1,10 +1,11 @@
-import { AuthProvider } from "@/providers/auth";
-import { UserProvider } from "@/providers/user";
+import { AuthProvider, ErrorProvider, UserProvider } from "@/providers";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <AuthProvider>
-      <UserProvider>{children}</UserProvider>
-    </AuthProvider>
+    <ErrorProvider>
+      <AuthProvider>
+        <UserProvider>{children}</UserProvider>
+      </AuthProvider>
+    </ErrorProvider>
   );
 }

@@ -51,6 +51,8 @@ export default function FormsPage() {
   );
 }
 
+// rename to formscale it sounds cooler
+
 // todo:
 // x pagination
 // x table row should be a link
@@ -63,6 +65,7 @@ export default function FormsPage() {
 // - add form settings to the schema instead of saved as json string
 // - dark mode light mode
 // - work on mobile
+// - fix env
 
 // /forms/id
 // - add metrics/live monitor to form
@@ -71,10 +74,22 @@ export default function FormsPage() {
 // 1/2 webhook & zod/schema validation
 // - sheet for full submission data
 // - special formatting for data (ex: left align numbers, etc)
-// - search submissions from all parameters
+// x search submissions from all parameters
 // - disable "save changes" button if no changes
 // - add delete section in form settings
 
 // settings
 // - add members to settings - add/remove members, see status, etc
-// - addons?
+// - addons? - pay for additional integrations
+
+// metrics
+// - fix filters
+// - set to last 30 days
+// - fix 24 hour invalid date error
+
+// general
+// - add global error sonner/boundary?
+// - 404 page
+
+// api
+// - add tests

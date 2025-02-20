@@ -1,14 +1,27 @@
 import App from "@/app";
-
+import { AuthController } from "@/controllers";
+import { cors } from "hono/cors";
 import { jwt } from "hono/jwt";
 
 const app = App;
 
-const guestPage = ["/auth/login", "/auth/signup"];
+app.use(
+  "*",
+  cors({
+    origin: ["http://localhost:3000"],
+    credentials: true,
+    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization"],
+    exposeHeaders: ["Content-Length", "X-Requested-With"],
+    maxAge: 3600,
+  })
+);
+
+const publicRoutes = ["/auth/login", "/auth/signup", "/auth/resend", "/auth/verify"];
 
 app.use("*", (ctx, next) => {
   const path = ctx.req.path;
-  if (guestPage.includes(path)) {
+  if (publicRoutes.includes(path)) {
     return next();
   }
 
@@ -18,5 +31,7 @@ app.use("*", (ctx, next) => {
 
   return jwtMiddleware(ctx, next);
 });
+
+app.route("/auth", AuthController);
 
 export default app;

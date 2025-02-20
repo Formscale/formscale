@@ -3,11 +3,11 @@
 import { SubmissionSent } from "@formhook/types";
 
 import DashCard from "@/app/(dashboard)/components/card";
-import FormButton from "@/components/form-button";
 import { DataTable } from "@/app/(dashboard)/components/table/table";
-import { ExportButton } from "./export-button";
-import { getColumns } from "./columns";
+import FormButton from "@/components/form-button";
 import { useForm } from "@/providers/form";
+import { getColumns } from "./columns";
+import { ExportButton } from "./export-button";
 
 const getFirstDataField = (submissions: SubmissionSent[]) => {
   if (submissions.length === 0) return "data.name";
@@ -30,6 +30,7 @@ export default function FormsPage() {
 
   const filterProps = {
     column: getFirstDataField(submissions),
+    globalSearch: true,
     select: true,
     children: <ExportButton form={form} />,
     items: [

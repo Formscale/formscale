@@ -9,17 +9,35 @@ export enum Roles {
 
 export const EditUserSchema = z.object({
   name: z.string().min(3).max(60),
-  email: z.string().min(3).max(60).email(),
+  email: z.string().email(),
 });
 
 export const UserSchema = z.object({
   id: z.string(),
-  name: z.string().min(3).max(60),
   email: z.string().min(3).max(60).email(),
+  name: z.string().min(3).max(60),
+  password: z.string(),
   role: z.nativeEnum(Roles).default(Roles.USER),
-  subscriptionTier: z.nativeEnum(SubscriptionTier).default(SubscriptionTier.FREE),
   verified: z.boolean().default(false),
+  otp: z.string().optional(),
+  otpExpiry: z.date().optional(),
+  attempts: z.number().default(3),
+  stripeCustomerId: z.string().optional(),
+  subscriptionTier: z.nativeEnum(SubscriptionTier).default(SubscriptionTier.FREE),
+  stripeSubscriptionId: z.string().optional(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
+
+export const SafeUserSchema = UserSchema.omit({
+  password: true,
+  stripeCustomerId: true,
+  stripeSubscriptionId: true,
+  otp: true,
+  otpExpiry: true,
+  attempts: true,
 });
 
 export type User = z.infer<typeof UserSchema>;
 export type EditUser = z.infer<typeof EditUserSchema>;
+export type SafeUser = z.infer<typeof SafeUserSchema>;

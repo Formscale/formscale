@@ -51,10 +51,10 @@ export default function Chart({ data }: { data: any[] }) {
         />
         <ChartTooltip content={<ChartTooltipContent className="font-heading-pro" />} />
         {/* <ChartLegend content={<ChartLegendContent />} /> */}
-        <Bar dataKey="pending" fill="var(--color-pending)" radius={0} barSize={10} />
-        <Bar dataKey="failed" fill="var(--color-failed)" radius={0} barSize={10} />
-        <Bar dataKey="completed" fill="var(--color-completed)" radius={0} barSize={10} />
-        <Bar dataKey="blocked" fill="var(--color-blocked)" radius={0} barSize={10} />
+        <Bar dataKey="pending" fill="var(--color-pending)" radius={[6, 6, 0, 0]} barSize={10} />
+        <Bar dataKey="failed" fill="var(--color-failed)" radius={[6, 6, 0, 0]} barSize={10} />
+        <Bar dataKey="completed" fill="var(--color-completed)" radius={[6, 6, 0, 0]} barSize={10} />
+        <Bar dataKey="blocked" fill="var(--color-blocked)" radius={[6, 6, 0, 0]} barSize={10} />
       </BarChart>
     </ChartContainer>
   );

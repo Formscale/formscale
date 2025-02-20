@@ -47,7 +47,23 @@ export default function FormPart<T extends FieldValues>({
       case "number":
       case "password":
       default:
-        return <Input type={type} placeholder={placeholder} {...field} className={className} />;
+        return (
+          <Input
+            type={type}
+            placeholder={placeholder}
+            {...field}
+            className={className}
+            style={
+              type === "password"
+                ? ({
+                    WebkitTextSecurity: "none",
+                    textSecurity: "none",
+                    fontFamily: "text-security-asterisk",
+                  } as React.CSSProperties)
+                : undefined
+            }
+          />
+        );
       case "switch":
         return <Switch {...field} checked={field.value} onCheckedChange={field.onChange} />;
       case "checkbox":

@@ -16,14 +16,17 @@ datasource db {
 }
 
 model User {
-  id                   String  @id @default(cuid())
-  email                String  @unique
+  id                   String    @id @default(cuid())
+  email                String    @unique
   name                 String
   password             String
-  role                 String  @default("user")
-  verified             Boolean @default(false)
+  role                 String    @default("user")
+  otp                  String?
+  otpExpiry            DateTime?
+  attempts             Int       @default(3)
+  verified             Boolean   @default(false)
   stripeCustomerId     String?
-  subscriptionTier     String  @default("free")
+  subscriptionTier     String    @default("free")
   stripeSubscriptionId String?
 
   forms     Form[]

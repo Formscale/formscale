@@ -5,35 +5,44 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-const getVariantClasses = (variant: string, isRoot: boolean = false) => {
-  const opacity = isRoot ? (variant === "destructive" ? "10" : "20") : "";
-  const baseClasses = {
-    default: `bg-formhook${isRoot ? `/${opacity}` : ""}`,
-    secondary: `bg-secondary${isRoot ? `/${opacity}` : ""}`,
-    destructive: `bg-destructive${isRoot ? `/${opacity}` : ""}`,
-    success: `bg-green-300${isRoot ? `/${opacity}` : ""}`,
-    blocked: `bg-destructive${isRoot ? `/${opacity}` : "/80"}`,
-  };
-  return baseClasses[variant as keyof typeof baseClasses] || baseClasses.default;
-};
+export type ProgressVariant = "default" | "secondary" | "destructive" | "success" | "blocked";
+
+const variantClassesMap = {
+  default: {
+    root: "bg-formhook/20",
+    indicator: "bg-formhook",
+  },
+  secondary: {
+    root: "bg-secondary/20",
+    indicator: "bg-secondary",
+  },
+  destructive: {
+    root: "bg-destructive/10",
+    indicator: "bg-destructive",
+  },
+  success: {
+    root: "bg-green-300/20",
+    indicator: "bg-green-300",
+  },
+  blocked: {
+    root: "bg-destructive/20",
+    indicator: "bg-destructive/80",
+  },
+} as const;
 
 const Progress = React.forwardRef<
   React.ElementRef<typeof ProgressPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> & {
-    variant?: "default" | "secondary" | "destructive" | "success" | "blocked";
+    variant?: ProgressVariant;
   }
 >(({ className, value, variant = "default", ...props }, ref) => (
   <ProgressPrimitive.Root
     ref={ref}
-    className={cn(
-      "relative h-2 w-full overflow-hidden rounded-full bg-formhook/20",
-      getVariantClasses(variant, true),
-      className
-    )}
+    className={cn("relative h-2 w-full overflow-hidden rounded-full", variantClassesMap[variant].root, className)}
     {...props}
   >
     <ProgressPrimitive.Indicator
-      className={cn("h-full w-full flex-1 bg-formhook transition-all", getVariantClasses(variant))}
+      className={cn("h-full w-full flex-1 transition-all", variantClassesMap[variant].indicator)}
       style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
     />
   </ProgressPrimitive.Root>
