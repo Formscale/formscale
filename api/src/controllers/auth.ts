@@ -2,6 +2,7 @@ import App from "@/app";
 import db from "@/db";
 import { create, findUnique, update } from "@/db/crud";
 import validator from "@/middleware/validation";
+import { sendVerifyEmail } from "@/services";
 import Response from "@/utils/response";
 import { LoginSchema, SafeUserSchema, SignupSchema, User } from "@formhook/types";
 import { compareSync, hashSync } from "bcrypt-edge";
@@ -39,20 +40,6 @@ const getCooldown = (otpExpiry: Date) => {
   return Math.ceil((cooldownEndTime - new Date().getTime()) / 1000);
 };
 
-// const sendOtpEmail = async (email: string, otp: string) => {
-//   const resend = new Resend(ctx.env.RESEND_API_KEY);
-
-//   const { data, error } = await resend.emails.send({
-//     from: "FormHook <formhook@driselamri.com>",
-//     to: email,
-//   });
-// };
-
-const sendOtp = async (email: string, otp: string) => {
-  // send with resend
-  console.log("send otp email", email, otp);
-};
-
 export const AuthController = App.post(
   "/login",
   validator(LoginSchema, (error, ctx) => {
@@ -84,7 +71,7 @@ export const AuthController = App.post(
           data: { otp, otpExpiry, attempts: 3 },
         });
 
-        await sendOtp(existingUser.email, otp);
+        await sendVerifyEmail([email], otp, ctx.env);
 
         return new Response(ctx).error("Email not verified. A new verification code has been sent.", 403);
       }
@@ -128,7 +115,7 @@ export const AuthController = App.post(
         otpExpiry,
       });
 
-      await sendOtp(newUser.email, otp);
+      await sendVerifyEmail([email], otp, ctx.env);
 
       return new Response(ctx).success({ email: newUser.email });
     }
@@ -163,7 +150,7 @@ export const AuthController = App.post(
       data: { otp, otpExpiry, attempts: 3 },
     });
 
-    await sendOtp(user.email, otp);
+    await sendVerifyEmail([user.email], otp, ctx.env);
 
     return new Response(ctx).success({ email: user.email });
   })
@@ -214,3 +201,5 @@ export const AuthController = App.post(
 
     return new Response(ctx).success({ token, user: safeUser });
   });
+
+// forgot password later

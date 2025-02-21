@@ -1,5 +1,6 @@
 import { z } from "zod";
-const MAX_FILE_SIZE = 1024 * 1024 * 10;
+
+export const MAX_FILE_SIZE = 1024 * 1024 * 10;
 
 export const BaseFieldSchema = z.object({
   id: z.string(),

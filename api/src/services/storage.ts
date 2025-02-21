@@ -1,5 +1,5 @@
+import { MAX_FILE_SIZE } from "@formhook/types";
 import { Context } from "hono";
-import { MAX_FILE_SIZE } from "@/config";
 
 export async function uploadFile(file: File, env: Env, ctx: Context) {
   if (file.size > MAX_FILE_SIZE) {
