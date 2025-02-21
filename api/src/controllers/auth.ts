@@ -27,6 +27,18 @@ const generateOtp = () => {
   return { otp, otpExpiry };
 };
 
+const otpCooldown = (otpExpiry: Date) => {
+  const otpGeneratedTime = otpExpiry.getTime() - 15 * 60 * 1000;
+  return new Date().getTime() < otpGeneratedTime + 60 * 1000;
+};
+
+const getCooldown = (otpExpiry: Date) => {
+  // 1 minute cooldown
+  const otpGeneratedTime = otpExpiry.getTime() - 15 * 60 * 1000;
+  const cooldownEndTime = otpGeneratedTime + 60 * 1000;
+  return Math.ceil((cooldownEndTime - new Date().getTime()) / 1000);
+};
+
 // const sendOtpEmail = async (email: string, otp: string) => {
 //   const resend = new Resend(ctx.env.RESEND_API_KEY);
 
@@ -64,7 +76,24 @@ export const AuthController = App.post(
     }
 
     if (!existingUser.verified) {
-      return new Response(ctx).error("Email not verified. Try verifying your email and logging in again.", 403);
+      if (!existingUser.otpExpiry || !otpCooldown(existingUser.otpExpiry)) {
+        const { otp, otpExpiry } = generateOtp();
+
+        await update(db(ctx.env), "user", {
+          where: { email },
+          data: { otp, otpExpiry, attempts: 3 },
+        });
+
+        await sendOtp(existingUser.email, otp);
+
+        return new Response(ctx).error("Email not verified. A new verification code has been sent.", 403);
+      }
+
+      const remainingSeconds = getCooldown(existingUser.otpExpiry);
+      return new Response(ctx).error(
+        `Email not verified. Please wait ${remainingSeconds.toLocaleString()} seconds before requesting a new code.`,
+        403
+      );
     }
 
     const { token, user } = await getToken(existingUser, ctx.env.JWT_SECRET);
@@ -119,9 +148,12 @@ export const AuthController = App.post(
       return new Response(ctx).error("Email already verified. Try logging in instead.", 400);
     }
 
-    if (user.otpExpiry && new Date().getTime() < user.otpExpiry.getTime() + 60 * 1000) {
-      const remainingSeconds = Math.ceil((user.otpExpiry.getTime() + 60 * 1000 - new Date().getTime()) / 1000);
-      return new Response(ctx).error(`Please wait ${remainingSeconds} seconds before requesting a new code.`, 429);
+    if (user.otpExpiry && otpCooldown(user.otpExpiry)) {
+      const remainingSeconds = getCooldown(user.otpExpiry);
+      return new Response(ctx).error(
+        `Please wait ${remainingSeconds.toLocaleString()} seconds before requesting a new code.`,
+        429
+      );
     }
 
     const { otp, otpExpiry } = generateOtp();
@@ -133,7 +165,7 @@ export const AuthController = App.post(
 
     await sendOtp(user.email, otp);
 
-    return new Response(ctx).success({ message: "New verification code sent." });
+    return new Response(ctx).success({ email: user.email });
   })
   .post("/verify", async (ctx) => {
     const { email, otp } = await ctx.req.json();
@@ -150,6 +182,10 @@ export const AuthController = App.post(
       return new Response(ctx).error("User already verified. Try logging in instead.", 400);
     }
 
+    if (existingUser.attempts <= 0) {
+      return new Response(ctx).error("Too many attempts. Try sending a new OTP later.", 429);
+    }
+
     if (!existingUser.otp || existingUser.otp !== otp) {
       const attempts = existingUser.attempts - 1;
 
@@ -163,10 +199,6 @@ export const AuthController = App.post(
 
     if (new Date() > existingUser.otpExpiry) {
       return new Response(ctx).error("OTP has expired. Try requesting a new one.", 401);
-    }
-
-    if (existingUser.attempts <= 0) {
-      return new Response(ctx).error("Too many attempts. Try resending a new OTP.", 429);
     }
 
     const updatedUser = await update(db(ctx.env), "user", {

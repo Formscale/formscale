@@ -19,6 +19,7 @@ import {
 
 import FormButton from "@/components/form-button";
 import Logo from "@/components/logo";
+import { useAuth } from "@/providers/auth";
 
 import {
   Sidebar,
@@ -67,26 +68,29 @@ const items = [
   },
 ];
 
-const footerItems = [
-  {
-    title: "Onboarding",
-    url: "/onboarding",
-    icon: LinkNone2Icon,
-  },
-  {
-    title: "Profile",
-    url: "/profile",
-    icon: CircleIcon,
-  },
-  {
-    title: "Sign out",
-    url: "/signout",
-    icon: ExitIcon,
-  },
-];
-
 export function AppSidebar() {
   const pathname = usePathname();
+  const { logout } = useAuth();
+
+  const footerItems = [
+    {
+      title: "Onboarding",
+      url: "/onboarding",
+      icon: LinkNone2Icon,
+    },
+    {
+      title: "Profile",
+      url: "/profile",
+      icon: CircleIcon,
+    },
+    {
+      title: "Sign out",
+      onClick: () => {
+        logout();
+      },
+      icon: ExitIcon,
+    },
+  ];
 
   return (
     <Sidebar variant="sidebar">

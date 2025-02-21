@@ -1,6 +1,9 @@
 "use client";
 
-import { Otp, OtpSchema } from "@formhook/types";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
+import { Otp, OtpSchema, User } from "@formhook/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -10,13 +13,20 @@ import { useFetch } from "@/hooks/fetch";
 import { useError } from "@/providers";
 import { useAuth } from "@/providers/auth";
 
-import AuthButton from "./button";
-import AuthHeader from "./header";
+import AuthButton from "../components/button";
+import AuthHeader from "../components/header";
 
-export default function OtpVerify() {
-  const { email } = useAuth();
-  const { post, isLoading } = useFetch<Otp>();
+export default function VerifyPage() {
+  const { email, login } = useAuth();
+  const { post, isLoading } = useFetch();
   const { handleError } = useError();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!email) {
+      router.push("/login");
+    }
+  }, [email, router]);
 
   const form = useForm<Otp>({
     resolver: zodResolver(OtpSchema),
@@ -29,6 +39,10 @@ export default function OtpVerify() {
   async function onSubmit(values: Otp) {
     try {
       const data = await post("auth/verify", values);
+
+      if (data.success && data.data?.token) {
+        login(data.data.token, data.data.user as User);
+      }
     } catch (error) {
       handleError({
         message: "Verification failed",

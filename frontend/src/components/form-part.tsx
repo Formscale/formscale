@@ -53,6 +53,7 @@ export default function FormPart<T extends FieldValues>({
             placeholder={placeholder}
             {...field}
             className={className}
+            autoComplete={type === "password" ? "new-password" : "on"}
             style={
               type === "password"
                 ? ({

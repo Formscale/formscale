@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
-
 import { ResendOtp, ResendOtpSchema } from "@formhook/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 import FormPart from "@/components/form-part";
@@ -13,22 +12,19 @@ import { useError } from "@/providers";
 import { useAuth } from "@/providers/auth";
 import AuthButton from "../components/button";
 import AuthHeader from "../components/header";
-import OtpVerify from "../components/otp-verify";
+
 const formFields = [{ name: "email", description: "Email", placeholder: "dris@formhook.com", type: "email" }];
 
-export default function LoginPage() {
-  const { setEmail, startVerification, isVerifying, resetAuth } = useAuth();
-  const { post, isLoading } = useFetch<ResendOtp>();
+export default function ResendPage() {
+  const { setEmail, email } = useAuth();
+  const { post, isLoading } = useFetch();
   const { handleError } = useError();
-
-  useEffect(() => {
-    resetAuth();
-  }, [resetAuth]);
+  const router = useRouter();
 
   const form = useForm<ResendOtp>({
     resolver: zodResolver(ResendOtpSchema),
     defaultValues: {
-      email: "",
+      email: email,
     },
   });
 
@@ -36,9 +32,9 @@ export default function LoginPage() {
     try {
       const data = await post("auth/resend", values);
 
-      if (data.success) {
-        setEmail(values.email);
-        startVerification();
+      if (data.success && data.data?.email) {
+        setEmail(data.data.email);
+        router.push("/verify");
       }
     } catch (error) {
       handleError({
@@ -46,10 +42,6 @@ export default function LoginPage() {
         description: (error as Error).message,
       });
     }
-  }
-
-  if (isVerifying) {
-    return <OtpVerify />;
   }
 
   return (

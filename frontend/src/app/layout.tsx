@@ -1,48 +1,48 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import localFont from "next/font/local";
-import { Inter } from "next/font/google";
 import { Providers } from "@/components/providers";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import localFont from "next/font/local";
+import "./globals.css";
 
 const headingPro = localFont({
   src: [
     {
-      path: "../../public/fonts/heading-pro/HeadingPro-Light.ttf",
+      path: "../../public/assets/fonts/heading-pro/HeadingPro-Light.ttf",
       weight: "300",
       style: "normal",
     },
     {
-      path: "../../public/fonts/heading-pro/HeadingPro-LightItalic.ttf",
+      path: "../../public/assets/fonts/heading-pro/HeadingPro-LightItalic.ttf",
       weight: "300",
       style: "italic",
     },
     {
-      path: "../../public/fonts/heading-pro/HeadingPro-Regular.ttf",
+      path: "../../public/assets/fonts/heading-pro/HeadingPro-Regular.ttf",
       weight: "400",
       style: "normal",
     },
     {
-      path: "../../public/fonts/heading-pro/HeadingPro-Italic.ttf",
+      path: "../../public/assets/fonts/heading-pro/HeadingPro-Italic.ttf",
       weight: "400",
       style: "italic",
     },
     {
-      path: "../../public/fonts/heading-pro/HeadingPro-Bold.ttf",
+      path: "../../public/assets/fonts/heading-pro/HeadingPro-Bold.ttf",
       weight: "700",
       style: "normal",
     },
     {
-      path: "../../public/fonts/heading-pro/HeadingPro-BoldItalic.ttf",
+      path: "../../public/assets/fonts/heading-pro/HeadingPro-BoldItalic.ttf",
       weight: "700",
       style: "italic",
     },
     {
-      path: "../../public/fonts/heading-pro/HeadingPro-ExtraBold.ttf",
+      path: "../../public/assets/fonts/heading-pro/HeadingPro-ExtraBold.ttf",
       weight: "800",
       style: "normal",
     },
     {
-      path: "../../public/fonts/heading-pro/HeadingPro-ExtraBoldItalic.ttf",
+      path: "../../public/assets/fonts/heading-pro/HeadingPro-ExtraBoldItalic.ttf",
       weight: "800",
       style: "italic",
     },

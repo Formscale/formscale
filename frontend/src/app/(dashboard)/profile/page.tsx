@@ -1,11 +1,11 @@
 "use client";
 
-import DashTitle from "../components/title";
+import { useUser } from "@/providers/user";
+import { EditUser, EditUserSchema } from "@formhook/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { EditUserSchema, EditUser } from "@formhook/types";
-import { useUser } from "@/providers/user";
 import DataCard from "../components/data-card";
+import DashTitle from "../components/title";
 
 export default function ProfilePage() {
   const { user } = useUser();

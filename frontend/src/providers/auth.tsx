@@ -1,30 +1,57 @@
 "use client";
 
-import { createContext, useContext, ReactNode, useState } from "react";
+import { User } from "@formhook/types";
+import { useRouter } from "next/navigation";
+import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
+import { Auth } from "../lib/auth";
+import { useUser } from "./user";
 
 interface AuthContext {
   email: string;
-  isVerifying: boolean;
   setEmail: (email: string) => void;
-  startVerification: () => void;
-  resetAuth: () => void;
+  login: (token: string, user: User) => void;
+  logout: () => void;
 }
 
 const AuthContext = createContext<AuthContext | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [email, setEmail] = useState("");
-  const [isVerifying, setIsVerifying] = useState(false);
+  const { setUser } = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = Auth.getToken();
+    if (token && Auth.isTokenExpired(token)) {
+      Auth.removeToken();
+      setUser(null);
+      setEmail("");
+      router.push("/login");
+    }
+  }, [setUser, router]);
+
+  const login = useCallback(
+    (token: string, user: User) => {
+      Auth.setToken(token);
+      setUser(user);
+      setEmail("");
+      router.push("/forms");
+    },
+    [setUser, router]
+  );
+
+  const logout = useCallback(() => {
+    Auth.removeToken();
+    setUser(null);
+    setEmail("");
+    router.push("/login");
+  }, [setUser, router]);
 
   const value = {
     email,
-    isVerifying,
     setEmail,
-    startVerification: () => setIsVerifying(true),
-    resetAuth: () => {
-      setEmail("");
-      setIsVerifying(false);
-    },
+    login,
+    logout,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -36,6 +36,7 @@ export const SafeUserSchema = UserSchema.omit({
   otp: true,
   otpExpiry: true,
   attempts: true,
+  updatedAt: true,
 });
 
 export type User = z.infer<typeof UserSchema>;

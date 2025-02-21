@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { useFetch } from "@/hooks/fetch";
 import { useError } from "@/providers";
@@ -13,7 +14,6 @@ import { Form } from "@/components/ui/form";
 import { useAuth } from "@/providers/auth";
 import AuthButton from "../components/button";
 import AuthHeader from "../components/header";
-import OtpVerify from "../components/otp-verify";
 
 const formFields = [
   { name: "name", description: "Name", placeholder: "Dris Elamri", type: "text" },
@@ -23,9 +23,10 @@ const formFields = [
 ];
 
 export default function SignupPage() {
-  const { isVerifying, startVerification, setEmail } = useAuth();
-  const { post, isLoading } = useFetch<Signup>();
+  const { setEmail } = useAuth();
+  const { post, isLoading } = useFetch();
   const { handleError } = useError();
+  const router = useRouter();
 
   const form = useForm<Signup>({
     resolver: zodResolver(SignupSchema),
@@ -43,7 +44,7 @@ export default function SignupPage() {
 
       if (data.success && data.data?.email) {
         setEmail(data.data.email);
-        startVerification();
+        router.push("/verify");
       }
     } catch (error) {
       handleError({
@@ -51,10 +52,6 @@ export default function SignupPage() {
         description: (error as Error).message,
       });
     }
-  }
-
-  if (isVerifying) {
-    return <OtpVerify />;
   }
 
   return (
