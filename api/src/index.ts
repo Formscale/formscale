@@ -1,16 +1,15 @@
-import App from "@/app";
-import { AuthController } from "@/controllers";
+import app from "@/app";
+import { AuthController, FormController, UserController } from "@/controllers";
+import Response from "@/utils/response";
 import { cors } from "hono/cors";
 import { jwt } from "hono/jwt";
-
-const app = App;
 
 app.use(
   "*",
   cors({
     origin: ["http://localhost:3000"],
     credentials: true,
-    allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowHeaders: ["Content-Type", "Authorization"],
     exposeHeaders: ["Content-Length", "X-Requested-With"],
     maxAge: 3600,
@@ -33,5 +32,11 @@ app.use("*", (ctx, next) => {
 });
 
 app.route("/auth", AuthController);
+app.route("/forms", FormController);
+app.route("/user", UserController);
+
+app.all("*", async (ctx) => {
+  return new Response(ctx).error("Route not found", 404);
+});
 
 export default app;

@@ -12,8 +12,14 @@ export const SubmissionSentSchema = z.object({
   formId: z.string().min(1),
   data: z.any(),
   status: SubmissionStatusSchema.default("pending"),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  updatedAt: z
+    .string()
+    .or(z.date())
+    .transform((val) => new Date(val)),
+  createdAt: z
+    .string()
+    .or(z.date())
+    .transform((val) => new Date(val)),
 });
 
 export type Submission = z.infer<typeof SubmissionSchema>;

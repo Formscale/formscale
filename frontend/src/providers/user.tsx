@@ -1,27 +1,71 @@
 "use client";
 
-import { User } from "@formhook/types";
-import { createContext, ReactNode, useCallback, useContext, useState } from "react";
+import { useFetch } from "@/hooks/fetch";
+import { Auth } from "@/lib/auth";
+import { EditUser, User } from "@formhook/types";
+import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
+import { useError } from "./error";
 
 interface UserContext {
   user: User | null;
+  isLoading: boolean;
   setUser: (user: User | null) => void;
-  updateUser: (updates: Partial<User>) => void;
+  updateUser: (user: EditUser) => Promise<void>;
 }
 
 const UserContext = createContext<UserContext | undefined>(undefined);
 
 export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const { handleError } = useError();
+  const { get, put } = useFetch();
 
-  const updateUser = useCallback((updates: Partial<User>) => {
-    setUser((prev) => (prev ? { ...prev, ...updates } : null));
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (Auth.getToken()) {
+        try {
+          setIsLoading(true);
+          const response = await get("user/profile");
+
+          if (response.data?.user) {
+            setUser(response.data.user);
+          }
+        } catch (error) {
+          handleError({ message: "Error fetching user", description: (error as Error).message });
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    fetchUser();
   }, []);
+
+  const updateUser = useCallback(
+    async (user: EditUser) => {
+      try {
+        setIsLoading(true);
+        const response = await put("user/edit", user);
+
+        if (response.success && response.data?.user) {
+          setUser(response.data.user);
+        }
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error("Failed to update user");
+        handleError(error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [put, handleError]
+  );
 
   const value = {
     user,
     setUser,
     updateUser,
+    isLoading,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

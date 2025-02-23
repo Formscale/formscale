@@ -21,7 +21,7 @@ export default function WebhookEditDialog(webhook: Webhook) {
   }
 
   const fields = [
-    { name: "url", type: "text", description: "URL", placeholder: "https://api.formhook.com/hooks" },
+    { name: "url", type: "text", description: "URL", placeholder: "https://api.formscale.dev/hooks" },
     { name: "method", type: "select", description: "Method", placeholder: "POST", options: ["POST", "GET"] },
     { name: "secret", type: "text", description: "Signing Secret (optional)", placeholder: "MY-SECRET" },
     { name: "enabled", type: "switch", description: "Hook Enabled", placeholder: "true" },

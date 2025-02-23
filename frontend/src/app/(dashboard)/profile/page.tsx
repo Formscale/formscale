@@ -8,7 +8,7 @@ import DataCard from "../components/data-card";
 import DashTitle from "../components/title";
 
 export default function ProfilePage() {
-  const { user } = useUser();
+  const { user, updateUser, isLoading } = useUser();
 
   const form = useForm<EditUser>({
     resolver: zodResolver(EditUserSchema),
@@ -20,11 +20,13 @@ export default function ProfilePage() {
 
   async function onSubmit(values: EditUser) {
     console.log(values);
+
+    await updateUser(values);
   }
 
   const fields = [
     { name: "name", description: "Name", placeholder: user?.name || "Dris Elamri", type: "text" },
-    { name: "email", description: "Email", placeholder: user?.email || "dris@formhook.com", type: "email" },
+    { name: "email", description: "Email", placeholder: user?.email || "dris@formscale.dev", type: "email" },
   ];
 
   return (
@@ -35,6 +37,7 @@ export default function ProfilePage() {
         description="Edit Profile"
         fields={fields}
         form={form}
+        disabled={isLoading}
         onSubmitAction={onSubmit}
       ></DataCard>
     </>

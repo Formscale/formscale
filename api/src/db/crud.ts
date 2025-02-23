@@ -1,9 +1,29 @@
+import { CreateForm, FormSettings, FormSettingsSchema } from "@formhook/types";
 import { PrismaClient } from "@prisma/client";
 
-export async function create<T extends keyof PrismaClient>(prisma: PrismaClient, model: T, data: any) {
-  return await (prisma[model] as any).create({
-    data,
-  });
+interface FormResult {
+  settings: string;
+  [key: string]: any;
+}
+
+function parseForm(result: FormResult) {
+  if (!result) return null;
+
+  try {
+    return {
+      ...result,
+      settings: JSON.parse(result.settings) as FormSettings,
+    };
+  } catch {
+    return {
+      ...result,
+      settings: FormSettingsSchema.parse({}),
+    };
+  }
+}
+
+function parseForms(results: FormResult[]) {
+  return results.map((form) => parseForm(form));
 }
 
 export async function findMany<T extends keyof PrismaClient>(
@@ -13,9 +33,16 @@ export async function findMany<T extends keyof PrismaClient>(
     where?: any;
     include?: any;
     orderBy?: any;
-  } = {}
+  } = {
+    orderBy: { createdAt: "desc" },
+  }
 ) {
-  return await (prisma[model] as any).findMany(params);
+  const results = await (prisma[model] as any).findMany(params);
+
+  if (model === "form") {
+    return parseForms(results);
+  }
+  return results;
 }
 
 export async function findOne<T extends keyof PrismaClient>(
@@ -26,7 +53,12 @@ export async function findOne<T extends keyof PrismaClient>(
     include?: any;
   }
 ) {
-  return await (prisma[model] as any).findFirst(params);
+  const result = await (prisma[model] as any).findFirst(params);
+
+  if (model === "form") {
+    return parseForm(result);
+  }
+  return result;
 }
 
 export async function findUnique<T extends keyof PrismaClient>(
@@ -34,9 +66,45 @@ export async function findUnique<T extends keyof PrismaClient>(
   model: T,
   params: {
     where: any;
+    include?: any;
   }
 ) {
-  return await (prisma[model] as any).findUnique(params);
+  const result = await (prisma[model] as any).findUnique(params);
+
+  if (model === "form") {
+    return parseForm(result);
+  }
+  return result;
+}
+
+export async function create<T extends keyof PrismaClient>(
+  prisma: PrismaClient,
+  model: T,
+  data: T extends "form" ? CreateForm & { id: string; userId: string } : any
+) {
+  if (model === "form") {
+    const user = await findUnique(prisma, "user", { where: { id: data.userId } });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const defaultSettings = FormSettingsSchema.parse({
+      ...data.settings,
+      emailSettings: {
+        ...data.settings?.emailSettings,
+        to: [user?.email || ""],
+      },
+    });
+
+    return await prisma.form.create({
+      data: {
+        ...data,
+        settings: JSON.stringify(defaultSettings),
+      },
+    });
+  }
+  return await (prisma[model] as any).create({ data });
 }
 
 export async function update<T extends keyof PrismaClient>(
@@ -47,13 +115,18 @@ export async function update<T extends keyof PrismaClient>(
     data: any;
   }
 ) {
-  return await (prisma[model] as any).update({
+  const result = await (prisma[model] as any).update({
     ...params,
     data: {
       ...params.data,
       updatedAt: new Date(),
     },
   });
+
+  if (model === "form") {
+    return parseForm(result);
+  }
+  return result;
 }
 
 export async function remove<T extends keyof PrismaClient>(prisma: PrismaClient, model: T, where: any) {
@@ -66,13 +139,24 @@ export async function secureFind<T extends keyof PrismaClient>(
   prisma: PrismaClient,
   model: T,
   userId: string,
-  id: string
+  id: string,
+  params: { include?: any } = {}
 ) {
-  return await (prisma[model] as any).findFirst({
-    where: {
-      id,
-      userId,
-    },
+  return findOne(prisma, model, {
+    where: { id, userId },
+    include: params.include,
+  });
+}
+
+export async function secureFindMany<T extends keyof PrismaClient>(
+  prisma: PrismaClient,
+  model: T,
+  userId: string,
+  params: { where?: any; include?: any; orderBy?: any } = {}
+) {
+  return findMany(prisma, model, {
+    ...params,
+    where: { ...params.where, userId },
   });
 }
 
@@ -83,11 +167,8 @@ export async function secureUpdate<T extends keyof PrismaClient>(
   id: string,
   data: any
 ) {
-  return await (prisma[model] as any).update({
-    where: {
-      id,
-      userId,
-    },
+  return await update(prisma, model, {
+    where: { id, userId },
     data,
   });
 }
@@ -98,22 +179,5 @@ export async function secureDelete<T extends keyof PrismaClient>(
   userId: string,
   id: string
 ) {
-  return await (prisma[model] as any).delete({
-    where: {
-      id,
-      userId,
-    },
-  });
+  return await remove(prisma, model, { id, userId });
 }
-
-// export async function getUserForms(c: Context, userId: string) {
-//   const prisma = db(c.env);
-//   return await findMany(prisma, "form", {
-//     where: { userId },
-//   });
-// }
-
-// export async function updateForm(c: Context, userId: string, formId: string, data: any) {
-//   const prisma = db(c.env);
-//   return await secureUpdate(prisma, "form", userId, formId, data);
-// }

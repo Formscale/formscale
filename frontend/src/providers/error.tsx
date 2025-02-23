@@ -12,10 +12,11 @@ const ErrorContext = createContext<ErrorContextType | null>(null);
 
 export function ErrorProvider({ children }: { children: React.ReactNode }) {
   const handleError = (error: Error | { message: string; description?: string }) => {
-    toast.error(error.message, {
+    toast.dismiss();
+
+    toast.error(error.message || "An unexpected error occurred", {
       description: "description" in error ? error.description : undefined,
     });
-    toast.dismiss();
   };
 
   return (

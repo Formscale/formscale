@@ -3,9 +3,16 @@ import Link from "next/link";
 
 export default function Logo() {
   return (
-    <Link href="/" className="flex items-center gap-3.5">
-      <Image src="/assets/logos/formhook-icon.svg" alt="FormHook" width={16} height={16} />
-      <span className="font-bold text-xl tracking-tighter">FormHook</span>
+    <Link href="/" className="flex items-center gap-2.5">
+      <Image
+        src="/assets/logos/formscale-icon.svg"
+        alt="Formscale"
+        width={38}
+        height={38}
+        className="-ml-1 aspect-square"
+        priority
+      />
+      <span className="font-bold text-xl text-foreground tracking-tighter">Formscale</span>
     </Link>
   );
 }

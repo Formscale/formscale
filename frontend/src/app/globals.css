@@ -18,6 +18,18 @@ body {
   font-family: "Heading Pro", "Inter", Arial, Helvetica, sans-serif;
 }
 
+@keyframes logo-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+}
+
 @layer base {
   :root {
     --formhook: 48 100% 50%;

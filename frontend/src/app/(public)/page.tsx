@@ -11,7 +11,7 @@ export default function Home() {
           The Most Powerful Form Builder For <span className="italic">Any</span> Site.
         </h1>
         <p className="text-md text-muted-foreground max-w-xl">
-          With FormHook, create beautiful forms that seamlessly integrate with your website in seconds - from static
+          With Formscale, create beautiful forms that seamlessly integrate with your website in seconds - from static
           sites to full-stack apps.
         </p>
         <div className="flex flex-row items-center justify-center gap-2">
@@ -71,7 +71,7 @@ form.addEventListener('submit', async (e) => {
   }
 });
 </script>`}
-          afterCode={`<form action="https://api.formhook.com/123" method="post">
+          afterCode={`<form action="https://api.formscale.dev/123" method="post">
   <input type="text" name="name" placeholder="Name" />
   <input type="email" name="email" placeholder="Email" />
   <button type="submit">Submit</button>

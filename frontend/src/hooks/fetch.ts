@@ -1,5 +1,5 @@
 import { Auth } from "@/lib/auth";
-import { AuthResponse, Login, Otp, ResendOtp, Signup } from "@formhook/types";
+import { AuthResponse, CreateForm, EditUser, Form, Login, Otp, ResendOtp, Signup, User } from "@formhook/types";
 import { useState } from "react";
 
 interface Endpoints {
@@ -19,11 +19,38 @@ interface Endpoints {
     input: ResendOtp;
     output: { email: string };
   };
+
+  "forms/all": {
+    input: null;
+    output: { forms: Form[] };
+  };
+  "forms/:id": {
+    input: null;
+    output: { form: Form };
+  };
+  "forms/:id/edit": {
+    input: Form;
+    output: { form: Form };
+  };
+  "forms/create": {
+    input: CreateForm;
+    output: { form: Form };
+  };
+
+  "user/profile": {
+    input: null;
+    output: { user: User };
+  };
+  "user/edit": {
+    input: EditUser;
+    output: { user: User };
+  };
 }
 
 interface FetchOptions<TEndpoint extends keyof Endpoints> extends RequestInit {
   onSuccess?: (data: ApiResponse<Endpoints[TEndpoint]["output"]>) => void;
   onError?: (error: Error) => void;
+  params?: Record<string, string>;
 }
 
 interface ApiResponse<T> {
@@ -54,6 +81,11 @@ export function useFetch() {
 
       const token = Auth.getToken();
 
+      const finalEndpoint = Object.entries(options.params || {}).reduce(
+        (path, [param, value]) => path.replace(`:${param}`, value),
+        endpoint.toString()
+      );
+
       const headers: HeadersInit = {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -61,7 +93,7 @@ export function useFetch() {
         ...options.headers,
       };
 
-      const response = await fetch(`${baseUrl}/${endpoint}`, {
+      const response = await fetch(`${baseUrl}/${finalEndpoint}`, {
         credentials: "include",
         headers,
         ...options,

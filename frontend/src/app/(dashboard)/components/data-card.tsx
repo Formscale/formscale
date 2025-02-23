@@ -1,10 +1,10 @@
 "use client";
 
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { FieldValues, UseFormReturn } from "react-hook-form";
-import { Form } from "@/components/ui/form";
 import FormPart from "@/components/form-part";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Form } from "@/components/ui/form";
+import { FieldValues, UseFormReturn } from "react-hook-form";
 
 import { DefaultFormProps } from "@/components/default-dialog";
 
@@ -17,11 +17,11 @@ function Wrapper<T extends FieldValues>({
 }: {
   children: React.ReactNode;
   form?: UseFormReturn<T>;
-  onSubmitAction: (values: T) => void;
+  onSubmitAction?: (values: T) => Promise<void>;
 }) {
   if (form) {
     return (
-      <form onSubmit={form.handleSubmit(onSubmitAction)} className="w-full">
+      <form onSubmit={form.handleSubmit(onSubmitAction || ((values) => Promise.resolve(values)))} className="w-full">
         {children}
       </form>
     );
@@ -41,14 +41,14 @@ export function DataCardSkeleton<T extends FieldValues>({
   title: string;
   button?: React.ReactNode;
   form?: UseFormReturn<T>;
-  onSubmitAction?: (values: T) => void;
+  onSubmitAction?: (values: T) => void | Promise<void>;
 }) {
   return (
     <Card className="w-full shadow-sm">
       <CardHeader className="py-4 pb-3 border-b border-border">
         <CardTitle className="text-md font-bold">{title}</CardTitle>
       </CardHeader>
-      <Wrapper form={form} onSubmitAction={onSubmitAction || (() => {})}>
+      <Wrapper form={form} onSubmitAction={async (values) => Promise.resolve(onSubmitAction?.(values))}>
         <CardContent className="py-6 pt-5">
           <div className="flex flex-col gap-5">{children}</div>
         </CardContent>
@@ -68,13 +68,14 @@ export default function DataCard<T extends FieldValues>({
   fields,
   form,
   onSubmitAction,
+  disabled,
   children,
 }: DefaultFormProps<T>) {
   return (
     <Form {...form}>
       <DataCardSkeleton
         button={
-          <Button type="submit" size="sm">
+          <Button type="submit" size="sm" disabled={disabled || !form.formState.isDirty}>
             <span className="text-xs font-bold">{description || "Save"}</span>
           </Button>
         }

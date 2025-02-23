@@ -1,4 +1,3 @@
-import App from "@/app";
 import db from "@/db";
 import { create, findUnique, update } from "@/db/crud";
 import validator from "@/middleware/validation";
@@ -6,6 +5,7 @@ import { sendVerifyEmail } from "@/services";
 import Response from "@/utils/response";
 import { LoginSchema, SafeUserSchema, SignupSchema, User } from "@formhook/types";
 import { compareSync, hashSync } from "bcrypt-edge";
+import { Hono } from "hono";
 import { sign } from "hono/jwt";
 
 const getToken = async (user: User, secret: string) => {
@@ -13,7 +13,7 @@ const getToken = async (user: User, secret: string) => {
 
   const payload = {
     data: safeUser,
-    exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30, // 30 days
+    exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7, // 30 days
   };
 
   const token = await sign(payload, secret);
@@ -40,54 +40,57 @@ const getCooldown = (otpExpiry: Date) => {
   return Math.ceil((cooldownEndTime - new Date().getTime()) / 1000);
 };
 
-export const AuthController = App.post(
-  "/login",
-  validator(LoginSchema, (error, ctx) => {
-    return new Response(ctx).error(error);
-  }),
-  async (ctx) => {
-    const { email, password } = await ctx.req.json();
+const auth = new Hono<{ Bindings: Env }>();
 
-    const existingUser = await findUnique(db(ctx.env), "user", {
-      where: { email },
-    });
+export const AuthController = auth
+  .post(
+    "/login",
+    validator(LoginSchema, (error, ctx) => {
+      return new Response(ctx).error(error);
+    }),
+    async (ctx) => {
+      const { email, password } = await ctx.req.json();
 
-    if (!existingUser) {
-      return new Response(ctx).error("User not found. Try signing up instead.", 404);
-    }
+      const existingUser = await findUnique(db(ctx.env), "user", {
+        where: { email },
+      });
 
-    const isPasswordValid = compareSync(password, existingUser?.password);
-
-    if (!isPasswordValid) {
-      return new Response(ctx).error("Invalid password. Try again or reset your password.", 401);
-    }
-
-    if (!existingUser.verified) {
-      if (!existingUser.otpExpiry || !otpCooldown(existingUser.otpExpiry)) {
-        const { otp, otpExpiry } = generateOtp();
-
-        await update(db(ctx.env), "user", {
-          where: { email },
-          data: { otp, otpExpiry, attempts: 3 },
-        });
-
-        await sendVerifyEmail([email], otp, ctx.env);
-
-        return new Response(ctx).error("Email not verified. A new verification code has been sent.", 403);
+      if (!existingUser) {
+        return new Response(ctx).error("User not found. Try signing up instead.", 404);
       }
 
-      const remainingSeconds = getCooldown(existingUser.otpExpiry);
-      return new Response(ctx).error(
-        `Email not verified. Please wait ${remainingSeconds.toLocaleString()} seconds before requesting a new code.`,
-        403
-      );
+      const isPasswordValid = compareSync(password, existingUser?.password);
+
+      if (!isPasswordValid) {
+        return new Response(ctx).error("Invalid password. Try again or reset your password.", 401);
+      }
+
+      if (!existingUser.verified) {
+        if (!existingUser.otpExpiry || !otpCooldown(existingUser.otpExpiry)) {
+          const { otp, otpExpiry } = generateOtp();
+
+          await update(db(ctx.env), "user", {
+            where: { email },
+            data: { otp, otpExpiry, attempts: 3 },
+          });
+
+          await sendVerifyEmail([email], otp, ctx.env);
+
+          return new Response(ctx).error("Email not verified. A new verification code has been sent.", 403);
+        }
+
+        const remainingSeconds = getCooldown(existingUser.otpExpiry);
+        return new Response(ctx).error(
+          `Email not verified. Please wait ${remainingSeconds.toLocaleString()} seconds before requesting a new code.`,
+          403
+        );
+      }
+
+      const { token, user } = await getToken(existingUser, ctx.env.JWT_SECRET);
+
+      return new Response(ctx).success({ token, user });
     }
-
-    const { token, user } = await getToken(existingUser, ctx.env.JWT_SECRET);
-
-    return new Response(ctx).success({ token, user });
-  }
-)
+  )
   .post(
     "/signup",
     validator(SignupSchema, (error, ctx) => {
@@ -203,3 +206,4 @@ export const AuthController = App.post(
   });
 
 // forgot password later
+// use refresh token & access tokens

@@ -1,26 +1,40 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { FormSchema, Form } from "@formhook/types";
 import DataCard from "@/app/(dashboard)/components/data-card";
+import { useForm as useFormProvider } from "@/providers/form";
+import { Form, FormSchema } from "@formhook/types";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
 
 export default function Settings({ form }: { form: Form }) {
+  const { updateForm, isLoading } = useFormProvider();
+
   const formSettings = useForm<Form>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       ...form,
+      settings: {
+        ...form.settings,
+        isPublic: form.settings.isPublic,
+        spamProtection: form.settings.spamProtection,
+        reCaptcha: form.settings.reCaptcha || "",
+        allowedOrigins: form.settings.allowedOrigins || [],
+        successUrl: form.settings.successUrl || "",
+      },
     },
   });
 
+  // console.log(formSettings.formState.errors);
+
   async function onSubmit(values: Form) {
     console.log(values);
+    await updateForm(values);
   }
 
   const generalFields = [
     { name: "name", description: "Name", placeholder: "Untitled Form", type: "text" },
-    // { name: "settings.admins", description: "Admins", placeholder: "dris@formhook.com", type: "tags" },
+    // { name: "settings.admins", description: "Admins", placeholder: "dris@formscale.dev", type: "tags" },
     {
       name: "settings.isPublic",
       description: "Active",
@@ -36,7 +50,7 @@ export default function Settings({ form }: { form: Form }) {
     {
       name: "settings.successUrl",
       description: "Success URL",
-      placeholder: "https://formhook.com/success",
+      placeholder: "https://formscale.dev/success",
       type: "text",
       children: (
         <p className="text-xs text-muted-foreground">Users will be redirected to this URL after submitting the form.</p>
@@ -49,7 +63,7 @@ export default function Settings({ form }: { form: Form }) {
     //   type: "switch",
     //   children: (
     //     <p className="text-xs text-muted-foreground">
-    //       FormHook will automatically add UTM tracking parameters to your form submissions.
+    //       Formscale will automatically add UTM tracking parameters to your form submissions.
     //     </p>
     //   ),
     // },
@@ -81,7 +95,7 @@ export default function Settings({ form }: { form: Form }) {
       type: "switch",
       children: (
         <p className="text-xs text-muted-foreground">
-          FormHook will automatically block spam submissions before reaching your inbox.
+          Formscale will automatically block spam submissions before reaching your inbox.
         </p>
       ),
     },
@@ -96,14 +110,14 @@ export default function Settings({ form }: { form: Form }) {
           <Link target="_blank" href="https://developers.google.com/recaptcha/docs/v3" className="underline">
             these instructions
           </Link>{" "}
-          to setup ReCaptcha with FormHook.
+          to setup ReCaptcha with Formscale.
         </p>
       ),
     },
     {
       name: "settings.allowedOrigins",
       description: "Allowed Origins",
-      placeholder: "https://formhook.com, http://localhost:3000",
+      placeholder: "https://formscale.dev, http://localhost:3000",
       type: "tags",
     },
   ];
@@ -115,6 +129,7 @@ export default function Settings({ form }: { form: Form }) {
         description="Save Changes"
         fields={generalFields}
         form={formSettings}
+        disabled={isLoading}
         onSubmitAction={onSubmit}
       ></DataCard>
       <DataCard
@@ -122,6 +137,7 @@ export default function Settings({ form }: { form: Form }) {
         description="Save Changes"
         fields={processingFields}
         form={formSettings}
+        disabled={isLoading}
         onSubmitAction={onSubmit}
       ></DataCard>
       <DataCard
@@ -129,6 +145,7 @@ export default function Settings({ form }: { form: Form }) {
         description="Save Changes"
         fields={protectionFields}
         form={formSettings}
+        disabled={isLoading}
         onSubmitAction={onSubmit}
       ></DataCard>
     </div>

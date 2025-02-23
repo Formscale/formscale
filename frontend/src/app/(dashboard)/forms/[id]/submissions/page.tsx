@@ -4,7 +4,6 @@ import { SubmissionSent } from "@formhook/types";
 
 import DashCard from "@/app/(dashboard)/components/card";
 import { DataTable } from "@/app/(dashboard)/components/table/table";
-import FormButton from "@/components/form-button";
 import { useForm } from "@/providers/form";
 import { getColumns } from "./columns";
 import { ExportButton } from "./export-button";
@@ -58,12 +57,11 @@ export default function FormsPage() {
 
   return (
     <>
-      {!submissions && (
-        <DashCard title="No forms yet." description="Create and manage your forms here.">
-          <FormButton variant="default" />
-        </DashCard>
+      {submissions.length === 0 ? (
+        <DashCard title="No submissions yet." description="Get started by collecting submissions."></DashCard>
+      ) : (
+        <DataTable columns={columns} data={submissions} onClickAction={handleRowClick} filterProps={filterProps} />
       )}
-      <DataTable columns={columns} data={submissions} onClickAction={handleRowClick} filterProps={filterProps} />
     </>
   );
 }

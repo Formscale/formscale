@@ -46,7 +46,7 @@ export default function UsagePage() {
         }
       >
         <UsageSection limits={limits} title="Free">
-          <span className="text-[0.8rem]">FormHook is currently free to use. Contact for higher limits.</span>
+          <span className="text-[0.8rem]">Formscale is currently free to use. Contact for higher limits.</span>
         </UsageSection>
       </DataCardSkeleton>
     </div>

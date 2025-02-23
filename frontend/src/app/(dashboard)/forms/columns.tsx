@@ -55,7 +55,7 @@ export const columns: ColumnDef<Form>[] = [
     header: ({ column }) => SortButton("Submissions", column),
     cell: ({ row }) => {
       const form = row.original;
-      return FormatNumber(form.submissions.length);
+      return FormatNumber(form?.submissions?.length ?? 0);
     },
   },
   {
@@ -78,6 +78,7 @@ export const columns: ColumnDef<Form>[] = [
       const rowDate = new Date(row.getValue(columnId));
       return rowDate >= filterValue;
     },
+    sortingFn: "datetime",
   },
   {
     id: "actions",

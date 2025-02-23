@@ -105,13 +105,6 @@ export default function HooksPage() {
             </Link>
           </span>
         </div>
-        {/* <Input
-          type="text"
-          placeholder="https://api.formhook.com/123"
-          value={`https://api.formhook.com/forms/${form.id}`}
-          disabled
-          className="max-w-sm"
-        /> */}
         {items.map((item) => (
           <Item key={item.title} {...item} />
         ))}

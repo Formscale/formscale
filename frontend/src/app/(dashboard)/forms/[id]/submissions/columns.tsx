@@ -63,6 +63,7 @@ export function getColumns(submissions: SubmissionSent[]): ColumnDef<SubmissionS
         const rowDate = new Date(row.getValue(columnId));
         return rowDate >= filterValue;
       },
+      sortingFn: "datetime",
     },
     {
       id: "actions",

@@ -1,6 +1,6 @@
 "use client";
 
-import { SubmissionSent } from "@formhook/types";
+import { Form, SubmissionSent } from "@formhook/types";
 import Link from "next/link";
 
 import DashCard from "@/app/(dashboard)/components/card";
@@ -20,13 +20,24 @@ const filterStatus = (submissions: SubmissionSent[], status: string) => {
 //   return submissions.filter((submission) => submission.createdAt.toISOString().split("T")[0] === date);
 // };
 
-export default function FormPage() {
-  const { form } = useForm();
+function FormInsights({ form }: { form: Form }) {
+  const submissions = form?.submissions;
+  const length = submissions?.length;
 
-  if (!form) return null;
-
-  const submissions = form.submissions;
-  const length = submissions.length;
+  if (!submissions || !length)
+    return (
+      <DashCard
+        title="Form insights"
+        description="No submissions yet - get started by adding the endpoint to your form!"
+      >
+        <Button variant="action" className="w-full" size="sm" asChild>
+          <Link href="/onboarding">
+            <LinkNone2Icon />
+            <span className="text-xs font-bold">View Setup</span>
+          </Link>
+        </Button>
+      </DashCard>
+    );
 
   const status: Limits[] = [
     {
@@ -56,27 +67,22 @@ export default function FormPage() {
   ];
 
   return (
-    <div className="w-full flex flex-col gap-6">
-      {form.submissions.length > 0 ? (
-        <DataCardSkeleton title="Form insights">
-          <UsageSection limits={status} title="Status" muted>
-            <Metric range="last 30 days" value={4} />
-          </UsageSection>
-        </DataCardSkeleton>
-      ) : (
-        <DashCard
-          title="Form insights"
-          description="No submissions yet - get started by adding the endpoint to your form!"
-        >
-          <Button variant="action" className="w-full" size="sm" asChild>
-            <Link href="/onboarding">
-              <LinkNone2Icon />
-              <span className="text-xs font-bold">View Setup</span>
-            </Link>
-          </Button>
-        </DashCard>
-      )}
+    <DataCardSkeleton title="Form insights">
+      <UsageSection limits={status} title="Status" muted>
+        <Metric range="last 30 days" value={4} />
+      </UsageSection>
+    </DataCardSkeleton>
+  );
+}
 
+export default function FormPage() {
+  const { form } = useForm();
+
+  if (!form) return null;
+
+  return (
+    <div className="w-full flex flex-col gap-6">
+      <FormInsights form={form} />
       <DataCardSkeleton
         title="Endpoint"
         button={
@@ -102,8 +108,8 @@ export default function FormPage() {
           </div>
           <Input
             type="text"
-            placeholder="https://api.formhook.com/123"
-            value={`https://api.formhook.com/${form.id}`}
+            placeholder={`${process.env.NEXT_PUBLIC_API_URL}/${form.id}`}
+            value={`${process.env.NEXT_PUBLIC_API_URL}/${form.id}`}
             disabled
             className="max-w-sm"
           />

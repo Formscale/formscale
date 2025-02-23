@@ -34,7 +34,7 @@ import {
 } from "@/components/ui/sidebar";
 
 import DefaultDropdown from "@/components/default-dropdown";
-
+import { useUser } from "@/providers/user";
 const items = [
   {
     title: "Forms",
@@ -71,6 +71,7 @@ const items = [
 export function AppSidebar() {
   const pathname = usePathname();
   const { logout } = useAuth();
+  const { user } = useUser();
 
   const footerItems = [
     {
@@ -124,7 +125,7 @@ export function AppSidebar() {
             <DefaultDropdown items={footerItems} side="top" className="w-[--radix-popper-anchor-width]">
               <SidebarMenuButton>
                 <AvatarIcon />
-                <span className="text-xs text-foreground">Dris Elamri</span>
+                <span className="text-xs text-foreground">{user?.name}</span>
                 <DotsHorizontalIcon className="ml-auto" />
               </SidebarMenuButton>
             </DefaultDropdown>

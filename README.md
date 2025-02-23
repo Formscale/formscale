@@ -1,4 +1,4 @@
-# FormHook
+# Formscale (FormHook)
 
 The most powerful form builder for any site.
 

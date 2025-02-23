@@ -5,9 +5,9 @@ import { ValidationSchema } from "./validations";
 export const WebhookSchema = z.object({
   type: z.enum(["webhook", "discord", "slack"]).default("webhook"),
   enabled: z.boolean().default(false),
-  url: z.string().url().default(""),
+  url: z.string().url(),
   method: z.enum(["GET", "POST"]).optional().default("POST"),
-  secret: z.string().optional().default(""),
+  secret: z.string().optional(),
   headers: z.record(z.string()).optional().default({}),
 });
 
@@ -16,8 +16,7 @@ export const DiscordSchema = WebhookSchema.extend({
   url: z
     .string()
     .url()
-    .regex(/^https:\/\/discord\.com\/api\/webhooks\/\d+\/[\w-]+$/, "Please enter a valid Discord webhook URL")
-    .default(""),
+    .regex(/^https:\/\/discord\.com\/api\/webhooks\/\d+\/[\w-]+$/, "Please enter a valid Discord webhook URL"),
 });
 
 export const EmailSettingsSchema = z.object({
@@ -27,15 +26,14 @@ export const EmailSettingsSchema = z.object({
     .optional()
     .default([]),
   template: z.enum(["Default", "Custom"]).optional().default("Default"),
-  theme: z
-    .object({
-      primary: z.string().default("#000000"),
-      background: z.string().default("#FFFFFF"),
-      logo: z.string().default(""),
-      icon: z.string().default(""),
-      text: z.string().default(""),
-    })
-    .optional(),
+  text: z.string().optional(),
+});
+
+export const ThemeSchema = z.object({
+  primary: z.string().optional(),
+  background: z.string().optional(),
+  logo: z.string().optional(),
+  icon: z.string().optional(),
 });
 
 export const AdminSchema = z.object({
@@ -45,9 +43,9 @@ export const AdminSchema = z.object({
 
 export const UTMSettingsSchema = z.object({
   enabled: z.boolean().optional().default(false),
-  source: z.string().optional().default(""),
-  medium: z.string().optional().default(""),
-  campaign: z.string().optional().default(""),
+  source: z.string().optional(),
+  medium: z.string().optional(),
+  campaign: z.string().optional(),
 });
 
 export const FormSettingsSchema = z.object({
@@ -56,15 +54,16 @@ export const FormSettingsSchema = z.object({
   spamProtection: z.boolean().optional().default(false),
   emailSettings: EmailSettingsSchema.optional().default({}),
   admins: z.array(AdminSchema).optional().default([]),
+  theme: ThemeSchema.optional().default({}),
   utm: UTMSettingsSchema.optional().default({}),
   reCaptcha: z
     .string()
     .regex(/^[0-9a-f]{32}$/, "Please enter a valid ReCaptcha site key")
     .optional()
-    .default(""),
+    .or(z.literal("")),
   webhooks: z.array(WebhookSchema).optional().default([]),
-  successUrl: z.string().url().optional().default(""),
-  customDomain: z.string().optional().default(""),
+  successUrl: z.string().url().optional().or(z.literal("")),
+  customDomain: z.string().optional(),
   allowedOrigins: z.array(z.string()).optional().default([]),
   validation: ValidationSchema.optional(),
 });
@@ -73,9 +72,15 @@ export const FormSchema = z.object({
   id: z.string(),
   name: z.string().min(3).max(60),
   settings: FormSettingsSchema,
-  submissions: z.array(SubmissionSentSchema),
-  updatedAt: z.date(),
-  createdAt: z.date(),
+  submissions: z.array(SubmissionSentSchema).optional(),
+  updatedAt: z
+    .string()
+    .or(z.date())
+    .transform((val) => new Date(val)),
+  createdAt: z
+    .string()
+    .or(z.date())
+    .transform((val) => new Date(val)),
 });
 
 export const CreateFormSchema = z.object({

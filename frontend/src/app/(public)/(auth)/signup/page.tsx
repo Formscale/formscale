@@ -17,7 +17,7 @@ import AuthHeader from "../components/header";
 
 const formFields = [
   { name: "name", description: "Name", placeholder: "Dris Elamri", type: "text" },
-  { name: "email", description: "Email", placeholder: "dris@formhook.com", type: "email" },
+  { name: "email", description: "Email", placeholder: "dris@formscale.dev", type: "email" },
   { name: "password", description: "Password", placeholder: "********", type: "password" },
   { name: "passwordConfirmation", description: "Confirm Password", placeholder: "********", type: "password" },
 ];
@@ -57,7 +57,7 @@ export default function SignupPage() {
   return (
     <>
       <AuthHeader
-        title="Create your FormHook account"
+        title="Create your Formscale account"
         description="Already have an account?"
         link="/login"
         linkText="Log In."

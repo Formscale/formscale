@@ -1,7 +1,8 @@
+import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import Logo from "./logo";
 import { Button } from "./ui/button";
-import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import { SidebarTrigger } from "./ui/sidebar";
 
 const links = [
   { label: "Features", href: "/features" },
@@ -24,7 +25,10 @@ const dashboardLinks = [
 export function HeaderDashboard() {
   return (
     <div className="w-full bg-background overflow-hidden p-3 px-4 border-b-[0.5px] border-border">
-      <div className="flex flex-row items-center justify-end mx-auto">
+      <div className="flex flex-row items-center justify-between mx-auto">
+        <div className="flex flex-row items-center gap-2">
+          <SidebarTrigger />
+        </div>
         <div className="flex flex-row items-center gap-2">
           {dashboardLinks.map((link, index) => (
             <Button

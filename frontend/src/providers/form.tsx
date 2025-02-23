@@ -1,24 +1,80 @@
 "use client";
 
-import { createContext, useContext, ReactNode, useState } from "react";
+import { useFetch } from "@/hooks/fetch";
 import { Form } from "@formhook/types";
+import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
+import { useError } from "./error";
 
-interface FormContext {
+interface FormContextType {
   form: Form | null;
-  setForm: (form: Form | null) => void;
-  updateForm: (updates: Partial<Form>) => void;
+  isLoading: boolean;
+  refreshForm: () => Promise<void>;
+  updateForm: (form: Form) => Promise<void>;
 }
 
-const FormContext = createContext<FormContext | undefined>(undefined);
+const FormContext = createContext<FormContextType | undefined>(undefined);
 
-export function FormProvider({ children, initialForm }: { children: ReactNode; initialForm: Form | null }) {
-  const [form, setForm] = useState<Form | null>(initialForm);
+export function FormProvider({ children, formId }: { children: ReactNode; formId: string }) {
+  const { get, put } = useFetch();
+  const [form, setForm] = useState<Form | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const { handleError } = useError();
 
-  const updateForm = (updates: Partial<Form>) => {
-    setForm((currentForm) => (currentForm ? { ...currentForm, ...updates } : null));
-  };
+  const refreshForm = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const response = await get("forms/:id", {
+        params: { id: formId },
+      });
 
-  return <FormContext.Provider value={{ form, setForm, updateForm }}>{children}</FormContext.Provider>;
+      if (response.success && response.data?.form) {
+        setForm(response.data.form);
+      }
+    } catch (err) {
+      const error = err instanceof Error ? err : new Error("Failed to fetch form");
+      handleError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [get, formId, handleError]);
+
+  const updateForm = useCallback(
+    async (form: Form) => {
+      try {
+        setIsLoading(true);
+        const response = await put("forms/:id/edit", form, {
+          params: { id: formId },
+        });
+
+        if (response.success && response.data?.form) {
+          setForm(response.data.form);
+        }
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error("Failed to update form");
+        handleError(error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [put, formId, handleError]
+  );
+
+  useEffect(() => {
+    refreshForm();
+  }, [formId]);
+
+  return (
+    <FormContext.Provider
+      value={{
+        form,
+        isLoading,
+        refreshForm,
+        updateForm,
+      }}
+    >
+      {children}
+    </FormContext.Provider>
+  );
 }
 
 export const useForm = () => {

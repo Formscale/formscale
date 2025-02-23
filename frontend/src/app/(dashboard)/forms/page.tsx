@@ -1,52 +1,12 @@
-"use client";
-
-import { Form } from "@formhook/types";
-
-import FormButton from "@/components/form-button";
-import { formData } from "@/lib/test-data";
-import { useRouter } from "next/navigation";
-import DashCard from "../components/card";
-import { DataTable } from "../components/table/table";
 import DashTitle from "../components/title";
-import { columns } from "./columns";
-const filterProps = {
-  column: "name",
-  items: [
-    {
-      itemColumn: "visibility",
-      items: [
-        { title: "All visibility", value: undefined },
-        { title: "Public", value: true },
-        { title: "Private", value: false },
-      ],
-    },
-    {
-      itemColumn: "updatedAt",
-      items: [
-        { title: "All time", value: undefined },
-        { title: "Last 30 days", value: "last_30_days" },
-        { title: "Last 7 days", value: "last_7_days" },
-        { title: "Last 24 hours", value: "last_24_hours" },
-      ],
-    },
-  ],
-};
+
+import FormsContent from "./forms";
 
 export default function FormsPage() {
-  const router = useRouter();
-  const handleRowClick = (row: Form) => {
-    router.push(`/forms/${row.id}`);
-  };
-
   return (
     <>
       <DashTitle title="Forms" />
-      {!formData && (
-        <DashCard title="No forms yet." description="Create and manage your forms here.">
-          <FormButton variant="default" />
-        </DashCard>
-      )}
-      <DataTable columns={columns} data={formData} onClickAction={handleRowClick} filterProps={filterProps} />
+      <FormsContent />
     </>
   );
 }

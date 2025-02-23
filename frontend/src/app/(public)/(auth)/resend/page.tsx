@@ -13,7 +13,7 @@ import { useAuth } from "@/providers/auth";
 import AuthButton from "../components/button";
 import AuthHeader from "../components/header";
 
-const formFields = [{ name: "email", description: "Email", placeholder: "dris@formhook.com", type: "email" }];
+const formFields = [{ name: "email", description: "Email", placeholder: "dris@formscale.dev", type: "email" }];
 
 export default function ResendPage() {
   const { setEmail, email } = useAuth();

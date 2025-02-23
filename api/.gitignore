@@ -4,6 +4,7 @@ dist/
 # dev
 .wrangler
 .dev.vars
+.dev.vars.production
 
 # env
 .env

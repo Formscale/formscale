@@ -56,8 +56,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "FormHook",
-  description: "FormHook",
+  title: "Formscale",
+  description: "Formscale",
 };
 
 export default function RootLayout({

@@ -1,5 +1,7 @@
 "use client";
 
+import FormPart from "@/components/form-part";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,10 +11,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
-import FormPart from "@/components/form-part";
-import { Button } from "@/components/ui/button";
-import { FieldValues, UseFormReturn } from "react-hook-form";
+import { DialogProps } from "@radix-ui/react-dialog";
 import { XIcon } from "lucide-react";
+import { FieldValues, UseFormReturn } from "react-hook-form";
 
 interface FormField {
   name: string;
@@ -42,18 +43,20 @@ export interface DeleteDialogProps extends DialogBaseProps {
   buttonText?: string;
 }
 
-export interface DefaultFormProps<T extends FieldValues> extends DialogBaseProps {
+export interface DefaultFormProps<T extends FieldValues> extends DialogBaseProps, DialogProps {
   form: UseFormReturn<T>;
-  onSubmitAction: (values: T) => void;
+  onSubmitAction: (values: T) => void | Promise<void>;
   fields: FormField[];
   buttonText?: string;
+  disabled?: boolean;
 }
 
 interface FormSkeletonProps<T extends FieldValues> {
   form: UseFormReturn<T>;
-  onSubmitAction: (values: T) => void;
+  onSubmitAction: (values: T) => void | Promise<void>;
   fields: FormField[];
   buttonText?: string;
+  disabled?: boolean;
 }
 
 export function DialogContentSkeleton({ title, description, children, props }: DialogContentSkeletonProps) {
@@ -102,6 +105,7 @@ export function FormSkeleton<T extends FieldValues>({
   onSubmitAction,
   fields,
   buttonText,
+  disabled,
 }: FormSkeletonProps<T>) {
   return (
     <Form {...form}>
@@ -109,7 +113,7 @@ export function FormSkeleton<T extends FieldValues>({
         {fields.map((field: FormField) => (
           <FormPart key={field.name} form={form} {...field} />
         ))}
-        <Button type="submit" variant="action" className="text-xs font-bold">
+        <Button type="submit" variant="action" className="text-xs font-bold" disabled={disabled}>
           {buttonText}
         </Button>
       </form>

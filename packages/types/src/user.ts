@@ -25,8 +25,14 @@ export const UserSchema = z.object({
   stripeCustomerId: z.string().optional(),
   subscriptionTier: z.nativeEnum(SubscriptionTier).default(SubscriptionTier.FREE),
   stripeSubscriptionId: z.string().optional(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  updatedAt: z
+    .string()
+    .or(z.date())
+    .transform((val) => new Date(val)),
+  createdAt: z
+    .string()
+    .or(z.date())
+    .transform((val) => new Date(val)),
 });
 
 export const SafeUserSchema = UserSchema.omit({

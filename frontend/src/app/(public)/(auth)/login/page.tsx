@@ -15,7 +15,7 @@ import AuthButton from "../components/button";
 import AuthHeader from "../components/header";
 
 const formFields = [
-  { name: "email", description: "Email", placeholder: "dris@formhook.com", type: "email" },
+  { name: "email", description: "Email", placeholder: "dris@formscale.dev", type: "email" },
   { name: "password", description: "Password", placeholder: "********", type: "password" },
 ];
 
@@ -55,7 +55,7 @@ export default function LoginPage() {
 
   return (
     <>
-      <AuthHeader title="Log in to FormHook" description="Don't have an account?" link="/signup" linkText="Sign Up." />
+      <AuthHeader title="Log in to Formscale" description="Don't have an account?" link="/signup" linkText="Sign Up." />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-full flex flex-col gap-4 mt-3 ">
           {formFields.map((field) => (
