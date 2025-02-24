@@ -7,12 +7,13 @@ import { DotsHorizontalIcon, EyeNoneIcon, EyeOpenIcon, Link1Icon } from "@radix-
 import { ColumnDef } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
-import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 
+import { DeleteDialog } from "@/components/default-dialog";
 import { DropdownItem, DropdownSkeleton } from "@/components/default-dropdown";
+import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
+import { handleCopy } from "@/lib/utils";
 import DashBadge from "../components/badge";
 import { FormatDate, FormatNumber, SortButton } from "../components/table/columns";
-
 export const columns: ColumnDef<Form>[] = [
   {
     accessorKey: "name",
@@ -88,30 +89,42 @@ export const columns: ColumnDef<Form>[] = [
       const dropdownItems = [
         { title: "View submissions", url: `/forms/${form.id}/submissions` },
         { title: "Settings", url: `/forms/${form.id}/settings` },
-        { title: "Delete form", url: `/forms/${form.id}/delete` },
+        {
+          title: "Delete form",
+          dialog: (
+            <DeleteDialog
+              title={`Delete ${form.name}?`}
+              description="This action cannot be undone."
+              buttonText={`Delete Form & All Associated Data`}
+              onDeleteAction={() => console.log(`delete form`)}
+            />
+          ),
+        },
       ];
 
       return (
-        <DropdownSkeleton
-          button={
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <DotsHorizontalIcon className="h-4 w-4" />
-            </Button>
-          }
-        >
-          <DropdownItem
-            item={{
-              title: "Copy endpoint",
-              icon: Link1Icon,
-              onClick: () => navigator.clipboard.writeText(`${window.location.origin}/forms/${form.id}`),
-            }}
-          />
-          <DropdownMenuSeparator />
-          {dropdownItems.map((item) => (
-            <DropdownItem key={item.title} item={item} />
-          ))}
-        </DropdownSkeleton>
+        <div onClick={(e) => e.stopPropagation()}>
+          <DropdownSkeleton
+            button={
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <DotsHorizontalIcon className="h-4 w-4" />
+              </Button>
+            }
+          >
+            <DropdownItem
+              item={{
+                title: "Copy endpoint",
+                icon: Link1Icon,
+                onClick: () => handleCopy(`${window.location.origin}/forms/${form.id}`, "Endpoint"),
+              }}
+            />
+            <DropdownMenuSeparator />
+            {dropdownItems.map((item) => (
+              <DropdownItem key={item.title} item={item} />
+            ))}
+          </DropdownSkeleton>
+        </div>
       );
     },
   },

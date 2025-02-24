@@ -9,7 +9,7 @@ export default function Logo() {
         alt="Formscale"
         width={38}
         height={38}
-        className="-ml-1 aspect-square"
+        className="-ml-1 aspect-square hover:animate-logo-pulse"
         priority
       />
       <span className="font-bold text-xl text-foreground tracking-tighter">Formscale</span>

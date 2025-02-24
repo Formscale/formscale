@@ -6,7 +6,7 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
 
-import { FormatDate, SortButton, StatusBadge } from "@/app/(dashboard)/components/table/columns";
+import { FormatCell, FormatDate, SortButton, StatusBadge } from "@/app/(dashboard)/components/table/columns";
 import { DropdownItem, DropdownSkeleton } from "@/components/default-dropdown";
 // import CheckboxColumn from "@/app/(dashboard)/components/table/checkbox";
 
@@ -25,9 +25,7 @@ export function getColumns(submissions: SubmissionSent[]): ColumnDef<SubmissionS
     id: `data.${field}`,
     accessorKey: `data.${field}`,
     header: ({ column }) => SortButton(field.substring(0, 1).toUpperCase() + field.substring(1), column),
-    cell: ({ row }) => (
-      <div className={index === 0 ? "pl-2" : undefined}>{row.original.data[field]?.toLocaleString()}</div>
-    ),
+    cell: ({ row }) => <div className={index === 0 ? "pl-2" : undefined}>{FormatCell(row.original.data[field])}</div>,
   }));
 
   return [
@@ -69,7 +67,7 @@ export function getColumns(submissions: SubmissionSent[]): ColumnDef<SubmissionS
       id: "actions",
       cell: ({ row }) => {
         const submission = row.original;
-        console.log(submission);
+        // console.log(submission);
 
         const dropdownItems = [
           { title: "View details", onClick: () => console.log("view details") },
@@ -77,18 +75,20 @@ export function getColumns(submissions: SubmissionSent[]): ColumnDef<SubmissionS
         ];
 
         return (
-          <DropdownSkeleton
-            button={
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <DotsHorizontalIcon className="h-4 w-4" />
-              </Button>
-            }
-          >
-            {dropdownItems.map((item) => (
-              <DropdownItem key={item.title} item={item} />
-            ))}
-          </DropdownSkeleton>
+          <div onClick={(e) => e.stopPropagation()}>
+            <DropdownSkeleton
+              button={
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <DotsHorizontalIcon className="h-4 w-4" />
+                </Button>
+              }
+            >
+              {dropdownItems.map((item) => (
+                <DropdownItem key={item.title} item={item} />
+              ))}
+            </DropdownSkeleton>
+          </div>
         );
       },
     },

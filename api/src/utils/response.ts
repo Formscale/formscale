@@ -42,5 +42,9 @@ class Response {
       statusCode ?? 400
     );
   };
+
+  redirect = (url: string, statusCode?: any) => {
+    return this.context.redirect(url, statusCode ?? 302);
+  };
 }
 export default Response;

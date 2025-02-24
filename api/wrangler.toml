@@ -3,16 +3,14 @@ main = "src/index.ts"
 compatibility_date = "2023-12-01"
 compatibility_flags = ["nodejs_compat"]
 
-[vars]
-BUCKET_URL = "https://pub-c9c7094ec24a47a4a5734bef90e797e1.r2.dev"
-
 # [[kv_namespaces]]
 # binding = "MY_KV_NAMESPACE"
 # id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 [[r2_buckets]]
 binding = "BUCKET"
-bucket_name = "formhook-bucket"
+preview_bucket_name = "formscale-dev"
+bucket_name = "formscale-cdn"
 
 [[d1_databases]]
 binding = "DB"

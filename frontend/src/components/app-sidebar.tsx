@@ -7,7 +7,7 @@ import {
   ArrowTopRightIcon,
   AvatarIcon,
   BarChartIcon,
-  CircleIcon,
+  ButtonIcon,
   ClockIcon,
   DotsHorizontalIcon,
   ExitIcon,
@@ -82,7 +82,7 @@ export function AppSidebar() {
     {
       title: "Profile",
       url: "/profile",
-      icon: CircleIcon,
+      icon: ButtonIcon,
     },
     {
       title: "Sign out",

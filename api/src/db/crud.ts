@@ -1,4 +1,4 @@
-import { CreateForm, FormSettings, FormSettingsSchema } from "@formhook/types";
+import { CreateForm, FormSettings, FormSettingsSchema, SubmissionSent } from "@formhook/types";
 import { PrismaClient } from "@prisma/client";
 
 interface FormResult {
@@ -10,11 +10,18 @@ function parseForm(result: FormResult) {
   if (!result) return null;
 
   try {
+    const settings = JSON.parse(result.settings) as FormSettings;
+    const submissions = result.submissions?.map((submission: SubmissionSent) => ({
+      ...submission,
+      data: JSON.parse(submission.data),
+    }));
+
     return {
       ...result,
-      settings: JSON.parse(result.settings) as FormSettings,
+      settings,
+      submissions,
     };
-  } catch {
+  } catch (error) {
     return {
       ...result,
       settings: FormSettingsSchema.parse({}),
@@ -80,7 +87,7 @@ export async function findUnique<T extends keyof PrismaClient>(
 export async function create<T extends keyof PrismaClient>(
   prisma: PrismaClient,
   model: T,
-  data: T extends "form" ? CreateForm & { id: string; userId: string } : any
+  data: T extends "form" ? CreateForm & { id: string; userId: string; development: boolean } : any
 ) {
   if (model === "form") {
     const user = await findUnique(prisma, "user", { where: { id: data.userId } });
@@ -113,15 +120,10 @@ export async function update<T extends keyof PrismaClient>(
   params: {
     where: any;
     data: any;
+    include?: any;
   }
 ) {
-  const result = await (prisma[model] as any).update({
-    ...params,
-    data: {
-      ...params.data,
-      updatedAt: new Date(),
-    },
-  });
+  const result = await (prisma[model] as any).update(params);
 
   if (model === "form") {
     return parseForm(result);
@@ -144,7 +146,7 @@ export async function secureFind<T extends keyof PrismaClient>(
 ) {
   return findOne(prisma, model, {
     where: { id, userId },
-    include: params.include,
+    ...params,
   });
 }
 
@@ -165,11 +167,13 @@ export async function secureUpdate<T extends keyof PrismaClient>(
   model: T,
   userId: string,
   id: string,
-  data: any
+  data: any,
+  params: { include?: any } = {}
 ) {
   return await update(prisma, model, {
     where: { id, userId },
     data,
+    ...params,
   });
 }
 

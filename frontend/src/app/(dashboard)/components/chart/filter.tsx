@@ -5,16 +5,17 @@ import { useState } from "react";
 import { Dropdown } from "../table/dropdown";
 
 interface FilterProps {
-  onFilterChangeAction: (filters: { dateRange?: string; formName?: string; status?: string }) => void;
   forms: Form[];
 }
 
-export function Filter({ onFilterChangeAction, forms }: FilterProps) {
+export function Filter({ forms }: FilterProps) {
   const [selectedTitles, setSelectedTitles] = useState({
     dateRange: "All time",
     formName: "All forms",
     status: "All statuses",
   });
+
+  const [selectedDateRange, setSelectedDateRange] = useState<string>("all time");
 
   const filterGroups = [
     {
@@ -50,7 +51,14 @@ export function Filter({ onFilterChangeAction, forms }: FilterProps) {
 
   const handleFilterSelect = (columnName: string, value: string | undefined, itemTitle: string) => {
     setSelectedTitles((prev) => ({ ...prev, [columnName]: itemTitle }));
-    onFilterChangeAction({ [columnName]: value });
+
+    switch (columnName) {
+      case "dateRange":
+        setSelectedDateRange(value ?? "all time");
+        break;
+      default:
+        break;
+    }
   };
 
   return (

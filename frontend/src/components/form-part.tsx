@@ -16,6 +16,7 @@ interface FormPartProps<T extends FieldValues> {
   description?: string;
   placeholder: string;
   muted?: boolean;
+  disabled?: boolean;
   className?: string;
   children?: React.ReactNode;
   options?: string[];
@@ -39,6 +40,7 @@ export default function FormPart<T extends FieldValues>({
   className,
   children,
   options,
+  disabled,
 }: FormPartProps<T>) {
   function renderInput({ field }: { field: FieldValues }) {
     switch (type) {
@@ -52,6 +54,7 @@ export default function FormPart<T extends FieldValues>({
             type={type}
             placeholder={placeholder}
             {...field}
+            disabled={disabled}
             className={className}
             autoComplete={type === "password" ? "new-password" : "on"}
             style={

@@ -16,3 +16,6 @@ logs/
 
 # react-email
 .react-email/
+
+# test
+src/lib/spam.ts

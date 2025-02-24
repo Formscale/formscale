@@ -1,5 +1,16 @@
 import { Auth } from "@/lib/auth";
-import { AuthResponse, CreateForm, EditUser, Form, Login, Otp, ResendOtp, Signup, User } from "@formhook/types";
+import {
+  AuthResponse,
+  CreateForm,
+  EditUser,
+  Form,
+  FormEdit,
+  Login,
+  Otp,
+  ResendOtp,
+  SafeUser,
+  Signup,
+} from "@formhook/types";
 import { useState } from "react";
 
 interface Endpoints {
@@ -29,8 +40,12 @@ interface Endpoints {
     output: { form: Form };
   };
   "forms/:id/edit": {
-    input: Form;
+    input: FormEdit;
     output: { form: Form };
+  };
+  "forms/:id/delete": {
+    input: null;
+    output: { message: string };
   };
   "forms/create": {
     input: CreateForm;
@@ -39,11 +54,11 @@ interface Endpoints {
 
   "user/profile": {
     input: null;
-    output: { user: User };
+    output: { user: SafeUser };
   };
   "user/edit": {
     input: EditUser;
-    output: { user: User };
+    output: { user: SafeUser; token: string };
   };
 }
 

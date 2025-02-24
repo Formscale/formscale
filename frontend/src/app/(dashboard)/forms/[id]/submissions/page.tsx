@@ -4,6 +4,7 @@ import { SubmissionSent } from "@formhook/types";
 
 import DashCard from "@/app/(dashboard)/components/card";
 import { DataTable } from "@/app/(dashboard)/components/table/table";
+// import { formData } from "@/lib/test-data";
 import { useForm } from "@/providers/form";
 import { getColumns } from "./columns";
 import { ExportButton } from "./export-button";
@@ -17,6 +18,7 @@ const getFirstDataField = (submissions: SubmissionSent[]) => {
 
 export default function FormsPage() {
   const { form } = useForm();
+  // const form = formData[0];
 
   if (!form) return null;
 
@@ -44,7 +46,7 @@ export default function FormsPage() {
       //   ],
       // },
       {
-        itemColumn: "createdAt",
+        itemColumn: "updatedAt",
         items: [
           { title: "All time", value: undefined },
           { title: "Last 30 days", value: "last_30_days" },

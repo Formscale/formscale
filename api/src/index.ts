@@ -1,5 +1,5 @@
 import app from "@/app";
-import { AuthController, FormController, UserController } from "@/controllers";
+import { AuthController, FormController, SubmissionsController, SubmitController, UserController } from "@/controllers";
 import Response from "@/utils/response";
 import { cors } from "hono/cors";
 import { jwt } from "hono/jwt";
@@ -16,11 +16,11 @@ app.use(
   })
 );
 
-const publicRoutes = ["/auth/login", "/auth/signup", "/auth/resend", "/auth/verify"];
+const publicRoutes = ["/auth/login", "/auth/signup", "/auth/resend", "/auth/verify", "/s/:id"];
 
 app.use("*", (ctx, next) => {
   const path = ctx.req.path;
-  if (publicRoutes.includes(path)) {
+  if (publicRoutes.includes(path) || path.startsWith("/s")) {
     return next();
   }
 
@@ -31,9 +31,11 @@ app.use("*", (ctx, next) => {
   return jwtMiddleware(ctx, next);
 });
 
+app.route("/s", SubmitController);
 app.route("/auth", AuthController);
 app.route("/forms", FormController);
 app.route("/user", UserController);
+app.route("/submissions", SubmissionsController);
 
 app.all("*", async (ctx) => {
   return new Response(ctx).error("Route not found", 404);

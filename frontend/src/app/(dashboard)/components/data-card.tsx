@@ -71,11 +71,23 @@ export default function DataCard<T extends FieldValues>({
   disabled,
   children,
 }: DefaultFormProps<T>) {
+  const checkDirty = (obj: any, path: string[]): boolean => {
+    if (path.length === 0) return !!obj;
+    const [current, ...rest] = path;
+    if (!obj || typeof obj !== "object") return false;
+    return checkDirty(obj[current], rest);
+  };
+
+  const isDirty = fields.some((field) => {
+    const path = field.name.split(".");
+    return checkDirty(form.formState.dirtyFields, path);
+  });
+
   return (
     <Form {...form}>
       <DataCardSkeleton
         button={
-          <Button type="submit" size="sm" disabled={disabled || !form.formState.isDirty}>
+          <Button type="submit" size="sm" disabled={disabled || !isDirty}>
             <span className="text-xs font-bold">{description || "Save"}</span>
           </Button>
         }

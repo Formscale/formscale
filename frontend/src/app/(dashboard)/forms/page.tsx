@@ -50,6 +50,8 @@ export default function FormsPage() {
 // general
 // - add global error sonner/boundary?
 // - 404 page
+// - add api/docs snippets
+// - dev/production modes (switch + parameter)
 
 // api
 // - add tests

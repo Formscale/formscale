@@ -1,5 +1,6 @@
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
+import { DevSwitcher } from "./dev-switcher";
 import Logo from "./logo";
 import { Button } from "./ui/button";
 import { SidebarTrigger } from "./ui/sidebar";
@@ -7,7 +8,7 @@ import { SidebarTrigger } from "./ui/sidebar";
 const links = [
   { label: "Features", href: "/features" },
   { label: "Pricing", href: "/pricing" },
-  { label: "Templates", href: "/templates" },
+  { label: "Components", href: "/components" },
   { label: "Docs", href: "/docs" },
 ];
 
@@ -18,7 +19,7 @@ const socialLinks = [
 
 const dashboardLinks = [
   { label: "Feedback", href: "/feedback" },
-  { label: "Templates", href: "/templates" },
+  { label: "Components", href: "/components" },
   { label: "Docs", href: "/docs" },
 ];
 
@@ -26,17 +27,20 @@ export function HeaderDashboard() {
   return (
     <div className="w-full bg-background overflow-hidden p-3 px-4 border-b-[0.5px] border-border">
       <div className="flex flex-row items-center justify-between mx-auto">
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-row items-center justify-center gap-3">
           <SidebarTrigger />
+          <DevSwitcher />
         </div>
         <div className="flex flex-row items-center gap-2">
           {dashboardLinks.map((link, index) => (
             <Button
               variant={index === 0 ? "outline" : "ghost"}
               size="sm"
-              className={index === 0 ? "" : "text-muted-foreground"}
+              // className={index === 0 ? "" : "text-muted-foreground"}
+              className={"text-muted-foreground"}
               key={link.href}
             >
+              {/* {index === 0 && <ChatBubbleIcon />} */}
               <Link href={link.href}>{link.label}</Link>
             </Button>
           ))}

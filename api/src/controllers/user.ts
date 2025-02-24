@@ -5,7 +5,7 @@ import { getUser } from "@/utils/user";
 import { EditUserSchema } from "@formhook/types";
 import { Hono } from "hono";
 import { update } from "../db/crud";
-
+import { getToken } from "./auth";
 const users = new Hono<{ Bindings: Env }>();
 
 export const UserController = users
@@ -20,14 +20,23 @@ export const UserController = users
       return new Response(ctx).error(error);
     }),
     async (ctx) => {
-      const { name, email } = await ctx.req.json();
+      const { name, email, development } = await ctx.req.json();
       const user = getUser(ctx);
 
       const updatedUser = await update(db(ctx.env), "user", {
         where: { id: user.id },
-        data: { name, email },
+        data: {
+          name,
+          // email,
+          development,
+        },
       });
 
-      return new Response(ctx).success({ user: updatedUser });
+      const { token, user: safeUser } = await getToken(updatedUser, ctx.env.JWT_SECRET);
+
+      return new Response(ctx).success({
+        user: safeUser,
+        token,
+      });
     }
   );

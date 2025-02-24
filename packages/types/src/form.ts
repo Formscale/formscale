@@ -51,6 +51,7 @@ export const UTMSettingsSchema = z.object({
 export const FormSettingsSchema = z.object({
   isPublic: z.boolean().optional().default(true),
   allowAnonymous: z.boolean().optional().default(true),
+  saveResponses: z.boolean().optional().default(false),
   spamProtection: z.boolean().optional().default(false),
   emailSettings: EmailSettingsSchema.optional().default({}),
   admins: z.array(AdminSchema).optional().default([]),
@@ -64,14 +65,28 @@ export const FormSettingsSchema = z.object({
   webhooks: z.array(WebhookSchema).optional().default([]),
   successUrl: z.string().url().optional().or(z.literal("")),
   customDomain: z.string().optional(),
-  allowedOrigins: z.array(z.string()).optional().default([]),
+  allowedOrigins: z
+    .array(
+      z
+        .string()
+        .refine(
+          (origin) => origin === "*" || origin === "null" || /^https?:\/\/[^\s/$.?#].[^\s]*$/.test(origin),
+          `Origin must be a valid URL, "*", or blank`
+        )
+    )
+    .optional()
+    .default([]),
   validation: ValidationSchema.optional(),
 });
 
+export const idString = "23456789abcdefghjkmnpqrstuvwxyz";
+export const IdSchema = z.string().regex(new RegExp(`^[${idString}]{8}$`), "Please use a valid form ID");
+
 export const FormSchema = z.object({
-  id: z.string(),
+  id: IdSchema,
   name: z.string().min(3).max(60),
   settings: FormSettingsSchema,
+  development: z.boolean().optional().default(true),
   submissions: z.array(SubmissionSentSchema).optional(),
   updatedAt: z
     .string()
@@ -87,8 +102,16 @@ export const CreateFormSchema = z.object({
   name: z.string().min(3).max(60),
 });
 
+export const FormEditSchema = FormSchema.omit({
+  submissions: true,
+  updatedAt: true,
+  createdAt: true,
+});
+
 export type Form = z.infer<typeof FormSchema>;
+export type Id = z.infer<typeof IdSchema>;
 export type CreateForm = z.infer<typeof CreateFormSchema>;
+export type FormEdit = z.infer<typeof FormEditSchema>;
 export type FormSettings = z.infer<typeof FormSettingsSchema>;
 export type Webhook = z.infer<typeof WebhookSchema>;
 export type Discord = z.infer<typeof DiscordSchema>;

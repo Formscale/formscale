@@ -2,7 +2,7 @@
 
 import DataCard from "@/app/(dashboard)/components/data-card";
 import { useForm as useFormProvider } from "@/providers/form";
-import { Form, FormSchema } from "@formhook/types";
+import { Form, FormEdit, FormEditSchema } from "@formhook/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -10,13 +10,14 @@ import { useForm } from "react-hook-form";
 export default function Settings({ form }: { form: Form }) {
   const { updateForm, isLoading } = useFormProvider();
 
-  const formSettings = useForm<Form>({
-    resolver: zodResolver(FormSchema),
+  const formSettings = useForm<FormEdit>({
+    resolver: zodResolver(FormEditSchema),
     defaultValues: {
       ...form,
       settings: {
         ...form.settings,
         isPublic: form.settings.isPublic,
+        saveResponses: form.settings.saveResponses,
         spamProtection: form.settings.spamProtection,
         reCaptcha: form.settings.reCaptcha || "",
         allowedOrigins: form.settings.allowedOrigins || [],
@@ -25,10 +26,9 @@ export default function Settings({ form }: { form: Form }) {
     },
   });
 
-  // console.log(formSettings.formState.errors);
+  console.log(formSettings.formState.errors);
 
-  async function onSubmit(values: Form) {
-    console.log(values);
+  async function onSubmit(values: FormEdit) {
     await updateForm(values);
   }
 
@@ -42,6 +42,17 @@ export default function Settings({ form }: { form: Form }) {
       type: "switch",
       children: (
         <p className="text-xs text-muted-foreground">Your form will no longer accept submissions when disabled.</p>
+      ),
+    },
+    {
+      name: "settings.saveResponses",
+      description: "Save Responses",
+      placeholder: "true",
+      type: "switch",
+      children: (
+        <p className="text-xs text-muted-foreground">
+          Formscale automatically saves submission data (including file uploads) from your form.
+        </p>
       ),
     },
   ];
@@ -119,6 +130,7 @@ export default function Settings({ form }: { form: Form }) {
       description: "Allowed Origins",
       placeholder: "https://formscale.dev, http://localhost:3000",
       type: "tags",
+      children: <p className="text-xs text-muted-foreground">Separate each origin with a comma or press enter.</p>,
     },
   ];
 

@@ -10,6 +10,7 @@ export enum Roles {
 export const EditUserSchema = z.object({
   name: z.string().min(3).max(60),
   email: z.string().email(),
+  development: z.boolean().default(true),
 });
 
 export const UserSchema = z.object({
@@ -22,6 +23,7 @@ export const UserSchema = z.object({
   otp: z.string().optional(),
   otpExpiry: z.date().optional(),
   attempts: z.number().default(3),
+  development: z.boolean().default(true),
   stripeCustomerId: z.string().optional(),
   subscriptionTier: z.nativeEnum(SubscriptionTier).default(SubscriptionTier.FREE),
   stripeSubscriptionId: z.string().optional(),

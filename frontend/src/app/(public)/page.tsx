@@ -19,7 +19,7 @@ export default function Home() {
             Get Started
           </Button>
           <Button variant="outline" size="lg" className="font-bold">
-            Browse Templates
+            Browse Components
           </Button>
         </div>
         <p className="text-xs text-muted-foreground">Fully Open Source - Use it for free</p>

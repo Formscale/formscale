@@ -1,7 +1,7 @@
 "use client";
 
 import { useFetch } from "@/hooks/fetch";
-import { Form } from "@formhook/types";
+import { Form, FormEdit } from "@formhook/types";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
 import { useError } from "./error";
 
@@ -9,7 +9,7 @@ interface FormContextType {
   form: Form | null;
   isLoading: boolean;
   refreshForm: () => Promise<void>;
-  updateForm: (form: Form) => Promise<void>;
+  updateForm: (form: FormEdit) => Promise<void>;
 }
 
 const FormContext = createContext<FormContextType | undefined>(undefined);
@@ -39,7 +39,7 @@ export function FormProvider({ children, formId }: { children: ReactNode; formId
   }, [get, formId, handleError]);
 
   const updateForm = useCallback(
-    async (form: Form) => {
+    async (form: FormEdit) => {
       try {
         setIsLoading(true);
         const response = await put("forms/:id/edit", form, {

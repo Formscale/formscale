@@ -60,8 +60,8 @@ export default function UsageItems({ limits }: { limits: Limits[] }) {
                     value={getProgressValue(lim.value, lim.total)}
                   />
                 </TooltipTrigger>
-                <TooltipContent side="bottom" className="opacity-80 mt-0.5">
-                  <span className="text-xs text-secondary-foreground">
+                <TooltipContent side="bottom" className="py-1 px-2 border border-border bg-background mt-0.5">
+                  <span className="text-xs text-foreground/80">
                     {Math.round(getProgressValue(lim.value, lim.total)).toLocaleString()}%
                   </span>
                 </TooltipContent>

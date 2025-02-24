@@ -5,13 +5,14 @@ import Link from "next/link";
 import DashCard from "@/app/(dashboard)/components/card";
 import DashTitle from "@/app/(dashboard)/components/title";
 import Loading from "@/components/loading";
+import SuspenseWrapper from "@/components/suspense-wrapper";
 import Tabs from "@/components/tabs";
 import { Button } from "@/components/ui/button";
-import { FormProvider, useForm } from "@/providers/form";
-import { TriangleLeftIcon } from "@radix-ui/react-icons";
+import { useForm } from "@/providers/form";
+import { ReloadIcon, TriangleLeftIcon } from "@radix-ui/react-icons";
 
 export function LayoutContent({ children, id }: { children: React.ReactNode; id: string }) {
-  const { form, isLoading } = useForm();
+  const { form, isLoading, refreshForm } = useForm();
 
   if (isLoading) return <Loading />;
 
@@ -42,7 +43,11 @@ export function LayoutContent({ children, id }: { children: React.ReactNode; id:
 
   return (
     <>
-      <DashTitle title={form?.name || "Your form"} />
+      <DashTitle title={form?.name || "Your form"}>
+        <Button size="sm" variant="outline" onClick={() => refreshForm()}>
+          <ReloadIcon />
+        </Button>
+      </DashTitle>
       <Tabs tabs={tabs} />
       {children}
     </>
@@ -51,8 +56,8 @@ export function LayoutContent({ children, id }: { children: React.ReactNode; id:
 
 export default function FormLayoutContent({ children, id }: { children: React.ReactNode; id: string }) {
   return (
-    <FormProvider formId={id}>
-      <LayoutContent id={id}>{children}</LayoutContent>
-    </FormProvider>
+    <LayoutContent id={id}>
+      <SuspenseWrapper>{children}</SuspenseWrapper>
+    </LayoutContent>
   );
 }

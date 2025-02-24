@@ -12,6 +12,13 @@ interface BaseEmailProps {
 
 export const BaseEmail = ({ title, description, children, footer, env }: BaseEmailProps) => {
   const frontendUrl = env.FRONTEND_URL;
+  // const bucketUrl = env.BUCKET_URL;
+
+  // const logoUrl = bucketUrl
+  //   ? `${bucketUrl}/assets/formscale-logo.png`
+  //   : `${frontendUrl}/assets/logos/formscale-logo.png`;
+
+  const logoUrl = `${frontendUrl}/assets/logos/formscale-logo.png`;
 
   return (
     <Html>
@@ -21,12 +28,7 @@ export const BaseEmail = ({ title, description, children, footer, env }: BaseEma
         <Container style={container}>
           <Section style={logoContainer}>
             <Link href={frontendUrl}>
-              <Img
-                src={`${frontendUrl}/assets/logos/formscale-logo.png`}
-                width="222"
-                height="64"
-                alt="Formscale logo"
-              />
+              <Img src={logoUrl} width="223" height="64" alt="Formscale logo" />
             </Link>
           </Section>
           <Heading style={h1}>{title}</Heading>

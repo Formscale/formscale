@@ -7,7 +7,7 @@ export default function Loading() {
       <Image
         src="/assets/logos/formscale-icon.svg"
         alt="Formscale loader"
-        className="animate-logo-pulse w-20 h-auto drop-shadow-sm cursor-pointer"
+        className="animate-logo-pulse w-22 aspect-square h-auto drop-shadow-sm cursor-pointer"
         width={100}
         height={100}
       />

@@ -23,6 +23,7 @@ model User {
   role                 String    @default("user")
   otp                  String?
   otpExpiry            DateTime?
+  development          Boolean   @default(true)
   attempts             Int       @default(3)
   verified             Boolean   @default(false)
   stripeCustomerId     String?
@@ -42,6 +43,7 @@ model Form {
   userId      String
   user        User         @relation(fields: [userId], references: [id])
   settings    String       @default("{}")
+  development Boolean      @default(true)
   submissions Submission[]
   updatedAt   DateTime     @updatedAt
   createdAt   DateTime     @default(now())
@@ -55,8 +57,25 @@ model Submission {
   form      Form     @relation(fields: [formId], references: [id])
   data      String   @default("{}")
   status    String   @default("pending")
+  location  String   @default("Unknown")
+  site      String?
+  logs      Logs[]
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 
   @@map("submissions")
+}
+
+model Logs {
+  id           String     @id @default(cuid())
+  type         String     @default("submission")
+  submissionId String
+  submission   Submission @relation(fields: [submissionId], references: [id])
+  data         String     @default("{}")
+  message      String?
+  code         Int        @default(200)
+  updatedAt    DateTime   @updatedAt
+  createdAt    DateTime   @default(now())
+
+  @@map("logs")
 }

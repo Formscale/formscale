@@ -9,6 +9,7 @@ import Metric from "@/app/(dashboard)/components/metric";
 import { Limits, UsageSection } from "@/app/(dashboard)/components/usage-item";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { handleCopy } from "@/lib/utils";
 import { useForm } from "@/providers/form";
 import { LinkNone2Icon } from "@radix-ui/react-icons";
 
@@ -69,7 +70,14 @@ function FormInsights({ form }: { form: Form }) {
   return (
     <DataCardSkeleton title="Form insights">
       <UsageSection limits={status} title="Status" muted>
-        <Metric range="last 30 days" value={4} />
+        <Metric
+          range="last 30 days"
+          value={
+            form.submissions?.filter(
+              (submission) => new Date(submission.createdAt) >= new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+            ).length || 0
+          }
+        />
       </UsageSection>
     </DataCardSkeleton>
   );
@@ -89,9 +97,7 @@ export default function FormPage() {
           <Button
             type="submit"
             size="sm"
-            onClick={() => {
-              navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_API_URL}/${form.id}`);
-            }}
+            onClick={() => handleCopy(`${process.env.NEXT_PUBLIC_API_URL}/s/${form.id}`, "Endpoint")}
           >
             <span className="text-xs font-bold">Copy Endpoint</span>
           </Button>
@@ -108,8 +114,8 @@ export default function FormPage() {
           </div>
           <Input
             type="text"
-            placeholder={`${process.env.NEXT_PUBLIC_API_URL}/${form.id}`}
-            value={`${process.env.NEXT_PUBLIC_API_URL}/${form.id}`}
+            placeholder={`${process.env.NEXT_PUBLIC_API_URL}/s/${form.id}`}
+            value={`${process.env.NEXT_PUBLIC_API_URL}/s/${form.id}`}
             disabled
             className="max-w-sm"
           />

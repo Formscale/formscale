@@ -1,4 +1,5 @@
 import { VerifyEmail } from "@/lib/emails";
+import { Form, SubmissionSent } from "@formhook/types";
 import { Resend } from "resend";
 
 export async function sendEmail(to: string[], subject: string, description: string, email: React.ReactNode, env: Env) {
@@ -25,4 +26,16 @@ export async function sendVerifyEmail(to: string[], otp: string, env: Env) {
     VerifyEmail({ otp, env }),
     env
   );
+}
+
+export async function sendSubmissionEmail(to: string[], form: Form, submission: SubmissionSent, env: Env) {
+  // await sendEmail(
+  //   to,
+  //   `New submission on ${form.name}`,
+  //   "A new submission has been made",
+  //   SubmissionEmail({ form, submission }),
+  //   env
+  // );
+
+  console.log("sending email");
 }

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Table } from "@tanstack/react-table";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import { Table } from "@tanstack/react-table";
 
 interface PaginationProps<T> {
   table: Table<T>;

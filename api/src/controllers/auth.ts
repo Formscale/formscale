@@ -8,7 +8,7 @@ import { compareSync, hashSync } from "bcrypt-edge";
 import { Hono } from "hono";
 import { sign } from "hono/jwt";
 
-const getToken = async (user: User, secret: string) => {
+export const getToken = async (user: User, secret: string) => {
   const safeUser = SafeUserSchema.parse(user);
 
   const payload = {
