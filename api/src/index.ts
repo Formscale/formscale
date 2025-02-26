@@ -20,7 +20,7 @@ const publicRoutes = ["/auth/login", "/auth/signup", "/auth/resend", "/auth/veri
 
 app.use("*", (ctx, next) => {
   const path = ctx.req.path;
-  if (publicRoutes.includes(path) || path.startsWith("/s")) {
+  if (publicRoutes.includes(path) || (path.startsWith("/s") && !path.includes("/submissions"))) {
     return next();
   }
 

@@ -42,15 +42,15 @@ function FormInsights({ form }: { form: Form }) {
 
   const status: Limits[] = [
     {
-      name: "Pending",
-      variant: "default",
-      value: filterStatus(submissions, "pending").length,
-      total: length,
-    },
-    {
       name: "Completed",
       variant: "success",
       value: filterStatus(submissions, "completed").length,
+      total: length,
+    },
+    {
+      name: "Pending",
+      variant: "default",
+      value: filterStatus(submissions, "pending").length,
       total: length,
     },
     {

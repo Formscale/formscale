@@ -8,9 +8,10 @@ interface BaseEmailProps {
   children: React.ReactNode;
   footer: string;
   env: Env;
+  link?: string;
 }
 
-export const BaseEmail = ({ title, description, children, footer, env }: BaseEmailProps) => {
+export const BaseEmail = ({ title, description, children, footer, env, link }: BaseEmailProps) => {
   const frontendUrl = env.FRONTEND_URL;
   // const bucketUrl = env.BUCKET_URL;
 
@@ -32,7 +33,9 @@ export const BaseEmail = ({ title, description, children, footer, env }: BaseEma
             </Link>
           </Section>
           <Heading style={h1}>{title}</Heading>
-          <Text style={heroText}>{description}</Text>
+          <Text style={heroText}>
+            {description} {link && <Link href={link}> {link}</Link>}
+          </Text>
 
           {/* <Section style={codeBox}>
           <Text style={confirmationCodeText}>{validationCode}</Text>
@@ -115,8 +118,7 @@ export const BaseEmail = ({ title, description, children, footer, env }: BaseEma
             <Text style={footerText}>
               {new Date().getFullYear()} Formscale / DRIS LLC. <br />
               11500 Wayzata Blvd #1222, Minnetonka, MN, 55305, USA <br />
-              <br />
-              All rights reserved.
+              <br />© All rights reserved, <Link href="https://formscale.dev">Formscale</Link>.
             </Text>
           </Section>
         </Container>

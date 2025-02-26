@@ -12,12 +12,10 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-export default function DefaultSheet({ children }: { children: React.ReactNode }) {
+export default function DefaultSheet({ trigger, children }: { trigger: React.ReactNode; children: React.ReactNode }) {
   return (
     <Sheet>
-      <SheetTrigger asChild>
-        <Button variant="outline">Open</Button>
-      </SheetTrigger>
+      <SheetTrigger asChild>{trigger}</SheetTrigger>
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Edit profile</SheetTitle>

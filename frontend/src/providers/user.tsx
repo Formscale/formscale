@@ -18,7 +18,7 @@ const UserContext = createContext<UserContext | undefined>(undefined);
 export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<SafeUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { handleError } = useError();
+  const { handleError, handleToast } = useError();
   const { get, put } = useFetch();
 
   useEffect(() => {
@@ -51,6 +51,10 @@ export function UserProvider({ children }: { children: ReactNode }) {
         if (response.success && response.data?.user) {
           setUser(response.data.user);
           Auth.setToken(response.data.token);
+
+          // if (user!.development === response.data.user.development) {
+          //   handleToast("success", "User updated successfully");
+          // }
         }
       } catch (err) {
         const error = err instanceof Error ? err : new Error("Failed to update user");

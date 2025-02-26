@@ -59,14 +59,14 @@ model Submission {
   status    String   @default("pending")
   location  String   @default("Unknown")
   site      String?
-  logs      Logs[]
+  logs      Log[]
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 
   @@map("submissions")
 }
 
-model Logs {
+model Log {
   id           String     @id @default(cuid())
   type         String     @default("submission")
   submissionId String

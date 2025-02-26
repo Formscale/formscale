@@ -57,6 +57,7 @@ interface FormSkeletonProps<T extends FieldValues> {
   fields: FormField[];
   buttonText?: string;
   disabled?: boolean;
+  ignoreDirty?: boolean;
 }
 
 export function DialogContentSkeleton({ title, description, children, props }: DialogContentSkeletonProps) {
@@ -73,7 +74,7 @@ export function DialogContentSkeleton({ title, description, children, props }: D
 
 export function DeleteDialog({
   title,
-  description,
+  description = "This action cannot be undone.",
   onDeleteAction,
   buttonText = "Delete",
   children,
@@ -106,14 +107,17 @@ export function FormSkeleton<T extends FieldValues>({
   fields,
   buttonText,
   disabled,
+  ignoreDirty = false,
 }: FormSkeletonProps<T>) {
+  const isDirty = ignoreDirty || form.formState.isDirty;
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmitAction)} className="w-full flex flex-col gap-4">
         {fields.map((field: FormField) => (
           <FormPart key={field.name} form={form} {...field} />
         ))}
-        <Button type="submit" variant="action" className="text-xs font-bold" disabled={disabled}>
+        <Button type="submit" variant="action" className="text-xs font-bold" disabled={disabled || !isDirty}>
           {buttonText}
         </Button>
       </form>
@@ -125,7 +129,7 @@ export default function DefaultDialog<T extends FieldValues>(props: DefaultFormP
   const { children, ...formProps } = props;
 
   return (
-    <DialogSkeleton title={props.title} description={props.description} button={children}>
+    <DialogSkeleton title={props.title} description={props.description} button={children} props={props}>
       <FormSkeleton {...formProps} buttonText={props.buttonText || "Create"} />
     </DialogSkeleton>
   );

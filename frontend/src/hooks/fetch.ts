@@ -13,7 +13,7 @@ import {
 } from "@formhook/types";
 import { useState } from "react";
 
-interface Endpoints {
+export interface Endpoints {
   "auth/login": {
     input: Login;
     output: AuthResponse;
@@ -59,6 +59,11 @@ interface Endpoints {
   "user/edit": {
     input: EditUser;
     output: { user: SafeUser; token: string };
+  };
+
+  "submissions/:id/delete": {
+    input: null;
+    output: { message: string };
   };
 }
 
@@ -156,7 +161,7 @@ export function useFetch() {
       data: Endpoints[TEndpoint]["input"],
       options?: FetchOptions<TEndpoint>
     ) => fetchData(endpoint, { method: "PATCH", body: JSON.stringify(data), ...options }),
-    delete: <TEndpoint extends keyof Endpoints>(endpoint: TEndpoint, options?: FetchOptions<TEndpoint>) =>
+    remove: <TEndpoint extends keyof Endpoints>(endpoint: TEndpoint, options?: FetchOptions<TEndpoint>) =>
       fetchData(endpoint, { method: "DELETE", ...options }),
   };
 }

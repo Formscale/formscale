@@ -185,3 +185,32 @@ export async function secureDelete<T extends keyof PrismaClient>(
 ) {
   return await remove(prisma, model, { id, userId });
 }
+
+export async function secureDeleteLinked<T extends keyof PrismaClient, P extends keyof PrismaClient>(
+  prisma: PrismaClient,
+  childModel: T,
+  parentModel: P,
+  userId: string,
+  id: string,
+  parentIdField: string = `${String(parentModel)}Id`
+) {
+  const child = await findUnique(prisma, childModel, { where: { id } });
+
+  if (!child) {
+    throw new Error(`${String(childModel)} not found`);
+  }
+
+  const parentId = child[parentIdField];
+
+  if (!parentId) {
+    throw new Error(`Invalid relationship: ${String(childModel)} has no ${parentIdField}`);
+  }
+
+  const parent = await secureFind(prisma, parentModel, userId, parentId);
+
+  if (!parent) {
+    throw new Error(`Parent not found or you don't have permission to delete this ${String(childModel)}.`);
+  }
+
+  return await remove(prisma, childModel, { id });
+}

@@ -107,7 +107,9 @@ export function createFormSchema(fields: Field[]) {
   const schemaObject: Record<string, z.ZodType> = {};
 
   for (const field of fields) {
-    schemaObject[field.id] = fieldToZodSchema(field);
+    if (field.id) {
+      schemaObject[field.id] = fieldToZodSchema(field);
+    }
   }
 
   return z.object(schemaObject);

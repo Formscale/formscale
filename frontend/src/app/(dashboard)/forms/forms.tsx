@@ -4,11 +4,12 @@ import { Form } from "@formhook/types";
 
 import FormButton from "@/components/form-button";
 import Loading from "@/components/loading";
-import { useForms } from "@/hooks/use-forms";
+import { useForms } from "@/providers";
 import { useRouter } from "next/navigation";
 import DashCard from "../components/card";
 import { DataTable } from "../components/table/table";
-import { columns } from "./columns";
+import { getColumns } from "./columns";
+
 const filterProps = {
   column: "name",
   items: [
@@ -35,6 +36,8 @@ const filterProps = {
 export default function FormsContent() {
   const router = useRouter();
   const { forms, isLoading } = useForms();
+
+  const columns = getColumns(forms);
 
   const handleRowClick = (row: Form) => {
     router.push(`/forms/${row.id}`);

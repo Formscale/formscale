@@ -4,14 +4,14 @@ import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "
 import { Bar, BarChart, XAxis, YAxis } from "recharts";
 
 const chartConfig = {
-  pending: {
-    label: "Pending",
-    color: "hsl(var(--formhook)/0.6)",
-  },
   completed: {
     label: "Completed",
     color: "hsl(var(--success))",
     // color: "hsl(var(--formhook))",
+  },
+  pending: {
+    label: "Pending",
+    color: "hsl(var(--formhook)/0.6)",
   },
   failed: {
     label: "Failed",
@@ -51,9 +51,9 @@ export default function Chart({ data }: { data: any[] }) {
         />
         <ChartTooltip content={<ChartTooltipContent className="font-heading-pro" />} />
         {/* <ChartLegend content={<ChartLegendContent />} /> */}
+        <Bar dataKey="completed" fill="var(--color-completed)" radius={[6, 6, 0, 0]} barSize={10} />
         <Bar dataKey="pending" fill="var(--color-pending)" radius={[6, 6, 0, 0]} barSize={10} />
         <Bar dataKey="failed" fill="var(--color-failed)" radius={[6, 6, 0, 0]} barSize={10} />
-        <Bar dataKey="completed" fill="var(--color-completed)" radius={[6, 6, 0, 0]} barSize={10} />
         <Bar dataKey="blocked" fill="var(--color-blocked)" radius={[6, 6, 0, 0]} barSize={10} />
       </BarChart>
     </ChartContainer>

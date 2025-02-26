@@ -12,42 +12,119 @@ import { DataCardSkeleton } from "@/app/(dashboard)/components/data-card";
 import Item from "@/app/(dashboard)/components/item";
 import { DeleteDialog } from "@/components/default-dialog";
 
-import { Discord } from "@formhook/types";
+import { useError } from "@/providers/error";
+import { useUser } from "@/providers/user";
+import { Discord, EmailSettings, Form, FormEdit, Webhook } from "@formhook/types";
+import { useEffect, useState } from "react";
 import DiscordEditDialog from "./discord";
 import EmailEditDialog from "./email";
 import WebhookEditDialog from "./webhook";
 
+const defaultWebhook = {
+  enabled: true,
+  url: "",
+  method: "POST" as const,
+  headers: {},
+};
+
+export function parseForm(form: Form) {
+  const formEdit: FormEdit = {
+    id: form.id,
+    name: form.name,
+    development: form.development,
+    settings: form.settings,
+  };
+
+  return formEdit;
+}
+
 export default function HooksPage() {
-  const { form } = useForm();
+  const [open, setOpen] = useState(false);
+  const { handleError, handleToast } = useError();
+  const { user } = useUser();
+  const [emailSettings, setEmailSettings] = useState<EmailSettings | null>(null);
+  const [hooks, setHooks] = useState<Webhook[]>([]);
+
+  const { form, refreshForm, updateForm } = useForm();
 
   if (!form) return null;
 
-  const discordWebhook = form.settings.webhooks.find((webhook) => webhook.type === "discord") as Discord;
+  useEffect(() => {
+    setHooks(form.settings.webhooks);
+    setEmailSettings(form.settings.emailSettings);
+  }, [form.settings.webhooks, form.settings.emailSettings]);
 
   const items = [
-    {
-      type: "webhook",
-      title: "Webhook",
-      icon: Link1Icon,
-      description: "Send submission data to a webhook",
-      dialog: <WebhookEditDialog {...form.settings.webhooks.find((w) => w.type === "webhook")!} />,
-      onClick: () => console.log("webhook"),
-    },
     {
       type: "email",
       title: "Email",
       icon: EnvelopeOpenIcon,
       description: "Forward submissions to email addresses",
-      dialog: <EmailEditDialog emailSettings={form.settings.emailSettings} admins={form.settings?.admins || []} />,
-      onClick: () => console.log("email"),
+      dialog: <EmailEditDialog emailSettings={emailSettings as EmailSettings} admins={form.settings?.admins || []} />,
+      onClick: () => {
+        if (!emailSettings?.template) {
+          setEmailSettings({
+            enabled: true,
+            to: [user?.email || ""],
+            template: "Default",
+            text: "",
+          });
+          setOpen(false);
+
+          handleToast("warning", "Unsaved changes. Save email settings to connect.");
+          return;
+        }
+
+        handleError(new Error("Email already connected."));
+      },
+    },
+    {
+      type: "webhook",
+      title: "Webhook",
+      icon: Link1Icon,
+      description: "Send submission data to a webhook",
+      dialog: <WebhookEditDialog {...(hooks.find((webhook) => webhook.type === "webhook") as Webhook)} />,
+      onClick: () => {
+        if (!hooks.find((webhook) => webhook.type === "webhook")) {
+          setHooks([
+            ...hooks,
+            {
+              type: "webhook",
+              ...defaultWebhook,
+            },
+          ]);
+
+          handleToast("warning", "Unsaved changes. Edit webhook settings to connect.");
+          setOpen(false);
+          return;
+        }
+
+        handleError(new Error("Webhook already connected."));
+      },
     },
     {
       type: "discord",
       title: "Discord",
       icon: DiscordLogoIcon,
       description: "Send submissions to a Discord channel",
-      dialog: <DiscordEditDialog {...discordWebhook} />,
-      onClick: () => console.log("discord"),
+      dialog: <DiscordEditDialog {...(hooks.find((webhook) => webhook.type === "discord") as Discord)} />,
+      onClick: () => {
+        if (!hooks.find((webhook) => webhook.type === "discord")) {
+          setHooks([
+            ...hooks,
+            {
+              type: "discord",
+              ...defaultWebhook,
+            },
+          ]);
+
+          handleToast("warning", "Unsaved changes. Edit Discord settings to connect.");
+          setOpen(false);
+          return;
+        }
+
+        handleError(new Error("Discord webhook already connected."));
+      },
     },
   ].map((service) => ({
     ...service,
@@ -65,7 +142,23 @@ export default function HooksPage() {
             title={`Disconnect ${service.title === "Discord" ? "Discord" : service.title.toLowerCase()}?`}
             description="This action cannot be undone."
             buttonText={`Disconnect ${service.title}`}
-            onDeleteAction={() => console.log(`disconnect ${service.type}`)}
+            onDeleteAction={async () => {
+              const formEdit = parseForm(form!);
+
+              const updatedForm = {
+                ...formEdit,
+                settings: {
+                  ...formEdit.settings,
+                  webhooks:
+                    service.type === "webhook" || service.type === "discord"
+                      ? formEdit.settings.webhooks.filter((webhook) => webhook.type !== service.type)
+                      : formEdit.settings.webhooks,
+                  emailSettings: service.type === "email" ? {} : formEdit.settings.emailSettings,
+                },
+              };
+
+              await updateForm(updatedForm as FormEdit);
+            }}
           />
         ),
       },
@@ -79,8 +172,9 @@ export default function HooksPage() {
         <DialogSkeleton
           title="Add a service"
           description="Connect your form to automate your workflow."
+          props={{ open, onOpenChange: setOpen }}
           button={
-            <Button type="submit" size="sm">
+            <Button type="submit" size="sm" onClick={() => setOpen(true)}>
               <span className="text-xs font-bold">Add Service</span>
             </Button>
           }
@@ -97,7 +191,7 @@ export default function HooksPage() {
       }
     >
       <div className="space-y-2">
-        <div className="mb-4 flex">
+        <div className={`${emailSettings?.template ? "mb-4" : ""} flex`}>
           <span className="text-[0.8rem]">
             Connect your form to other services.{" "}
             <Link href="/integrations" className="text-muted-foreground underline">
@@ -105,8 +199,13 @@ export default function HooksPage() {
             </Link>
           </span>
         </div>
-        {items.map((item) => (
+        {/* {items.map((item) => (
           <Item key={item.title} {...item} />
+        ))} */}
+
+        {emailSettings?.template && <Item {...items.find((item) => item.type === "email")!} />}
+        {hooks.map((hook, index) => (
+          <Item key={index} {...items.find((item) => item.type === hook.type)!} />
         ))}
       </div>
     </DataCardSkeleton>

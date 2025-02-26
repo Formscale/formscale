@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "@/providers/form";
 import { ReloadIcon, TriangleLeftIcon } from "@radix-ui/react-icons";
 
-export function LayoutContent({ children, id }: { children: React.ReactNode; id: string }) {
+export default function FormLayoutContent({ children, id }: { children: React.ReactNode; id: string }) {
   const { form, isLoading, refreshForm } = useForm();
 
   if (isLoading) return <Loading />;
@@ -49,15 +49,7 @@ export function LayoutContent({ children, id }: { children: React.ReactNode; id:
         </Button>
       </DashTitle>
       <Tabs tabs={tabs} />
-      {children}
-    </>
-  );
-}
-
-export default function FormLayoutContent({ children, id }: { children: React.ReactNode; id: string }) {
-  return (
-    <LayoutContent id={id}>
       <SuspenseWrapper>{children}</SuspenseWrapper>
-    </LayoutContent>
+    </>
   );
 }

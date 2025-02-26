@@ -7,6 +7,8 @@ import { Form } from "@/components/ui/form";
 import { FieldValues, UseFormReturn } from "react-hook-form";
 
 import { DefaultFormProps } from "@/components/default-dialog";
+import { useError } from "@/providers/error";
+import { useEffect } from "react";
 
 /* yeah this code is also scuffed im sorry */
 
@@ -71,6 +73,8 @@ export default function DataCard<T extends FieldValues>({
   disabled,
   children,
 }: DefaultFormProps<T>) {
+  const { handleToast } = useError();
+
   const checkDirty = (obj: any, path: string[]): boolean => {
     if (path.length === 0) return !!obj;
     const [current, ...rest] = path;
@@ -82,6 +86,12 @@ export default function DataCard<T extends FieldValues>({
     const path = field.name.split(".");
     return checkDirty(form.formState.dirtyFields, path);
   });
+
+  useEffect(() => {
+    if (isDirty) {
+      handleToast("warning", "Unsaved changes");
+    }
+  }, [isDirty, handleToast]);
 
   return (
     <Form {...form}>

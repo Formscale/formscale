@@ -1,5 +1,5 @@
 import db from "@/db";
-import { secureDelete, secureFind, secureFindMany } from "@/db/crud";
+import { secureDeleteLinked, secureFind, secureFindMany } from "@/db/crud";
 import Response from "@/utils/response";
 import { getUser } from "@/utils/user";
 import { Hono } from "hono";
@@ -40,11 +40,18 @@ export const SubmissionsController = submissions
 
     return new Response(ctx).success({ submissions });
   })
-  .delete("/:id", async (ctx) => {
-    const { id } = ctx.req.param();
-    const user = getUser(ctx);
+  .delete("/:id/delete", async (ctx) => {
+    try {
+      const { id } = ctx.req.param();
+      const user = getUser(ctx);
 
-    await secureDelete(db(ctx.env), "submission", user.id, id);
+      console.log(id, user.id);
 
-    return new Response(ctx).success({ message: "Submission deleted" });
+      await secureDeleteLinked(db(ctx.env), "submission", "form", user.id, id);
+
+      return new Response(ctx).success({ message: "Submission deleted" });
+    } catch (error) {
+      console.error(error);
+      return new Response(ctx).error("Failed to delete submission.", 500);
+    }
   });

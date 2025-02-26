@@ -1,27 +1,31 @@
 "use client";
 
-import { useError, useUser } from "@/providers";
+import { useError, useForms, useUser } from "@/providers";
 import { EditUser } from "@formhook/types";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { useLayoutEffect, useState } from "react";
 import DefaultDropdown from "./default-dropdown";
 import { Button } from "./ui/button";
 
+function DevBadge({ current = "dev" }: { current?: string }) {
+  const bg = current === "dev" ? "bg-formhook/80" : "bg-success";
+
+  return <div className={`w-2 h-2 rounded-full shadow-sm ${bg}`} />;
+}
+
 export function DevSwitcher() {
   const { user, updateUser, isLoading } = useUser();
   const [current, setCurrent] = useState("dev");
   const { handleToast } = useError();
+  const { refreshForms } = useForms();
 
   async function editMode(development: boolean) {
     if (user && development !== user.development) {
       await updateUser({ ...user, development } as EditUser);
 
-      handleToast("success", "Switching to " + (development ? "development" : "production"));
+      handleToast("success", `Switched to ${development ? "development" : "production"}`);
 
-      setTimeout(() => {
-        // should refetch forms instead of reloading page (convert useForms to provider)
-        window.location.reload();
-      }, 750);
+      await refreshForms();
     }
   }
 
@@ -49,6 +53,7 @@ export function DevSwitcher() {
   return (
     <DefaultDropdown items={items}>
       <Button variant="outline" size="sm" disabled={isLoading} className="flex justify-center items-center">
+        <DevBadge current={current} />
         {current === "dev" ? "Development" : "Production"}
         <CaretSortIcon className="-mr-1" />
       </Button>

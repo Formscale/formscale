@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react";
 
-import { useForms } from "@/hooks/use-forms";
+import Loading from "@/components/loading";
+import { useForms } from "@/providers";
 import { DashCardSkeleton } from "../components/card";
 import Chart from "../components/chart/chart";
 import { Filter } from "../components/chart/filter";
 import Metric from "../components/metric";
 import DashTitle from "../components/title";
-
 // yeah this code doesn't work
 // i'll fix it
 // maybe
@@ -24,7 +24,7 @@ interface ChartDataPoint {
 }
 
 export default function MetricsPage() {
-  const { forms } = useForms();
+  const { forms, isLoading } = useForms();
   const [chartData, setChartData] = useState<ChartDataPoint[]>([]);
   const [sortedData, setSortedData] = useState<ChartDataPoint[]>([]);
   const [selectedDateRange, setSelectedDateRange] = useState<string>("all time");
@@ -51,6 +51,8 @@ export default function MetricsPage() {
     setSortedData(sortedData);
     setChartData(sortedData);
   }, [forms]);
+
+  if (isLoading) return <Loading />;
 
   return (
     <>

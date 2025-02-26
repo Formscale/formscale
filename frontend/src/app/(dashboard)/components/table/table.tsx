@@ -30,15 +30,17 @@ interface FilterProps {
 interface DataTableProps<TData extends { id: string }, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  onClickAction: (row: TData) => void;
   filterProps: FilterProps;
+  onClickAction?: (row: TData) => void;
+  WrapperComponent?: React.ComponentType<{ children: React.ReactNode }>;
 }
 
 export function DataTable<TData extends { id: string }, TValue>({
   columns,
   data,
-  onClickAction,
+  onClickAction = () => {},
   filterProps,
+  WrapperComponent,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([
     {

@@ -3,9 +3,61 @@ import { create, findOne, secureDelete, secureFind, secureFindMany, secureUpdate
 import validator from "@/middleware/validation";
 import Response from "@/utils/response";
 import { getUser } from "@/utils/user";
-import { CreateFormSchema, FormEditSchema, idString } from "@formhook/types";
-import { Hono } from "hono";
+import {
+  Admin,
+  CreateFormSchema,
+  EmailSettings,
+  Form,
+  FormEditSchema,
+  FormSettings,
+  idString,
+  SafeUser,
+  ValidationSchema,
+  Webhook,
+} from "@formhook/types";
+import { Context, Hono } from "hono";
 import { customAlphabet } from "nanoid";
+
+async function getForm(ctx: Context, user: SafeUser, id: string) {
+  const currentForm = await findOne(db(ctx.env), "form", {
+    where: { id, userId: user.id, development: user.development },
+  });
+
+  if (!currentForm) {
+    throw new Error("Form not found.");
+  }
+
+  return currentForm;
+}
+
+async function updateForm(
+  ctx: Context,
+  currentForm: Form,
+  data: EmailSettings | Webhook[] | FormSettings,
+  settingKey?: "validation" | "emailSettings"
+) {
+  let settings;
+
+  if (settingKey) {
+    settings = {
+      ...currentForm.settings,
+      [settingKey]: data,
+    };
+  } else {
+    settings = data;
+  }
+
+  const formData = {
+    ...currentForm,
+    settings: JSON.stringify(settings),
+  };
+
+  const updatedForm = await secureUpdate(db(ctx.env), "form", getUser(ctx).id, currentForm.id, formData, {
+    include: { submissions: true },
+  });
+
+  return new Response(ctx).success({ form: updatedForm });
+}
 
 const generateId = customAlphabet(idString, 8);
 
@@ -21,7 +73,9 @@ export const FormController = forms
       const { name } = await ctx.req.json();
       const user = getUser(ctx);
 
-      const existingForm = await findOne(db(ctx.env), "form", { where: { name, userId: user.id } });
+      const existingForm = await findOne(db(ctx.env), "form", {
+        where: { name, userId: user.id, development: user.development },
+      });
 
       if (existingForm) {
         return new Response(ctx).error(`Form named "${existingForm.name}" already exists in this account.`, 400);
@@ -84,45 +138,89 @@ export const FormController = forms
       return new Response(ctx).error(error);
     }),
     async (ctx) => {
-      const user = getUser(ctx);
-      const { id } = ctx.req.param();
-      const { ...form } = await ctx.req.json();
+      try {
+        const user = getUser(ctx);
+        const { id } = ctx.req.param();
+        const { ...form } = await ctx.req.json();
 
-      const currentForm = await findOne(db(ctx.env), "form", {
-        where: { id, userId: user.id },
-      });
+        const currentForm = await getForm(ctx, user, id);
 
-      if (!currentForm) {
-        return new Response(ctx).error("Form not found.", 404);
-      }
+        if (form.name && form.name !== currentForm.name) {
+          const existingForm = await findOne(db(ctx.env), "form", {
+            where: { name: form.name, userId: user.id, id: { not: id } },
+          });
 
-      if (form.name && form.name !== currentForm.name) {
-        const existingForm = await findOne(db(ctx.env), "form", {
-          where: { name: form.name, userId: user.id, id: { not: id } },
-        });
-
-        if (existingForm) {
-          return new Response(ctx).error(`Form named "${form.name}" already exists in this account.`, 400);
+          if (existingForm) {
+            return new Response(ctx).error(`Form named "${form.name}" already exists in this account.`, 400);
+          }
         }
+
+        // check if emailsettings were changed and do validation stuff
+
+        if (form.settings.emailSettings && form.settings.emailSettings.enabled) {
+          const emailSettings = form.settings.emailSettings;
+
+          if (emailSettings.to.length === 0) {
+            return new Response(ctx).error("Email recipients cannot be empty.", 400);
+          }
+
+          const validEmails = [user.email, ...(form.settings.admins?.map((admin: Admin) => admin.email) || [])];
+
+          const unverifiedEmails = emailSettings.to.filter((email: string) => !validEmails.includes(email));
+
+          if (unverifiedEmails.length > 0) {
+            const newAdmins = unverifiedEmails.map((email: string) => ({
+              email,
+              role: "admin" as const,
+              verified: false,
+            }));
+
+            form.settings.admins = [...(form.settings.admins || []), ...newAdmins];
+
+            console.log("sending email(s) to ", unverifiedEmails.join(", "));
+
+            // send verification email
+            // create route to add admins
+            // update form with admins via email link to confirm
+          }
+        }
+
+        // prevent user from editing id, admins, etc
+
+        return updateForm(ctx, form, form.settings);
+      } catch (error) {
+        return new Response(ctx).error(error);
       }
+    }
+  )
+  .put(
+    "/:id/edit/validation",
+    validator(ValidationSchema, (error, ctx) => {
+      return new Response(ctx).error(error);
+    }),
+    async (ctx) => {
+      try {
+        const user = getUser(ctx);
+        const { id } = ctx.req.param();
+        const { validation } = await ctx.req.json();
 
-      const formData = {
-        ...form,
-        settings: JSON.stringify(form.settings),
-      };
+        const currentForm = await getForm(ctx, user, id);
 
-      const updatedForm = await secureUpdate(db(ctx.env), "form", user.id, id, formData, {
-        include: { submissions: true },
-      });
-
-      return new Response(ctx).success({ form: updatedForm });
+        return updateForm(ctx, currentForm, validation, "validation");
+      } catch (error) {
+        return new Response(ctx).error(error);
+      }
     }
   )
   .delete("/:id/delete", async (ctx) => {
-    const user = getUser(ctx);
-    const { id } = ctx.req.param();
+    try {
+      const user = getUser(ctx);
+      const { id } = ctx.req.param();
 
-    await secureDelete(db(ctx.env), "form", user.id, id);
+      await secureDelete(db(ctx.env), "form", user.id, id);
 
-    return new Response(ctx).success({ message: "Form deleted successfully" });
+      return new Response(ctx).success({ message: "Form deleted successfully." });
+    } catch (error) {
+      return new Response(ctx).error(error as Error);
+    }
   });

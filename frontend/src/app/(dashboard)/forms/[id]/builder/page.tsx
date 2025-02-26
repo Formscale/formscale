@@ -23,9 +23,13 @@ import { useForm } from "@/providers/form";
 import { DataCardSkeleton } from "@/app/(dashboard)/components/data-card";
 import Item from "@/app/(dashboard)/components/item";
 import { DeleteDialog } from "@/components/default-dialog";
+import { Field, TextSchema } from "@formhook/types";
+import { ComponentType, useState } from "react";
 
 export default function HooksPage() {
   const { form } = useForm();
+  const [fields, setFields] = useState<Field[]>([]);
+  const [open, setOpen] = useState(false);
 
   if (!form) return null;
 
@@ -36,14 +40,23 @@ export default function HooksPage() {
   //   { name: "settings.theme.icon", description: "Icon", placeholder: "", type: "upload" },
   // ];
 
+  const validations = form.settings.validation;
+
   const items = [
     {
       type: "text",
       title: "Text",
       icon: TextIcon,
       description: "Set a minimum and maximum length.",
-      //   dialog: <EmailEditDialog emailSettings={form.settings.emailSettings} admins={form.settings?.admins || []} />,
-      onClick: () => console.log("text"),
+      onClick: () => {
+        setFields([
+          ...fields,
+          TextSchema.parse({
+            type: "text",
+          }),
+        ]);
+        setOpen(false);
+      },
     },
     {
       type: "number",
@@ -133,6 +146,7 @@ export default function HooksPage() {
         button={
           <DialogSkeleton
             title="New field"
+            props={{ open, onOpenChange: setOpen }}
             description="Each form field will be validated before processing."
             button={
               <Button size="sm">
@@ -152,7 +166,8 @@ export default function HooksPage() {
         }
       >
         <div className="space-y-2">
-          <div className="mb-4 flex">
+          {/* <div className="mb-4 flex"> */}
+          <div className="flex">
             <span className="text-[0.8rem]">
               Add form fields to validate submission data.{" "}
               <Link href="/docs/validation" className="text-muted-foreground underline">
@@ -160,8 +175,14 @@ export default function HooksPage() {
               </Link>
             </span>
           </div>
-          {items.map((item) => (
-            <Item key={item.title} {...item} />
+          {fields.map((item, index) => (
+            <Item
+              key={index}
+              {...item}
+              title={item.name || items.find((i) => i.type === item.type)?.title || ""}
+              description={item.description || items.find((i) => i.type === item.type)?.description || ""}
+              icon={items.find((i) => i.type === item.type)?.icon as ComponentType}
+            />
           ))}
         </div>
       </DataCardSkeleton>

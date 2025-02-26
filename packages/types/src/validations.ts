@@ -25,9 +25,17 @@ export enum FILE_TYPES {
   ZIP = "application/zip",
 }
 
+export enum TEMPLATES {
+  CUSTOM = "Custom",
+  CONTACT = "Contact",
+  WAITLIST = "Waitlist",
+  EMAIL = "Email",
+  FEEDBACK = "Feedback",
+}
+
 export const BaseFieldSchema = z.object({
-  id: z.string(),
-  name: z.string(),
+  id: z.string().optional(),
+  name: z.string().optional(),
   placeholder: z.string().optional(),
   description: z.string().optional(),
   required: z.boolean().default(false),
@@ -119,7 +127,7 @@ export const FieldSchema = z.discriminatedUnion("type", [
 export const ValidationSchema = z.object({
   enabled: z.boolean().default(false),
   explicit: z.boolean().default(false),
-  template: z.enum(["Custom", "Contact", "Email", "Feedback", "Support", "Registration"]).default("Custom"),
+  template: z.nativeEnum(TEMPLATES).default(TEMPLATES.CUSTOM),
   fields: z.array(FieldSchema).default([]),
   schema: z.any().default({}),
 });

@@ -2,8 +2,9 @@
 
 import { useFetch } from "@/hooks/fetch";
 import { Form, FormEdit } from "@formhook/types";
-import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
+import { createContext, ReactNode, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useError } from "./error";
+import { useForms } from "./forms";
 
 interface FormContextType {
   form: Form | null;
@@ -18,7 +19,9 @@ export function FormProvider({ children, formId }: { children: ReactNode; formId
   const { get, put } = useFetch();
   const [form, setForm] = useState<Form | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { handleError } = useError();
+  const { handleError, handleToast } = useError();
+  const { updateForm: updateFormContext } = useForms();
+  const fetchedRef = useRef(false);
 
   const refreshForm = useCallback(async () => {
     try {
@@ -29,10 +32,13 @@ export function FormProvider({ children, formId }: { children: ReactNode; formId
 
       if (response.success && response.data?.form) {
         setForm(response.data.form);
+        updateFormContext(response.data.form);
       }
     } catch (err) {
-      const error = err instanceof Error ? err : new Error("Failed to fetch form");
-      handleError(error);
+      handleError({
+        message: "Failed to fetch form",
+        description: (err as Error).message,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -48,10 +54,14 @@ export function FormProvider({ children, formId }: { children: ReactNode; formId
 
         if (response.success && response.data?.form) {
           setForm(response.data.form);
+          updateFormContext(response.data.form);
+          handleToast("success", "Form updated successfully");
         }
       } catch (err) {
-        const error = err instanceof Error ? err : new Error("Failed to update form");
-        handleError(error);
+        handleError({
+          message: "Failed to update form",
+          description: (err as Error).message,
+        });
       } finally {
         setIsLoading(false);
       }
@@ -60,7 +70,10 @@ export function FormProvider({ children, formId }: { children: ReactNode; formId
   );
 
   useEffect(() => {
-    refreshForm();
+    if (!fetchedRef.current) {
+      fetchedRef.current = true;
+      refreshForm();
+    }
   }, [formId]);
 
   return (

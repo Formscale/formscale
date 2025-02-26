@@ -7,7 +7,11 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 
 import { FormatCell, FormatDate, SortButton, StatusBadge } from "@/app/(dashboard)/components/table/columns";
+import { DeleteDialog } from "@/components/default-dialog";
 import { DropdownItem, DropdownSkeleton } from "@/components/default-dropdown";
+import { useDelete } from "@/hooks/use-delete";
+import { useForm } from "@/providers";
+import { uppercase } from "@formhook/utils";
 // import CheckboxColumn from "@/app/(dashboard)/components/table/checkbox";
 
 export const getDataFields = (submissions: SubmissionSent[]) => {
@@ -19,13 +23,16 @@ export const getDataFields = (submissions: SubmissionSent[]) => {
 };
 
 export function getColumns(submissions: SubmissionSent[]): ColumnDef<SubmissionSent>[] {
+  const { deleteItem } = useDelete();
+  const { refreshForm } = useForm();
+
   const dataFields = getDataFields(submissions);
 
   const dataColumns: ColumnDef<SubmissionSent>[] = dataFields.map((field, index) => ({
     id: `data.${field}`,
     accessorKey: `data.${field}`,
-    header: ({ column }) => SortButton(field.substring(0, 1).toUpperCase() + field.substring(1), column),
-    cell: ({ row }) => <div className={index === 0 ? "pl-2" : undefined}>{FormatCell(row.original.data[field])}</div>,
+    header: ({ column }) => SortButton(uppercase(field), column),
+    cell: ({ row }) => <div className={"pl-4"}>{FormatCell(row.original.data[field])}</div>,
   }));
 
   return [
@@ -71,7 +78,18 @@ export function getColumns(submissions: SubmissionSent[]): ColumnDef<SubmissionS
 
         const dropdownItems = [
           { title: "View details", onClick: () => console.log("view details") },
-          { title: "Delete submission", onClick: () => console.log("delete submission") },
+          {
+            title: "Delete submission",
+            onClick: () => console.log("delete submission"),
+            dialog: (
+              <DeleteDialog
+                title="Delete submission?"
+                onDeleteAction={async () => {
+                  await deleteItem("submissions/:id/delete", { id: submission.id }, { onSuccess: refreshForm });
+                }}
+              />
+            ),
+          },
         ];
 
         return (

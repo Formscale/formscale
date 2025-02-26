@@ -1,23 +1,27 @@
 "use client";
 
 import { DialogContentSkeleton, FormSkeleton } from "@/components/default-dialog";
+import { useForm as useFormProvider } from "@/providers/form";
 import { Discord, DiscordSchema } from "@formhook/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { updateWebhook } from "./webhook";
 
 export default function DiscordEditDialog(discord: Discord) {
+  const { updateForm, form: formContext, isLoading } = useFormProvider();
+
   const form = useForm<Discord>({
     resolver: zodResolver(DiscordSchema),
     defaultValues: {
       ...discord,
-      enabled: discord.enabled || true,
+      enabled: discord.enabled,
     },
   });
 
   if (!discord) return null;
 
   async function onSubmit(values: Discord) {
-    console.log(values);
+    await updateWebhook(values, formContext!, updateForm);
   }
 
   const fields = [

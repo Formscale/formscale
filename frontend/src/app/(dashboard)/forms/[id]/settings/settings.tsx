@@ -29,6 +29,7 @@ export default function Settings({ form }: { form: Form }) {
   console.log(formSettings.formState.errors);
 
   async function onSubmit(values: FormEdit) {
+    console.log(values);
     await updateForm(values);
   }
 

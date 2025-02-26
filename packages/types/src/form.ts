@@ -2,8 +2,10 @@ import { z } from "zod";
 import { SubmissionSentSchema } from "./submission";
 import { ValidationSchema } from "./validations";
 
+export const HookEnum = z.enum(["webhook", "discord", "email"]);
+
 export const WebhookSchema = z.object({
-  type: z.enum(["webhook", "discord", "slack"]).default("webhook"),
+  type: HookEnum.default("webhook"),
   enabled: z.boolean().default(false),
   url: z.string().url(),
   method: z.enum(["GET", "POST"]).optional().default("POST"),
@@ -30,15 +32,18 @@ export const EmailSettingsSchema = z.object({
 });
 
 export const ThemeSchema = z.object({
+  name: z.string().optional().default("New Theme"),
   primary: z.string().optional(),
   background: z.string().optional(),
   logo: z.string().optional(),
   icon: z.string().optional(),
+  branding: z.boolean().optional().default(true),
 });
 
 export const AdminSchema = z.object({
   email: z.string().email(),
   role: z.enum(["admin", "owner"]).default("admin"),
+  verified: z.boolean().optional().default(false),
 });
 
 export const UTMSettingsSchema = z.object({
@@ -51,7 +56,7 @@ export const UTMSettingsSchema = z.object({
 export const FormSettingsSchema = z.object({
   isPublic: z.boolean().optional().default(true),
   allowAnonymous: z.boolean().optional().default(true),
-  saveResponses: z.boolean().optional().default(false),
+  saveResponses: z.boolean().optional().default(true),
   spamProtection: z.boolean().optional().default(false),
   emailSettings: EmailSettingsSchema.optional().default({}),
   admins: z.array(AdminSchema).optional().default([]),
@@ -76,7 +81,7 @@ export const FormSettingsSchema = z.object({
     )
     .optional()
     .default([]),
-  validation: ValidationSchema.optional(),
+  validation: ValidationSchema.optional().default({}),
 });
 
 export const idString = "23456789abcdefghjkmnpqrstuvwxyz";

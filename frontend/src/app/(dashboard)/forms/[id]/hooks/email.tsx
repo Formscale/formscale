@@ -1,9 +1,11 @@
 "use client";
 
 import { DialogContentSkeleton, FormSkeleton } from "@/components/default-dialog";
+import { useForm as useFormProvider } from "@/providers/form";
 import { Admin, EmailSettings, EmailSettingsSchema } from "@formhook/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { parseForm } from "./page";
 
 interface EmailEditDialogProps {
   emailSettings: EmailSettings;
@@ -11,11 +13,13 @@ interface EmailEditDialogProps {
 }
 
 export default function EmailEditDialog({ emailSettings, admins }: EmailEditDialogProps) {
+  const { updateForm, form: formContext, isLoading } = useFormProvider();
+
   const form = useForm<EmailSettings>({
     resolver: zodResolver(EmailSettingsSchema),
     defaultValues: {
       ...emailSettings,
-      enabled: emailSettings.enabled || true,
+      enabled: emailSettings.enabled,
       to: emailSettings.to || admins.map((admin) => admin.email),
     },
   });
@@ -23,7 +27,17 @@ export default function EmailEditDialog({ emailSettings, admins }: EmailEditDial
   if (!emailSettings) return null;
 
   async function onSubmit(values: EmailSettings) {
-    console.log(values);
+    const formEdit = parseForm(formContext!);
+
+    const form = {
+      ...formEdit,
+      settings: {
+        ...formEdit.settings,
+        emailSettings: values,
+      },
+    };
+
+    await updateForm(form);
   }
 
   const fields = [
@@ -46,7 +60,14 @@ export default function EmailEditDialog({ emailSettings, admins }: EmailEditDial
 
   return (
     <DialogContentSkeleton title="Edit email settings" description="Submissions will be forwarded to recipients.">
-      <FormSkeleton form={form} onSubmitAction={onSubmit} fields={fields} buttonText="Save" />
+      <FormSkeleton
+        form={form}
+        onSubmitAction={onSubmit}
+        fields={fields}
+        buttonText="Save"
+        disabled={isLoading}
+        ignoreDirty={true}
+      />
     </DialogContentSkeleton>
   );
 }

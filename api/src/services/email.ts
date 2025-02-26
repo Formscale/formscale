@@ -1,4 +1,4 @@
-import { VerifyEmail } from "@/lib/emails";
+import { SubmissionEmail, VerifyEmail, splitLink } from "@/lib/emails";
 import { Form, SubmissionSent } from "@formhook/types";
 import { Resend } from "resend";
 
@@ -29,13 +29,11 @@ export async function sendVerifyEmail(to: string[], otp: string, env: Env) {
 }
 
 export async function sendSubmissionEmail(to: string[], form: Form, submission: SubmissionSent, env: Env) {
-  // await sendEmail(
-  //   to,
-  //   `New submission on ${form.name}`,
-  //   "A new submission has been made",
-  //   SubmissionEmail({ form, submission }),
-  //   env
-  // );
-
-  console.log("sending email");
+  await sendEmail(
+    to,
+    `New submission on ${form.name}`,
+    `Submission recieved on ${splitLink(submission.site ?? "")}`,
+    SubmissionEmail({ form, submission, env }),
+    env
+  );
 }

@@ -22,8 +22,8 @@ export function Filter({ forms }: FilterProps) {
       itemColumn: "status",
       items: [
         { title: "All statuses", value: undefined },
-        { title: "Pending", value: "pending" },
         { title: "Completed", value: "completed" },
+        { title: "Pending", value: "pending" },
         { title: "Failed", value: "failed" },
         { title: "Blocked", value: "blocked" },
       ],

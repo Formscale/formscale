@@ -3,6 +3,8 @@ import { FieldValues } from "react-hook-form";
 
 // i will fix this one day
 
+export const uppercase = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
+
 export interface Formatter {
   number: (value: number) => string;
   percentage: (value: string) => string;
@@ -51,7 +53,7 @@ export const contentFormatter: Formatter = {
   },
 };
 
-export function FormatCell(value: FieldValues[keyof FieldValues], formatter: Formatter) {
+export function FormatCell(value: FieldValues[keyof FieldValues], formatter: Formatter, bucketUrl?: string) {
   if (typeof value !== "string") {
     if (typeof value === "number") return formatter.number(value);
     if (typeof value === "boolean") return formatter.boolean(value);
@@ -60,7 +62,7 @@ export function FormatCell(value: FieldValues[keyof FieldValues], formatter: For
     if (typeof value === "object" && value !== null) return formatter.object(value);
     return formatter.default(value);
   }
-  if (value.includes(process.env.NEXT_PUBLIC_BUCKET_URL || ".png")) return formatter.link(value, "file");
+  if (value.includes(bucketUrl || "https://cdn.formscale.dev" || ".png")) return formatter.link(value, "file");
   if (/^-?\d+\.?\d*%$/.test(value)) return formatter.percentage(value);
   if (/^(https?:\/\/[^\s]+)$/.test(value)) return formatter.link(value, "url");
   if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return formatter.link(value, "email");

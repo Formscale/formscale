@@ -15,7 +15,7 @@ function getLocation(ctx: Context): string {
   if (!cf) return "Unknown";
 
   const location = ["city", "region", "country"].map((key) => cf[key]).filter((value) => value && value !== "XX");
-  const timezone = cf.timezone ? ` (${cf.timezone})` : "";
+  const timezone = cf.timezone ? ` (${cf.timezone.toString().replace("_", " ")})` : "";
 
   return location.length !== 0 ? `${location.join(", ")}${timezone}` : "Unknown";
 }
@@ -58,14 +58,14 @@ export const SubmitController = submit.post("/:id", async (ctx) => {
         const origin = ctx.req.header("origin");
 
         if (!origin) {
-          return new Response(ctx).error("Origin is required", 400);
+          return new Response(ctx).error("Origin is required.", 400);
         }
 
         const normalizedOrigin = origin?.toLowerCase().trim();
         const normalizedAllowedOrigins = form.settings.allowedOrigins.map((o: string) => o.toLowerCase().trim());
 
         if (!normalizedAllowedOrigins.includes(normalizedOrigin)) {
-          return new Response(ctx).error("Form cannot be submitted from this origin", 403);
+          return new Response(ctx).error("Form cannot be submitted from this origin.", 403);
         }
       }
     }
@@ -98,7 +98,7 @@ export const SubmitController = submit.post("/:id", async (ctx) => {
       }
     }
 
-    if (form.settings.validation) {
+    if (form.settings.validation && form.settings.validation.enabled) {
       try {
         const validationSchema = z.object(form.settings.validation);
         const validation = await validationSchema.parseAsync(data);
@@ -147,35 +147,33 @@ export const SubmitController = submit.post("/:id", async (ctx) => {
       data[field] = url;
     }
 
-    if (form.settings.emailSettings.enabled) {
-      await sendSubmissionEmail(form.settings.emailSettings, form, submission, ctx.env);
-    }
-
-    if (form.settings.webhooks.length > 0) {
+    if (form.settings.webhooks && form.settings.webhooks.length > 0) {
       const webhooks = form.settings.webhooks.filter((webhook: Webhook) => webhook.enabled);
 
       try {
-        const promises = [];
-
-        for (const webhook of webhooks) {
-          promises.push(
-            fetch(webhook.url, {
+        const results = await Promise.allSettled(
+          webhooks.map(async (webhook: Webhook) => {
+            const response = await fetch(webhook.url, {
               method: webhook.method,
-              ...(webhook.method === "POST" ? { body: JSON.stringify(data) } : {}),
+              ...(webhook.method === "POST" && {
+                body: JSON.stringify(data),
+              }),
               headers: {
                 "Content-Type": "application/json",
+                ...(webhook.secret && {
+                  Authorization: `Bearer ${webhook.secret}`,
+                }),
                 ...webhook.headers,
               },
-              ...(webhook.secret
-                ? {
-                    Authorization: `Bearer ${webhook.secret}`,
-                  }
-                : {}),
-            })
-          );
-        }
+            });
 
-        await Promise.all(promises);
+            if (!response.ok) {
+              throw new Error(`Webhook failed: ${response.statusText}`);
+            }
+
+            return response;
+          })
+        );
       } catch (err) {
         await update(db(ctx.env), "submission", {
           where: { id: submission.id },
@@ -200,6 +198,19 @@ export const SubmitController = submit.post("/:id", async (ctx) => {
         status: "completed",
       },
     });
+
+    if (
+      form.settings.emailSettings &&
+      form.settings.emailSettings.enabled &&
+      form.settings.emailSettings.to.length > 0
+    ) {
+      const submissionData = {
+        ...updatedSubmission,
+        data: typeof updatedSubmission.data === "string" ? JSON.parse(updatedSubmission.data) : updatedSubmission.data,
+      };
+
+      await sendSubmissionEmail(form.settings.emailSettings.to, form, submissionData, ctx.env);
+    }
 
     await update(db(ctx.env), "form", {
       where: { id: formId },
