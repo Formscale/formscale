@@ -99,8 +99,6 @@ const submissionText = {
 
 const descriptionText = {
   color: "#b7b7b7",
-  fontSize: "16px",
-  paddingBottom: "4px",
 };
 
 const button = {
@@ -110,5 +108,6 @@ const button = {
   fontWeight: "bold",
   borderRadius: "6px",
   marginTop: "12px",
-  marginBottom: "20px",
+  marginBottom: "24px",
+  fontSize: "16px",
 };

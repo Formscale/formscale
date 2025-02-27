@@ -3,15 +3,19 @@
 import { DataCardSkeleton } from "@/app/(dashboard)/components/data-card";
 import { UsageSection } from "@/app/(dashboard)/components/usage-item";
 import { Button } from "@/components/ui/button";
+import { useForms, useUser } from "@/providers";
 import { SubscriptionTier, TierLimits, Usage } from "@formhook/types";
 
 export default function UsagePage() {
-  const currentTier = SubscriptionTier.FREE;
+  const { forms } = useForms();
+  const { user } = useUser();
+
+  const currentTier = user?.subscriptionTier ?? SubscriptionTier.FREE;
 
   const usage: Usage = {
-    forms: 2,
-    submissions: 50,
-    members: 1,
+    forms: forms.length,
+    submissions: forms.reduce((acc, form) => acc + (form.submissions?.length ?? 0), 0),
+    members: new Set(forms.flatMap((form) => form.settings.admins?.map((admin) => admin.email) || [])).size,
     maxForms: TierLimits[currentTier]?.maxForms ?? 0,
     maxSubmissionsPerMonth: TierLimits[currentTier]?.maxSubmissionsPerMonth ?? 0,
     maxMembers: TierLimits[currentTier]?.maxMembers ?? 0,
@@ -34,6 +38,10 @@ export default function UsagePage() {
       total: usage.maxMembers,
     },
   ];
+
+  // set unlimited in development
+  // change color in production?
+  // reorder to completed, pending, blocked, failed
 
   return (
     <div className="w-full flex flex-col gap-6">

@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { SubmissionSentSchema } from "./submission";
-import { ValidationSchema } from "./validations";
+import { SubmissionSentSchema, SubmissionStatusSchema } from "./submission";
+import { MAX_FILE_SIZE, ValidationSchema } from "./validations";
 
 export const HookEnum = z.enum(["webhook", "discord", "email"]);
 
@@ -31,13 +31,30 @@ export const EmailSettingsSchema = z.object({
   text: z.string().optional(),
 });
 
+// automatically parse links & data (handlebars format)
+// export const AutoReplySchema = z.object({
+//   enabled: z.boolean().default(false),
+//   to: z.string().email({ message: "Please enter a valid email address" }),
+//   subject: z.string().optional(),
+//   content: z.string().optional(),
+// });
+
 export const ThemeSchema = z.object({
-  name: z.string().optional().default("New Theme"),
-  primary: z.string().optional(),
-  background: z.string().optional(),
+  name: z.string().min(3).max(60).optional().or(z.literal("")),
+  accent: z
+    .string()
+    .regex(/^#([0-9a-f]{6})$/i, "Please enter a valid hex color.")
+    .optional()
+    .or(z.literal("")),
   logo: z.string().optional(),
   icon: z.string().optional(),
   branding: z.boolean().optional().default(true),
+});
+
+export const LogoUploadSchema = z.object({
+  logo: z.instanceof(File).refine((file) => file.size <= MAX_FILE_SIZE, {
+    message: `File too large.`,
+  }),
 });
 
 export const AdminSchema = z.object({
@@ -58,6 +75,7 @@ export const FormSettingsSchema = z.object({
   allowAnonymous: z.boolean().optional().default(true),
   saveResponses: z.boolean().optional().default(true),
   spamProtection: z.boolean().optional().default(false),
+  defaultStatus: SubmissionStatusSchema.default("completed"),
   emailSettings: EmailSettingsSchema.optional().default({}),
   admins: z.array(AdminSchema).optional().default([]),
   theme: ThemeSchema.optional().default({}),

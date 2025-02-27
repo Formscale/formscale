@@ -1,7 +1,7 @@
 "use client";
 
 import { SubmissionSent } from "@formhook/types";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import { DotsHorizontalIcon, Link1Icon } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
@@ -9,9 +9,13 @@ import { Button } from "@/components/ui/button";
 import { FormatCell, FormatDate, SortButton, StatusBadge } from "@/app/(dashboard)/components/table/columns";
 import { DeleteDialog } from "@/components/default-dialog";
 import { DropdownItem, DropdownSkeleton } from "@/components/default-dropdown";
+import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { useDelete } from "@/hooks/use-delete";
+import { handleCopy } from "@/lib/utils";
 import { useForm } from "@/providers";
 import { uppercase } from "@formhook/utils";
+import { exportData } from "./export-button";
+
 // import CheckboxColumn from "@/app/(dashboard)/components/table/checkbox";
 
 export const getDataFields = (submissions: SubmissionSent[]) => {
@@ -21,6 +25,15 @@ export const getDataFields = (submissions: SubmissionSent[]) => {
   });
   return Array.from(fields);
 };
+
+function DropdownWrapper({ children, index }: { children: React.ReactNode; index: number }) {
+  // this might be my best code ever
+  if (index !== 0) {
+    return <div onClick={(e) => e.stopPropagation()}>{children}</div>;
+  }
+
+  return <>{children}</>;
+}
 
 export function getColumns(submissions: SubmissionSent[]): ColumnDef<SubmissionSent>[] {
   const { deleteItem } = useDelete();
@@ -77,10 +90,11 @@ export function getColumns(submissions: SubmissionSent[]): ColumnDef<SubmissionS
         // console.log(submission);
 
         const dropdownItems = [
-          { title: "View details", onClick: () => console.log("view details") },
+          { title: "View details" },
+          { title: "Export CSV", onClick: () => exportData("csv", [submission]) },
+          { title: "Export JSON", onClick: () => exportData("json", [submission]) },
           {
-            title: "Delete submission",
-            onClick: () => console.log("delete submission"),
+            title: "Delete",
             dialog: (
               <DeleteDialog
                 title="Delete submission?"
@@ -93,20 +107,30 @@ export function getColumns(submissions: SubmissionSent[]): ColumnDef<SubmissionS
         ];
 
         return (
-          <div onClick={(e) => e.stopPropagation()}>
-            <DropdownSkeleton
-              button={
-                <Button variant="ghost" className="h-8 w-8 p-0">
-                  <span className="sr-only">Open menu</span>
-                  <DotsHorizontalIcon className="h-4 w-4" />
-                </Button>
-              }
-            >
-              {dropdownItems.map((item) => (
-                <DropdownItem key={item.title} item={item} />
-              ))}
-            </DropdownSkeleton>
-          </div>
+          <DropdownSkeleton
+            button={
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <DotsHorizontalIcon className="h-4 w-4" />
+              </Button>
+            }
+          >
+            <div onClick={(e) => e.stopPropagation()}>
+              <DropdownItem
+                item={{
+                  title: "Copy ID",
+                  icon: Link1Icon,
+                  onClick: () => handleCopy(`${submission.id}`, "Submission ID"),
+                }}
+              />
+            </div>
+            <DropdownMenuSeparator />
+            {dropdownItems.map((item, index) => (
+              <DropdownWrapper key={index} index={index}>
+                <DropdownItem item={item} />
+              </DropdownWrapper>
+            ))}
+          </DropdownSkeleton>
         );
       },
     },

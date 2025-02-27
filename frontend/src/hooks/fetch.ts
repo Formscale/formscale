@@ -2,14 +2,17 @@ import { Auth } from "@/lib/auth";
 import {
   AuthResponse,
   CreateForm,
+  EditStatus,
   EditUser,
   Form,
   FormEdit,
+  Log,
   Login,
   Otp,
   ResendOtp,
   SafeUser,
   Signup,
+  SubmissionSent,
 } from "@formhook/types";
 import { useState } from "react";
 
@@ -64,6 +67,19 @@ export interface Endpoints {
   "submissions/:id/delete": {
     input: null;
     output: { message: string };
+  };
+  "submissions/:id/status": {
+    input: EditStatus;
+    output: { submission: SubmissionSent };
+  };
+
+  "logs/all": {
+    input: null;
+    output: { logs: Log[] };
+  };
+  "logs/submissions/:id": {
+    input: null;
+    output: { logs: Log[] };
   };
 }
 

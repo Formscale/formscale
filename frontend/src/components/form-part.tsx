@@ -6,8 +6,12 @@ import { Input } from "@/components/ui/input";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { uppercase } from "@formhook/utils";
+import { TrashIcon, UploadIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
 import { FieldValues, Path, UseFormReturn } from "react-hook-form";
 import TagInput from "./tag-input";
+import { Button } from "./ui/button";
 
 interface FormPartProps<T extends FieldValues> {
   form: UseFormReturn<T>;
@@ -68,20 +72,66 @@ export default function FormPart<T extends FieldValues>({
             }
           />
         );
+      case "upload":
+        return (
+          <div className="w-full flex flex-col gap-2">
+            <Input
+              type="file"
+              placeholder={placeholder}
+              disabled={disabled}
+              className={`${className} hidden`}
+              id={`file-upload-${name}`}
+              onChange={(e) => {
+                field.onChange(e.target.files?.[0] || null);
+              }}
+            />
+
+            {typeof field.value === "string" && field.value && (
+              <Link href={field.value} target="_blank" className="underline">
+                {field.value.split("/").pop()}
+              </Link>
+            )}
+
+            <Button
+              variant="outline"
+              className="w-fit"
+              onClick={() => {
+                if (field.value) {
+                  field.onChange(null);
+                } else {
+                  document.getElementById(`file-upload-${name}`)?.click();
+                }
+              }}
+              type="button"
+            >
+              {typeof field.value === "string" && field.value ? (
+                <>
+                  <TrashIcon />
+                  <span className="text-xs">Remove file</span>
+                </>
+              ) : (
+                <>
+                  <UploadIcon />
+                  <span className="text-xs">{field.value instanceof File ? field.value.name : "Upload file"}</span>
+                </>
+              )}
+            </Button>
+          </div>
+        );
       case "switch":
-        return <Switch {...field} checked={field.value} onCheckedChange={field.onChange} />;
+        return <Switch {...field} checked={field.value} onCheckedChange={field.onChange} disabled={disabled} />;
       case "checkbox":
         return <Checkbox {...field} checked={field.value} onCheckedChange={field.onChange} />;
       case "select":
         return (
           <Select {...field} onValueChange={field.onChange}>
-            <SelectTrigger>
+            <SelectTrigger className="max-w-sm">
               <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent>
               {options?.map((option: string) => (
                 <SelectItem key={option} value={option}>
-                  {option}
+                  {uppercase(option)}
                 </SelectItem>
               ))}
             </SelectContent>

@@ -11,7 +11,7 @@ interface UseDeleteOptions {
 export function useDelete() {
   const { remove } = useFetch();
   const [isDeleting, setIsDeleting] = useState(false);
-  const { handleError } = useError();
+  const { handleError, handleToast } = useError();
 
   const deleteItem = async (
     endpoint: keyof Endpoints,
@@ -24,6 +24,7 @@ export function useDelete() {
 
       if (options.onSuccess) {
         await options.onSuccess();
+        handleToast("success", "Item deleted successfully");
       }
 
       return response;

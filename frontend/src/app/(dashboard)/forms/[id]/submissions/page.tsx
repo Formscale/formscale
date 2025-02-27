@@ -8,6 +8,7 @@ import { DataTable } from "@/app/(dashboard)/components/table/table";
 import { useForm } from "@/providers/form";
 import { getColumns } from "./columns";
 import { ExportButton } from "./export-button";
+import SubmissionSheet from "./sheet";
 
 const getFirstDataField = (submissions: SubmissionSent[]) => {
   if (submissions.length === 0) return "data.name";
@@ -25,9 +26,9 @@ export default function FormsPage() {
   const submissions = form.submissions || [];
   const columns = getColumns(submissions);
 
-  const handleRowClick = (row: SubmissionSent) => {
-    console.log(row);
-  };
+  // const handleRowClick = (row: SubmissionSent) => {
+  //   console.log(row);
+  // };
 
   const filterProps = {
     column: getFirstDataField(submissions),
@@ -62,7 +63,15 @@ export default function FormsPage() {
       {submissions.length === 0 ? (
         <DashCard title="No submissions yet." description="Get started by collecting submissions."></DashCard>
       ) : (
-        <DataTable columns={columns} data={submissions} onClickAction={handleRowClick} filterProps={filterProps} />
+        <DataTable
+          columns={columns}
+          data={submissions}
+          // onClickAction={handleRowClick}
+          filterProps={filterProps}
+          WrapperComponent={({ trigger, rowData }) => (
+            <SubmissionSheet trigger={trigger} submission={rowData} form={form} />
+          )}
+        />
       )}
     </>
   );

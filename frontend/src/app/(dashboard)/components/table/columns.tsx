@@ -115,7 +115,7 @@ const formatters = {
   link: (value: string, type: string) => {
     const { href, content } = contentFormatters.link(value, type);
     return (
-      <Link href={href} className="underline" target="_blank">
+      <Link href={href} className="underline" target="_blank" onClick={(e) => e.stopPropagation()}>
         {content}
       </Link>
     );

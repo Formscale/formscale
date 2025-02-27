@@ -1,47 +1,43 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
-export default function DefaultSheet({ trigger, children }: { trigger: React.ReactNode; children: React.ReactNode }) {
+export default function DefaultSheet<TData extends { id: string }, TValue>({
+  trigger,
+  rowData,
+  title,
+  description,
+  buttonText = "Save Changes",
+  children,
+}: {
+  trigger: React.ReactNode;
+  rowData: TData;
+  title: string;
+  description: string;
+  children: React.ReactNode;
+  buttonText?: string;
+}) {
+  console.log("test", rowData);
+
   return (
     <Sheet>
       <SheetTrigger asChild>{trigger}</SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Edit profile</SheetTitle>
-          <SheetDescription>Make changes to your profile here. Click save when done.</SheetDescription>
+          <SheetTitle className="-mb-1">{title}</SheetTitle>
+          <SheetDescription className="text-xs text-muted-foreground">{description}</SheetDescription>
         </SheetHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input id="name" value="Pedro Duarte" className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input id="username" value="@peduarte" className="col-span-3" />
-          </div>
-        </div>
-        {children}
-        <SheetFooter>
+        <div className="grid gap-2 py-4">{children}</div>
+        {/* <SheetFooter className="w-full flex justify-start">
           <SheetClose asChild>
-            <Button type="submit">Save changes</Button>
+          <Button type="submit" className="text-xs font-bold">
+            {buttonText}
+          </Button>
           </SheetClose>
-        </SheetFooter>
+        </SheetFooter> */}
       </SheetContent>
     </Sheet>
   );
+}
+
+{
+  /* save changes, export submission, copy id, send email */
 }

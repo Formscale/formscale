@@ -58,6 +58,7 @@ interface FormSkeletonProps<T extends FieldValues> {
   buttonText?: string;
   disabled?: boolean;
   ignoreDirty?: boolean;
+  children?: React.ReactNode;
 }
 
 export function DialogContentSkeleton({ title, description, children, props }: DialogContentSkeletonProps) {
@@ -108,6 +109,7 @@ export function FormSkeleton<T extends FieldValues>({
   buttonText,
   disabled,
   ignoreDirty = false,
+  children,
 }: FormSkeletonProps<T>) {
   const isDirty = ignoreDirty || form.formState.isDirty;
 
@@ -117,6 +119,7 @@ export function FormSkeleton<T extends FieldValues>({
         {fields.map((field: FormField) => (
           <FormPart key={field.name} form={form} {...field} />
         ))}
+        {children}
         <Button type="submit" variant="action" className="text-xs font-bold" disabled={disabled || !isDirty}>
           {buttonText}
         </Button>

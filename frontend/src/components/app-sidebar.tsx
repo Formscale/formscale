@@ -14,6 +14,7 @@ import {
   GearIcon,
   GlobeIcon,
   LinkNone2Icon,
+  LockClosedIcon,
   StackIcon,
 } from "@radix-ui/react-icons";
 
@@ -35,6 +36,7 @@ import {
 
 import DefaultDropdown from "@/components/default-dropdown";
 import { useUser } from "@/providers/user";
+
 const items = [
   {
     title: "Forms",
@@ -60,6 +62,11 @@ const items = [
     title: "Domains",
     url: "/domains",
     icon: GlobeIcon,
+  },
+  {
+    title: "API",
+    url: "/api",
+    icon: LockClosedIcon,
   },
   {
     title: "Settings",
@@ -101,7 +108,7 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu className="flex flex-col gap-2">
+            <SidebarMenu className="flex flex-col gap-1.5">
               <SidebarMenuItem className="mb-2">
                 <FormButton />
               </SidebarMenuItem>

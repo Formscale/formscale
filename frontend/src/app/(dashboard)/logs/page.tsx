@@ -1,11 +1,11 @@
+import { LogsProvider } from "../../../providers/logs";
 import DashTitle from "../components/title";
-import DashCard from "../components/card";
 
 export default function LogsPage() {
   return (
-    <>
+    <LogsProvider>
       <DashTitle title="Logs" />
-      <DashCard title="Logs coming soon." description="Monitor submissions, webhooks, emails, and more."></DashCard>
-    </>
+      {/* <DashCard title="Logs coming soon." description="Monitor submissions, webhooks, emails, and more."></DashCard> */}
+    </LogsProvider>
   );
 }

@@ -14,20 +14,20 @@ export default function Pagination<T>({ table }: PaginationProps<T>) {
     <div className="flex w-full justify-between items-start gap-4">
       {table.getPageCount() !== 0 && (
         <span className="text-xs text-muted-foreground">
-          {/* Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()} */}
           Showing {table.getRowModel().rows.length} of {table.getFilteredRowModel().rows.length}
+          {/* ({table.getState().pagination.pageIndex + 1} of {table.getPageCount()}) */}
         </span>
       )}
       <div className="flex items-center justify-end gap-2">
-        {canPreviousPage(table) && (
-          <Button variant="outline" size="sm" onClick={() => table.previousPage()}>
-            <ChevronLeftIcon className="w-4 h-4" />
-          </Button>
-        )}
-        {canNextPage(table) && (
-          <Button variant="outline" size="sm" onClick={() => table.nextPage()}>
-            <ChevronRightIcon className="w-4 h-4" />
-          </Button>
+        {(canPreviousPage(table) || canNextPage(table)) && (
+          <>
+            <Button variant="outline" size="sm" onClick={() => table.previousPage()} disabled={!canPreviousPage(table)}>
+              <ChevronLeftIcon className="w-4 h-4" />
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!canNextPage(table)}>
+              <ChevronRightIcon className="w-4 h-4" />
+            </Button>
+          </>
         )}
       </div>
     </div>

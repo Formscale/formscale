@@ -19,9 +19,16 @@ export default function Settings({ form }: { form: Form }) {
         isPublic: form.settings.isPublic,
         saveResponses: form.settings.saveResponses,
         spamProtection: form.settings.spamProtection,
+        defaultStatus: form.settings.defaultStatus || "completed",
         reCaptcha: form.settings.reCaptcha || "",
         allowedOrigins: form.settings.allowedOrigins || [],
         successUrl: form.settings.successUrl || "",
+        theme: {
+          name: form.settings.theme?.name || "",
+          accent: form.settings.theme?.accent || "",
+          logo: form.settings.theme?.logo || "",
+          branding: form.settings.theme?.branding,
+        },
       },
     },
   });
@@ -34,7 +41,12 @@ export default function Settings({ form }: { form: Form }) {
   }
 
   const generalFields = [
-    { name: "name", description: "Name", placeholder: "Untitled Form", type: "text" },
+    {
+      name: "name",
+      description: "Name",
+      placeholder: "Untitled Form",
+      type: "text",
+    },
     // { name: "settings.admins", description: "Admins", placeholder: "dris@formscale.dev", type: "tags" },
     {
       name: "settings.isPublic",
@@ -68,6 +80,18 @@ export default function Settings({ form }: { form: Form }) {
         <p className="text-xs text-muted-foreground">Users will be redirected to this URL after submitting the form.</p>
       ),
     },
+    {
+      name: "settings.defaultStatus",
+      type: "select",
+      description: "Default Status",
+      placeholder: "completed",
+      options: ["completed", "pending", "failed", "blocked"],
+      children: (
+        <span className="text-xs text-muted-foreground">
+          The default status of successful submissions. Can be edited per submission.
+        </span>
+      ),
+    },
     // {
     //   name: "settings.utm.enabled",
     //   description: "UTM Tracking",
@@ -97,6 +121,37 @@ export default function Settings({ form }: { form: Form }) {
     //   placeholder: "formhook",
     //   type: "text",
     // },
+  ];
+
+  // move theme to builder w/ email settings?
+  const themeFields = [
+    {
+      name: "settings.theme.name",
+      description: "App Name",
+      placeholder: "Formscale",
+      type: "text",
+      children: (
+        <p className="text-xs text-muted-foreground">This name will be used within emails and default components.</p>
+      ),
+    },
+    {
+      name: "settings.theme.accent",
+      description: "Accent",
+      placeholder: "#ffce00",
+      type: "text",
+      children: <p className="text-xs text-muted-foreground">Used for buttons and highlights.</p>,
+    },
+    { name: "settings.theme.logo", description: "Logo", placeholder: "", type: "upload" },
+    {
+      name: "settings.theme.branding",
+      description: '"Powered by Formscale" branding',
+      placeholder: "true",
+      type: "switch",
+      disabled: true,
+      children: (
+        <p className="text-xs text-muted-foreground">Displays Formscale branding below emails and form components.</p>
+      ),
+    },
   ];
 
   const protectionFields = [
@@ -149,6 +204,14 @@ export default function Settings({ form }: { form: Form }) {
         title="Processing"
         description="Save Changes"
         fields={processingFields}
+        form={formSettings}
+        disabled={isLoading}
+        onSubmitAction={onSubmit}
+      ></DataCard>
+      <DataCard
+        title="Theme"
+        description="Save Changes"
+        fields={themeFields}
         form={formSettings}
         disabled={isLoading}
         onSubmitAction={onSubmit}

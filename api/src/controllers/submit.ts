@@ -195,7 +195,7 @@ export const SubmitController = submit.post("/:id", async (ctx) => {
         data: JSON.stringify(saveResponses ? { ...data } : { message: "Response not saved" }),
         location: getLocation(ctx),
         site: ctx.req.header("referer") ? ctx.req.header("referer") : undefined,
-        status: "completed",
+        status: form.settings.defaultStatus || "completed",
       },
     });
 

@@ -37,7 +37,8 @@ export function UsageSection({ limits, title, children, muted }: UsageProps) {
 }
 
 function getProgressValue(value: number, total: number) {
-  return total === 0 ? 0 : (value / total) * 100;
+  if (total === 0) return 0;
+  return Math.min((value / total) * 100, 100);
 }
 
 export default function UsageItems({ limits }: { limits: Limits[] }) {

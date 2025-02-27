@@ -33,13 +33,6 @@ export default function HooksPage() {
 
   if (!form) return null;
 
-  // const themeFields = [
-  //   { name: "settings.theme.primary", description: "Primary Color", placeholder: "#000000", type: "text" },
-  //   { name: "settings.theme.background", description: "Background Color", placeholder: "#FFFFFF", type: "text" },
-  //   { name: "settings.theme.logo", description: "Logo", placeholder: "", type: "upload" },
-  //   { name: "settings.theme.icon", description: "Icon", placeholder: "", type: "upload" },
-  // ];
-
   const validations = form.settings.validation;
 
   const items = [
@@ -186,14 +179,6 @@ export default function HooksPage() {
           ))}
         </div>
       </DataCardSkeleton>
-
-      {/* <DataCard
-        title="Theme"
-        description="Save Changes"
-        fields={themeFields}
-        form={form}
-        onSubmitAction={onSubmit}
-      ></DataCard> */}
     </div>
   );
 }

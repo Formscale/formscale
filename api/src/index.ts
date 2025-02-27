@@ -1,5 +1,12 @@
 import app from "@/app";
-import { AuthController, FormController, SubmissionsController, SubmitController, UserController } from "@/controllers";
+import {
+  AuthController,
+  FormController,
+  LogsController,
+  SubmissionsController,
+  SubmitController,
+  UserController,
+} from "@/controllers";
 import Response from "@/utils/response";
 import { cors } from "hono/cors";
 import { jwt } from "hono/jwt";
@@ -36,6 +43,7 @@ app.route("/auth", AuthController);
 app.route("/forms", FormController);
 app.route("/user", UserController);
 app.route("/submissions", SubmissionsController);
+app.route("/logs", LogsController);
 
 app.all("*", async (ctx) => {
   return new Response(ctx).error("Route not found", 404);

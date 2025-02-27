@@ -80,6 +80,7 @@ export function Filter<T>({ table, items, column, select, children, globalSearch
               : ((table.getColumn(column!)?.getFilterValue() as string) ?? "")
           }
           onChange={(e) => handleSearch(e.target.value)}
+          className="bg-background"
           // className={`w-full max-w-sm ${children || select ? "md:min-w-[400px]" : "w-auto"}`}
         />
       )}

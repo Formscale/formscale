@@ -1,7 +1,9 @@
 import db from "@/db";
-import { secureDeleteLinked, secureFind, secureFindMany } from "@/db/crud";
+import { secureDeleteLinked, secureFind, secureFindMany, update } from "@/db/crud";
+import validator from "@/middleware/validation";
 import Response from "@/utils/response";
 import { getUser } from "@/utils/user";
+import { SubmissionStatusSchema } from "@formhook/types";
 import { Hono } from "hono";
 
 const submissions = new Hono<{ Bindings: Env }>();
@@ -40,6 +42,32 @@ export const SubmissionsController = submissions
 
     return new Response(ctx).success({ submissions });
   })
+  .put(
+    "/:id/status",
+    validator(SubmissionStatusSchema, (error, ctx) => {
+      return new Response(ctx).error(error);
+    }),
+    async (ctx) => {
+      const { id } = ctx.req.param();
+      const user = getUser(ctx);
+      const { status } = await ctx.req.json();
+
+      const submission = await secureFind(db(ctx.env), "submission", user.id, id);
+
+      if (!submission) {
+        return new Response(ctx).error("Submission not found or you don't have permission to edit it.", 404);
+      }
+
+      await update(db(ctx.env), "submission", {
+        where: { id },
+        data: { status },
+      });
+
+      // add log when submission status is updated
+
+      return new Response(ctx).success({ message: "Submission status updated" });
+    }
+  )
   .delete("/:id/delete", async (ctx) => {
     try {
       const { id } = ctx.req.param();

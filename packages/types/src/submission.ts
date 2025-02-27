@@ -9,6 +9,10 @@ export const SubmissionSchema = z.object({
   data: z.record(z.string(), z.any()),
 });
 
+export const EditStatusSchema = z.object({
+  status: SubmissionStatusSchema.default("completed"),
+});
+
 export const SubmissionSentSchema = z.object({
   id: z.string().min(1),
   formId: IdSchema,
@@ -30,3 +34,4 @@ export const SubmissionSentSchema = z.object({
 export type Submission = z.infer<typeof SubmissionSchema>;
 export type SubmissionSent = z.infer<typeof SubmissionSentSchema>;
 export type SubmissionStatus = z.infer<typeof SubmissionStatusSchema>;
+export type EditStatus = z.infer<typeof EditStatusSchema>;

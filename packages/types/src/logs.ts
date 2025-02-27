@@ -7,7 +7,7 @@ export const LogSchema = z.object({
   type: LogTypeSchema.default("submission"),
   data: z.any().optional().default({}),
   message: z.string().optional(),
-  code: z.number().optional(),
+  code: z.number().optional().default(200),
   updatedAt: z
     .string()
     .or(z.date())

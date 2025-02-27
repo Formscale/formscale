@@ -21,7 +21,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { DashCardHeader } from "../card";
 import { Filter, FilterGroup } from "./filter";
 import Pagination from "./pagination";
-
 interface FilterProps {
   items: FilterGroup[];
   column?: string;
@@ -32,7 +31,23 @@ interface DataTableProps<TData extends { id: string }, TValue> {
   data: TData[];
   filterProps: FilterProps;
   onClickAction?: (row: TData) => void;
-  WrapperComponent?: React.ComponentType<{ children: React.ReactNode }>;
+  WrapperComponent?: React.ComponentType<{ trigger: React.ReactNode; rowData: TData }>;
+}
+
+function Wrapper<TData extends { id: string }, TValue>({
+  children,
+  WrapperComponent,
+  rowData,
+}: {
+  children: React.ReactNode;
+  WrapperComponent?: React.ComponentType<{ trigger: React.ReactNode; rowData: TData }>;
+  rowData: TData;
+}) {
+  if (WrapperComponent) {
+    return <WrapperComponent trigger={children} rowData={rowData} />;
+  }
+
+  return <>{children}</>;
 }
 
 export function DataTable<TData extends { id: string }, TValue>({
@@ -92,17 +107,20 @@ export function DataTable<TData extends { id: string }, TValue>({
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                  onClick={() => onClickAction(row.original)}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell className="text-xs cursor-pointer" key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
-                  ))}
-                </TableRow>
+                <Wrapper key={row.id} WrapperComponent={WrapperComponent} rowData={row.original}>
+                  <TableRow
+                    // key={row.id}
+                    className="bg-background"
+                    data-state={row.getIsSelected() && "selected"}
+                    onClick={() => onClickAction(row.original)}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell className="text-xs cursor-pointer" key={cell.id}>
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </Wrapper>
               ))
             ) : (
               <TableRow>

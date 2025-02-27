@@ -6,6 +6,7 @@ import { EditUserSchema } from "@formhook/types";
 import { Hono } from "hono";
 import { update } from "../db/crud";
 import { getToken } from "./auth";
+
 const users = new Hono<{ Bindings: Env }>();
 
 export const UserController = users

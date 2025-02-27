@@ -25,7 +25,7 @@ const dashboardLinks = [
 
 export function HeaderDashboard() {
   return (
-    <div className="w-full bg-background overflow-hidden p-3 px-4 border-b-[0.5px] border-border">
+    <div className="z-50 w-full bg-background overflow-hidden p-3 px-4 border-b-[0.5px] border-border">
       <div className="flex flex-row items-center justify-between mx-auto">
         <div className="flex flex-row items-center justify-center gap-3">
           <SidebarTrigger />
