@@ -22,6 +22,8 @@ function getLocation(ctx: Context): string {
 
 const submit = new Hono<{ Bindings: Env }>();
 
+let submissionId: string;
+
 export const SubmitController = submit.post("/:id", async (ctx) => {
   // add ip to submission schema
   // and replace updates & stuff with logs
@@ -80,6 +82,18 @@ export const SubmitController = submit.post("/:id", async (ctx) => {
       formId,
     });
 
+    submissionId = submission.id;
+
+    await create(db(ctx.env), "log", {
+      submissionId,
+      type: "submission",
+      data: JSON.stringify({
+        formId,
+      }),
+      message: "Submission created",
+      code: 200,
+    });
+
     const fileFormData = new FormData();
     const entries = Array.from(formData.entries());
 
@@ -106,13 +120,21 @@ export const SubmitController = submit.post("/:id", async (ctx) => {
         data = validation;
       } catch (err) {
         await update(db(ctx.env), "submission", {
-          where: { id: submission.id },
+          where: { id: submissionId },
           data: {
             data: JSON.stringify(
               saveResponses ? { ...data, error: err } : { message: "Response not saved", error: err }
             ),
             status: "blocked",
           },
+        });
+
+        await create(db(ctx.env), "log", {
+          submissionId,
+          type: "submission",
+          message: "Validation failed",
+          code: 400,
+          data: JSON.stringify({ formId, submissionId, error: err }),
         });
 
         return new Response(ctx).error(err);
@@ -138,54 +160,118 @@ export const SubmitController = submit.post("/:id", async (ctx) => {
           },
         });
 
+        await create(db(ctx.env), "log", {
+          submissionId,
+          type: "submission",
+          message: "Spam detected",
+          code: 403,
+          data: JSON.stringify({ formId, submissionId, spam, error: "Spam detected" }),
+        });
+
+        // redirect early
+
         return new Response(ctx).error("Spam detected", 403);
       }
     }
 
     const fileUploads = await uploadFiles(fileFormData, ctx.env, ctx);
+    let uploadedFiles: string[] = [];
     for (const { field, url } of fileUploads) {
       data[field] = url;
+      uploadedFiles.push(url);
+    }
+
+    if (fileUploads.length > 0) {
+      await create(db(ctx.env), "log", {
+        submissionId,
+        type: "submission",
+        message: "Files uploaded",
+        code: 200,
+        data: JSON.stringify({ formId, submissionId, files: uploadedFiles }),
+      });
     }
 
     if (form.settings.webhooks && form.settings.webhooks.length > 0) {
       const webhooks = form.settings.webhooks.filter((webhook: Webhook) => webhook.enabled);
 
-      try {
+      if (webhooks.length > 0) {
         const results = await Promise.allSettled(
           webhooks.map(async (webhook: Webhook) => {
-            const response = await fetch(webhook.url, {
-              method: webhook.method,
-              ...(webhook.method === "POST" && {
-                body: JSON.stringify(data),
-              }),
-              headers: {
-                "Content-Type": "application/json",
-                ...(webhook.secret && {
-                  Authorization: `Bearer ${webhook.secret}`,
+            try {
+              const response = await fetch(webhook.url, {
+                method: webhook.method,
+                ...(webhook.method === "POST" && {
+                  body: JSON.stringify(data),
                 }),
-                ...webhook.headers,
-              },
-            });
+                headers: {
+                  "Content-Type": "application/json",
+                  ...(webhook.secret && {
+                    Authorization: `Bearer ${webhook.secret}`,
+                  }),
+                  ...webhook.headers,
+                },
+              });
 
-            if (!response.ok) {
-              throw new Error(`Webhook failed: ${response.statusText}`);
+              await create(db(ctx.env), "log", {
+                submissionId,
+                type: "webhook",
+                message: response.ok ? "Webhook delivered" : `Webhook failed: ${response.statusText}`,
+                code: response.status,
+                data: JSON.stringify({
+                  formId,
+                  submissionId,
+                  webhookUrl: webhook.url,
+                  method: webhook.method,
+                }),
+              });
+
+              if (!response.ok) {
+                return { success: false, url: webhook.url, status: response.status, statusText: response.statusText };
+              }
+
+              return { success: true, url: webhook.url };
+            } catch (error) {
+              await create(db(ctx.env), "log", {
+                submissionId,
+                type: "webhook",
+                message: `Webhook error: ${error instanceof Error ? error.message : "Unknown error"}`,
+                code: 500,
+                data: JSON.stringify({
+                  formId,
+                  submissionId,
+                  webhookUrl: webhook.url,
+                  error: error instanceof Error ? error.message : "Unknown error",
+                }),
+              });
+
+              return {
+                success: false,
+                url: webhook.url,
+                error: error instanceof Error ? error.message : "Unknown error",
+              };
             }
-
-            return response;
           })
         );
-      } catch (err) {
-        await update(db(ctx.env), "submission", {
-          where: { id: submission.id },
-          data: {
-            data: JSON.stringify(
-              saveResponses ? { ...data, error: err } : { message: "Response not saved", error: err }
-            ),
-            status: "failed",
-          },
-        });
 
-        return new Response(ctx).error(err);
+        const allFailed = results.every(
+          (result) => result.status === "rejected" || (result.status === "fulfilled" && !result.value.success)
+        );
+
+        if (allFailed && webhooks.length > 0) {
+          await update(db(ctx.env), "submission", {
+            where: { id: submissionId },
+            data: {
+              status: "failed",
+              data: JSON.stringify(
+                saveResponses
+                  ? { ...data, error: "All webhooks failed" }
+                  : { message: "Response not saved", error: "All webhooks failed" }
+              ),
+            },
+          });
+
+          // return early if on production !!!
+        }
       }
     }
 
@@ -229,11 +315,27 @@ export const SubmitController = submit.post("/:id", async (ctx) => {
     // );
 
     if (form.settings.successUrl) {
+      await create(db(ctx.env), "log", {
+        submissionId,
+        type: "submission",
+        message: `Redirected to ${form.settings.successUrl.replace(/^https?:\/\//, "")}`,
+        code: 302,
+        data: JSON.stringify({ formId, submissionId, url: form.settings.successUrl }),
+      });
+
       return new Response(ctx).redirect(form.settings.successUrl);
     }
 
     return new Response(ctx).redirect(`${ctx.env.FRONTEND_URL}/success/${updatedSubmission.id}`);
   } catch (err) {
+    await create(db(ctx.env), "log", {
+      submissionId,
+      type: "submission",
+      message: typeof err === "string" ? err : (err as Error).message || "Unknown error",
+      code: 500,
+      data: JSON.stringify({ error: err }),
+    });
+
     console.error(err);
     return new Response(ctx).error(err);
   }

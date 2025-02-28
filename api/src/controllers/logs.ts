@@ -3,7 +3,7 @@ import Response from "@/utils/response";
 import { getUser } from "@/utils/user";
 import { Form, SubmissionSent } from "@formhook/types";
 import { Hono } from "hono";
-import { findMany, secureFindMany } from "../db/crud";
+import { findMany, secureFind, secureFindMany } from "../db/crud";
 
 const logs = new Hono<{ Bindings: Env }>();
 
@@ -26,7 +26,7 @@ export const LogsController = logs
       return new Response(ctx).error("Forms not found", 404);
     }
 
-    const logs = await findMany(db(ctx.env), "logs", {
+    const logs = await findMany(db(ctx.env), "log", {
       where: {
         submissionId: {
           in: forms.flatMap((form: Form) => form.submissions?.map((submission: SubmissionSent) => submission.id)),
@@ -43,26 +43,24 @@ export const LogsController = logs
 
     const { id } = ctx.req.param();
 
-    const forms = await secureFindMany(db(ctx.env), "form", user.id, {
+    const submission = await secureFind(db(ctx.env), "submission", user.id, id, {
       where: {
-        development,
+        id,
+        form: {
+          userId: user.id,
+          development: user.development,
+        },
       },
-      include: {
-        submissions: true,
-      },
+      include: { form: true },
     });
-
-    const submission = forms.flatMap((form: Form) =>
-      form.submissions?.find((submission: SubmissionSent) => submission.id === id)
-    );
 
     if (!submission) {
       return new Response(ctx).error("Submission not found");
     }
 
-    const logs = await findMany(db(ctx.env), "logs", {
+    const logs = await findMany(db(ctx.env), "log", {
       where: {
-        submissionId: submission.id,
+        submissionId: id,
       },
     });
 

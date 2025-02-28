@@ -17,7 +17,7 @@ import { FieldValues, UseFormReturn } from "react-hook-form";
 
 interface FormField {
   name: string;
-  description: string;
+  description?: string;
   placeholder: string;
   type: string;
   options?: string[];
@@ -53,7 +53,7 @@ export interface DefaultFormProps<T extends FieldValues> extends DialogBaseProps
 
 interface FormSkeletonProps<T extends FieldValues> {
   form: UseFormReturn<T>;
-  onSubmitAction: (values: T) => void | Promise<void>;
+  onSubmitAction?: (values: T) => void | Promise<void>;
   fields: FormField[];
   buttonText?: string;
   disabled?: boolean;
@@ -115,14 +115,19 @@ export function FormSkeleton<T extends FieldValues>({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmitAction)} className="w-full flex flex-col gap-4">
+      <form
+        onSubmit={onSubmitAction ? form.handleSubmit(onSubmitAction) : undefined}
+        className="w-full flex flex-col gap-4"
+      >
         {fields.map((field: FormField) => (
           <FormPart key={field.name} form={form} {...field} />
         ))}
         {children}
-        <Button type="submit" variant="action" className="text-xs font-bold" disabled={disabled || !isDirty}>
-          {buttonText}
-        </Button>
+        {buttonText && (
+          <Button type="submit" variant="action" className="text-xs font-bold" disabled={disabled || !isDirty}>
+            {buttonText}
+          </Button>
+        )}
       </form>
     </Form>
   );

@@ -54,15 +54,15 @@ function FormInsights({ form }: { form: Form }) {
       total: length,
     },
     {
-      name: "Failed",
-      variant: "destructive",
-      value: filterStatus(submissions, "failed").length,
-      total: length,
-    },
-    {
       name: "Blocked",
       variant: "blocked",
       value: filterStatus(submissions, "blocked").length,
+      total: length,
+    },
+    {
+      name: "Failed",
+      variant: "destructive",
+      value: filterStatus(submissions, "failed").length,
       total: length,
     },
   ];

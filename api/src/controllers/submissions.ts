@@ -1,9 +1,9 @@
 import db from "@/db";
-import { secureDeleteLinked, secureFind, secureFindMany, update } from "@/db/crud";
+import { create, secureDeleteLinked, secureFind, secureFindMany, update } from "@/db/crud";
 import validator from "@/middleware/validation";
 import Response from "@/utils/response";
 import { getUser } from "@/utils/user";
-import { SubmissionStatusSchema } from "@formhook/types";
+import { EditStatusSchema } from "@formhook/types";
 import { Hono } from "hono";
 
 const submissions = new Hono<{ Bindings: Env }>();
@@ -44,7 +44,7 @@ export const SubmissionsController = submissions
   })
   .put(
     "/:id/status",
-    validator(SubmissionStatusSchema, (error, ctx) => {
+    validator(EditStatusSchema, (error, ctx) => {
       return new Response(ctx).error(error);
     }),
     async (ctx) => {
@@ -52,7 +52,9 @@ export const SubmissionsController = submissions
       const user = getUser(ctx);
       const { status } = await ctx.req.json();
 
-      const submission = await secureFind(db(ctx.env), "submission", user.id, id);
+      const submission = await secureFindMany(db(ctx.env), "form", user.id, {
+        where: { submissions: { some: { id } } },
+      });
 
       if (!submission) {
         return new Response(ctx).error("Submission not found or you don't have permission to edit it.", 404);
@@ -63,7 +65,13 @@ export const SubmissionsController = submissions
         data: { status },
       });
 
-      // add log when submission status is updated
+      await create(db(ctx.env), "log", {
+        submissionId: id,
+        type: "submission",
+        message: `Submission status updated to ${status}`,
+        code: 200,
+        data: JSON.stringify({ status }),
+      });
 
       return new Response(ctx).success({ message: "Submission status updated" });
     }
@@ -76,6 +84,14 @@ export const SubmissionsController = submissions
       console.log(id, user.id);
 
       await secureDeleteLinked(db(ctx.env), "submission", "form", user.id, id);
+
+      await create(db(ctx.env), "log", {
+        submissionId: id,
+        type: "submission",
+        message: `Submission deleted`,
+        code: 200,
+        data: JSON.stringify({ id }),
+      });
 
       return new Response(ctx).success({ message: "Submission deleted" });
     } catch (error) {

@@ -13,7 +13,7 @@ export default async function SettingsLayout({ children }: { children: React.Rea
   return (
     <>
       <DashTitle title="Settings" />
-      <Tabs tabs={tabs} />
+      <Tabs tabs={tabs} basePath={basePath} />
       {children}
     </>
   );

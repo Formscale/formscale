@@ -24,8 +24,8 @@ export function Filter({ forms }: FilterProps) {
         { title: "All statuses", value: undefined },
         { title: "Completed", value: "completed" },
         { title: "Pending", value: "pending" },
-        { title: "Failed", value: "failed" },
         { title: "Blocked", value: "blocked" },
+        { title: "Failed", value: "failed" },
       ],
     },
     {

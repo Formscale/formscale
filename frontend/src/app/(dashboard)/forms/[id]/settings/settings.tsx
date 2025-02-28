@@ -85,7 +85,7 @@ export default function Settings({ form }: { form: Form }) {
       type: "select",
       description: "Default Status",
       placeholder: "completed",
-      options: ["completed", "pending", "failed", "blocked"],
+      options: ["completed", "pending", "blocked", "failed"],
       children: (
         <span className="text-xs text-muted-foreground">
           The default status of successful submissions. Can be edited per submission.

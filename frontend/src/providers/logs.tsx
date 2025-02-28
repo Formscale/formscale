@@ -27,12 +27,15 @@ export function LogsProvider({ children }: { children: ReactNode }) {
 
       if (response.success && response.data?.logs) {
         setLogs(response.data.logs);
+      } else {
+        setLogs([]);
       }
     } catch (err) {
       handleError({
         message: "Failed to fetch logs",
         description: (err as Error).message,
       });
+      setLogs([]);
     } finally {
       setIsLoading(false);
     }

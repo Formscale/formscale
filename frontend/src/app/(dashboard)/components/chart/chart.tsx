@@ -1,6 +1,13 @@
 "use client";
 
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 import { Bar, BarChart, XAxis, YAxis } from "recharts";
 
 const chartConfig = {
@@ -13,13 +20,13 @@ const chartConfig = {
     label: "Pending",
     color: "hsl(var(--formhook)/0.6)",
   },
-  failed: {
-    label: "Failed",
-    color: "hsl(var(--destructive))",
-  },
   blocked: {
     label: "Blocked",
     color: "hsl(var(--destructive)/0.8)",
+  },
+  failed: {
+    label: "Failed",
+    color: "hsl(var(--destructive))",
   },
 } satisfies ChartConfig;
 
@@ -50,7 +57,7 @@ export default function Chart({ data }: { data: any[] }) {
           domain={["dataMin", "dataMax"]}
         />
         <ChartTooltip content={<ChartTooltipContent className="font-heading-pro" />} />
-        {/* <ChartLegend content={<ChartLegendContent />} /> */}
+        <ChartLegend content={<ChartLegendContent />} />
         <Bar dataKey="completed" fill="var(--color-completed)" radius={[6, 6, 0, 0]} barSize={10} />
         <Bar dataKey="pending" fill="var(--color-pending)" radius={[6, 6, 0, 0]} barSize={10} />
         <Bar dataKey="failed" fill="var(--color-failed)" radius={[6, 6, 0, 0]} barSize={10} />

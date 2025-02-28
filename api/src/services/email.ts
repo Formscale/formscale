@@ -1,6 +1,8 @@
 import { SubmissionEmail, VerifyEmail, splitLink } from "@/lib/emails";
 import { Form, SubmissionSent } from "@formhook/types";
 import { Resend } from "resend";
+import db from "../db";
+import { create } from "../db/crud";
 
 export async function sendEmail(to: string[], subject: string, description: string, email: React.ReactNode, env: Env) {
   const resend = new Resend(env.RESEND_API_KEY);
@@ -29,11 +31,31 @@ export async function sendVerifyEmail(to: string[], otp: string, env: Env) {
 }
 
 export async function sendSubmissionEmail(to: string[], form: Form, submission: SubmissionSent, env: Env) {
-  await sendEmail(
-    to,
-    `New submission on ${form.name}`,
-    `Submission recieved on ${splitLink(submission.site ?? "")}`,
-    SubmissionEmail({ form, submission, env }),
-    env
-  );
+  try {
+    const emailId = await sendEmail(
+      to,
+      `New submission on ${form.name}`,
+      `Submission recieved on ${splitLink(submission.site ?? "")}`,
+      SubmissionEmail({ form, submission, env }),
+      env
+    );
+
+    await create(db(env), "log", {
+      submissionId: submission.id,
+      type: "email",
+      message: `Email sent to ${to.join(", ")}`,
+      code: 200,
+      data: JSON.stringify({ formId: form.id, submissionId: submission.id, emailId, recipients: to }),
+    });
+  } catch (error) {
+    await create(db(env), "log", {
+      submissionId: submission.id,
+      type: "email",
+      message: `Email failed to send to ${to.join(", ")}`,
+      code: 500,
+      data: JSON.stringify({ formId: form.id, submissionId: submission.id, recipients: to, error: error }),
+    });
+
+    console.error(error);
+  }
 }

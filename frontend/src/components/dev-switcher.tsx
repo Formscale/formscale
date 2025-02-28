@@ -1,8 +1,9 @@
 "use client";
 
-import { useError, useForms, useUser } from "@/providers";
+import { useError, useForms, useLogs, useUser } from "@/providers";
 import { EditUser } from "@formhook/types";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
+import { usePathname, useRouter } from "next/navigation";
 import { useLayoutEffect, useState } from "react";
 import DefaultDropdown from "./default-dropdown";
 import { Button } from "./ui/button";
@@ -18,6 +19,9 @@ export function DevSwitcher() {
   const [current, setCurrent] = useState("dev");
   const { handleToast } = useError();
   const { refreshForms } = useForms();
+  const { refreshLogs } = useLogs();
+  const router = useRouter();
+  const pathname = usePathname();
 
   async function editMode(development: boolean) {
     if (user && development !== user.development) {
@@ -26,6 +30,15 @@ export function DevSwitcher() {
       handleToast("success", `Switched to ${development ? "development" : "production"}`);
 
       await refreshForms();
+      await refreshLogs();
+
+      if (pathname !== "/logs" && pathname !== "/forms" && pathname !== "/submissions") {
+        const segments = pathname.split("/").filter(Boolean);
+
+        if (segments.length > 1) {
+          router.push(`/${segments[0]}`);
+        }
+      }
     }
   }
 

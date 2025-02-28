@@ -1,3 +1,4 @@
+import SubmissionItem from "@/app/(dashboard)/components/submission-item";
 import Loading from "@/components/loading";
 import { useFetch } from "@/hooks/fetch";
 import { useError } from "@/providers/error";
@@ -5,7 +6,6 @@ import { Log, SubmissionSent } from "@formhook/types";
 import { format } from "date-fns";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { SubmissionItem } from "./sheet";
 
 export default function LogsContent({ submission }: { submission: SubmissionSent }) {
   const { get } = useFetch();
@@ -13,15 +13,16 @@ export default function LogsContent({ submission }: { submission: SubmissionSent
   const [isLoading, setIsLoading] = useState(true);
   const { handleError } = useError();
 
-  const defaultLog: Log = {
-    id: submission.id,
-    createdAt: submission.createdAt,
-    updatedAt: submission.updatedAt,
-    type: "submission" as const,
-    data: submission.data,
-    message: "Submission created",
-    code: 200,
-  };
+  // const defaultLog: Log = {
+  //   id: submission.id,
+  //   submissionId: submission.id,
+  //   createdAt: submission.createdAt,
+  //   updatedAt: submission.updatedAt,
+  //   type: "submission" as const,
+  //   data: submission.data,
+  //   message: "Submission created",
+  //   code: 200,
+  // };
 
   const fetchLogs = useCallback(async () => {
     if (!isLoading) return;
@@ -32,11 +33,11 @@ export default function LogsContent({ submission }: { submission: SubmissionSent
       });
 
       if (response.success && response.data?.logs) {
-        const logs: Log[] = [...response.data.logs, defaultLog].sort(
-          (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        );
+        // const logs: Log[] = response.data.logs.sort(
+        //   (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        // );
 
-        setLogs(logs);
+        setLogs(response.data.logs);
       }
     } catch (err) {
       handleError({
@@ -54,23 +55,25 @@ export default function LogsContent({ submission }: { submission: SubmissionSent
 
   if (isLoading)
     return (
-      <div className="flex justify-center items-start h-full">
+      <div className="flex justify-center items-start h-full -mt-36">
         <Loading size="mini" />
       </div>
     );
 
+  if (!logs || logs.length === 0) {
+    return <SubmissionItem label="N/A" value="No logs found" />;
+  }
+
   return (
     <>
-      {logs &&
-        logs.length > 0 &&
-        logs.map((log, index) => (
-          <Link href={`/logs/${log.id}`} key={index}>
-            <SubmissionItem
-              label={format(new Date(log.createdAt), "MM/dd/yyyy 'at' h:mm a")}
-              value={`${log.code} - ${log.message}`}
-            />
-          </Link>
-        ))}
+      {logs.map((log, index) => (
+        <Link href={`/logs/${log.id}`} key={index}>
+          <SubmissionItem
+            label={format(new Date(log.createdAt), "MM/dd/yyyy 'at' h:mm:ss a")}
+            value={`${log.code} - ${log.message}`}
+          />
+        </Link>
+      ))}
     </>
   );
 }

@@ -52,6 +52,16 @@ export function getColumns(submissions: SubmissionSent[]): ColumnDef<SubmissionS
     // CheckboxColumn(),
     ...dataColumns,
     {
+      id: "id",
+      accessorFn: (row) => row.id,
+      header: ({ column }) => {
+        return null;
+      },
+      cell: ({ row }) => {
+        return null;
+      },
+    },
+    {
       id: "status",
       accessorFn: (row) => row.status,
       header: "Status",

@@ -2,7 +2,7 @@ import { z } from "zod";
 import { IdSchema } from "./form";
 import { LogSchema } from "./logs";
 
-export const SubmissionStatusSchema = z.enum(["pending", "completed", "failed", "blocked"]);
+export const SubmissionStatusSchema = z.enum(["pending", "completed", "blocked", "failed"]);
 
 export const SubmissionSchema = z.object({
   id: IdSchema,

@@ -9,24 +9,19 @@ import DashBadge from "../badge";
 
 // base columns
 
-export function SortButton<T>(title: string, column: Column<T>) {
+export function SortButton<T>(title: string, column: Column<T>, shiftLeft: boolean = false) {
   return (
-    <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-      <span className="text-xs">{title}</span>
-      <CaretSortIcon />
-    </Button>
+    <div className={`${shiftLeft ? "-ml-4" : ""}`}>
+      <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+        <span className="text-xs">{title}</span>
+        <CaretSortIcon />
+      </Button>
+    </div>
   );
 }
 
 export function StatusBadge({ status }: { status: string }) {
   switch (status) {
-    case "pending":
-      return (
-        <DashBadge variant="secondary">
-          <DotsHorizontalIcon className="h-4 w-4" />
-          Pending
-        </DashBadge>
-      );
     case "completed":
       return (
         <DashBadge variant="success">
@@ -34,11 +29,11 @@ export function StatusBadge({ status }: { status: string }) {
           Completed
         </DashBadge>
       );
-    case "failed":
+    case "pending":
       return (
-        <DashBadge variant="destructive">
-          <Cross2Icon className="h-4 w-4" />
-          Failed
+        <DashBadge variant="secondary">
+          <DotsHorizontalIcon className="h-4 w-4" />
+          Pending
         </DashBadge>
       );
     case "blocked":
@@ -46,6 +41,13 @@ export function StatusBadge({ status }: { status: string }) {
         <DashBadge variant="destructive">
           <CrossCircledIcon className="h-4 w-4" />
           Blocked
+        </DashBadge>
+      );
+    case "failed":
+      return (
+        <DashBadge variant="destructive">
+          <Cross2Icon className="h-4 w-4" />
+          Failed
         </DashBadge>
       );
   }
@@ -123,9 +125,9 @@ const formatters = {
 
   boolean: (value: boolean) => <div>{contentFormatters.boolean(value)}</div>,
 
-  array: (value: any[]) => <div>{contentFormatters.array(value)}</div>,
+  array: (value: any[]) => <div>{value.map((v) => contentFormatters.array(v.toString()))}</div>,
 
-  object: (value: object) => <div>{contentFormatters.object(value)}</div>,
+  object: (value: object) => <div>{contentFormatters.object(value)}</div>, // JSON.stringify?
 
   default: (value: any) => <div>{contentFormatters.default(value)}</div>,
 };

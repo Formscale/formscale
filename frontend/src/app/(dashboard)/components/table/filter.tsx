@@ -12,11 +12,12 @@ interface FilterProps<T> {
   select?: boolean;
   children?: React.ReactNode;
   globalSearch?: boolean;
+  searchPlaceholder?: string;
 }
 
 interface FilterItem {
   title: string;
-  value: string | boolean | undefined;
+  value: string | boolean | number | undefined;
 }
 
 export interface FilterGroup {
@@ -24,7 +25,7 @@ export interface FilterGroup {
   items: FilterItem[];
 }
 
-export function Filter<T>({ table, items, column, select, children, globalSearch }: FilterProps<T>) {
+export function Filter<T>({ table, items, column, select, children, globalSearch, searchPlaceholder }: FilterProps<T>) {
   const [selectedTitles, setSelectedTitles] = useState<Record<string, string>>(
     Object.fromEntries(items.map((group) => [group.itemColumn, group.items[0].title]))
   );
@@ -39,7 +40,7 @@ export function Filter<T>({ table, items, column, select, children, globalSearch
     }
   };
 
-  const handleFilterSelect = (columnName: string, value: string | boolean | undefined, itemTitle: string) => {
+  const handleFilterSelect = (columnName: string, value: string | boolean | number | undefined, itemTitle: string) => {
     setSelectedTitles((prev) => ({ ...prev, [columnName]: itemTitle }));
 
     switch (columnName) {
@@ -73,7 +74,7 @@ export function Filter<T>({ table, items, column, select, children, globalSearch
     <div className={`flex w-full gap-2 items-center ${hasSearch ? "justify-between" : "justify-end"}`}>
       {hasSearch && (
         <Input
-          placeholder={globalSearch ? "Search all..." : "Search..."}
+          placeholder={globalSearch ? "Search all..." : (searchPlaceholder ?? "Search...")}
           value={
             globalSearch
               ? ((table.getState().globalFilter as string) ?? "")

@@ -1,3 +1,11 @@
-export default function LogsPage() {
-  return <div>Logs</div>;
+import Log from "./log";
+
+export default async function LogPage({ params }: { params: { id: string } }) {
+  const { id } = await params;
+
+  return (
+    <>
+      <Log id={id} />
+    </>
+  );
 }

@@ -1,8 +1,8 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Button } from "@/components/ui/button";
 
 interface TabsProps {
   tabs: {
@@ -10,13 +10,14 @@ interface TabsProps {
     href: string;
     icon?: React.ReactNode;
   }[];
+  basePath?: string;
 }
 
-export default function Tabs({ tabs }: TabsProps) {
+export default function Tabs({ tabs, basePath }: TabsProps) {
   const pathname = usePathname();
 
   const isActive = (href: string) => {
-    return pathname === href;
+    return pathname === href || (href !== basePath && pathname.startsWith(href));
   };
 
   return (

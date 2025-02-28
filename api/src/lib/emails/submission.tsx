@@ -44,7 +44,7 @@ export const SubmissionEmail = ({ form, submission, env }: SubmissionEmailProps)
           );
         })}
       </Section>
-      <Button style={button} href={`${frontendUrl}/forms/${form.id}/submissions`} target="_blank">
+      <Button style={button} href={`${frontendUrl}/forms/${form.id}/submissions/${submission.id}`} target="_blank">
         View Submission
       </Button>
       <Text style={descriptionText}>

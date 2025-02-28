@@ -1,4 +1,4 @@
-import { CreateForm, FormSettings, FormSettingsSchema, SubmissionSent } from "@formhook/types";
+import { CreateForm, FormSettings, FormSettingsSchema, Log, SubmissionSent } from "@formhook/types";
 import { PrismaClient } from "@prisma/client";
 
 interface FormResult {
@@ -29,8 +29,30 @@ function parseForm(result: FormResult) {
   }
 }
 
+function parseLog(result: Log) {
+  if (!result) return null;
+
+  try {
+    const data = typeof result.data === "string" ? JSON.parse(result.data) : result.data;
+
+    return {
+      ...result,
+      data,
+    };
+  } catch (error) {
+    return {
+      ...result,
+      data: {},
+    };
+  }
+}
+
 function parseForms(results: FormResult[]) {
   return results.map((form) => parseForm(form));
+}
+
+function parseLogs(results: Log[]) {
+  return results.map((log) => parseLog(log));
 }
 
 export async function findMany<T extends keyof PrismaClient>(
@@ -48,6 +70,8 @@ export async function findMany<T extends keyof PrismaClient>(
 
   if (model === "form") {
     return parseForms(results);
+  } else if (model === "log") {
+    return parseLogs(results);
   }
   return results;
 }
@@ -64,6 +88,8 @@ export async function findOne<T extends keyof PrismaClient>(
 
   if (model === "form") {
     return parseForm(result);
+  } else if (model === "log") {
+    return parseLog(result);
   }
   return result;
 }
@@ -80,6 +106,8 @@ export async function findUnique<T extends keyof PrismaClient>(
 
   if (model === "form") {
     return parseForm(result);
+  } else if (model === "log") {
+    return parseLog(result);
   }
   return result;
 }
@@ -127,6 +155,8 @@ export async function update<T extends keyof PrismaClient>(
 
   if (model === "form") {
     return parseForm(result);
+  } else if (model === "log") {
+    return parseLog(result);
   }
   return result;
 }
@@ -142,10 +172,10 @@ export async function secureFind<T extends keyof PrismaClient>(
   model: T,
   userId: string,
   id: string,
-  params: { include?: any } = {}
+  params: { include?: any; where?: any } = {}
 ) {
   return findOne(prisma, model, {
-    where: { id, userId },
+    where: { id, userId, ...params.where },
     ...params,
   });
 }

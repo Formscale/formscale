@@ -3,14 +3,14 @@
 import Link from "next/link";
 
 import DashCard from "@/app/(dashboard)/components/card";
+import RefreshButton from "@/app/(dashboard)/components/refresh-button";
 import DashTitle from "@/app/(dashboard)/components/title";
 import Loading from "@/components/loading";
 import SuspenseWrapper from "@/components/suspense-wrapper";
 import Tabs from "@/components/tabs";
 import { Button } from "@/components/ui/button";
 import { useForm } from "@/providers/form";
-import { ReloadIcon, TriangleLeftIcon } from "@radix-ui/react-icons";
-
+import { TriangleLeftIcon } from "@radix-ui/react-icons";
 export default function FormLayoutContent({ children, id }: { children: React.ReactNode; id: string }) {
   const { form, isLoading, refreshForm } = useForm();
 
@@ -43,12 +43,10 @@ export default function FormLayoutContent({ children, id }: { children: React.Re
 
   return (
     <>
-      <DashTitle title={form?.name || "Your form"}>
-        <Button size="sm" variant="outline" onClick={() => refreshForm()}>
-          <ReloadIcon />
-        </Button>
+      <DashTitle title={`${form?.name}` || "Untitled Form"}>
+        <RefreshButton refresh={refreshForm} type="form" />
       </DashTitle>
-      <Tabs tabs={tabs} />
+      <Tabs tabs={tabs} basePath={basePath} />
       <SuspenseWrapper>{children}</SuspenseWrapper>
     </>
   );

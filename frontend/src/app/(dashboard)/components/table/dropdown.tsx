@@ -1,9 +1,13 @@
 import DefaultDropdown, { DefaultDropdownProps } from "@/components/default-dropdown";
-import { DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 interface DropdownProps extends DefaultDropdownProps {
   title: string;
@@ -22,9 +26,10 @@ export function Dropdown({ title, items, muted }: DropdownProps) {
 
 const columnLabels: Record<string, string> = {
   updatedAt: "Last updated",
+  createdAt: "Created",
 };
 
-const hiddenColumns = ["actions", "select"];
+const hiddenColumns = ["actions", "select", "id"];
 
 export function DropdownSelect<T>({ table }: { table: Table<T> }) {
   return (

@@ -4,11 +4,11 @@ import { SubmissionSent } from "@formhook/types";
 
 import DashCard from "@/app/(dashboard)/components/card";
 import { DataTable } from "@/app/(dashboard)/components/table/table";
-// import { formData } from "@/lib/test-data";
 import { useForm } from "@/providers/form";
+import { useEffect, useState } from "react";
 import { getColumns } from "./columns";
 import { ExportButton } from "./export-button";
-import SubmissionSheet from "./sheet";
+import SubmissionSheet from "./sheet/sheet";
 
 const getFirstDataField = (submissions: SubmissionSent[]) => {
   if (submissions.length === 0) return "data.name";
@@ -17,18 +17,30 @@ const getFirstDataField = (submissions: SubmissionSent[]) => {
   return `data.${firstField}`;
 };
 
-export default function FormsPage() {
+export default function Submissions({ id }: { id?: string }) {
   const { form } = useForm();
-  // const form = formData[0];
+  const [selectedSubmission, setSelectedSubmission] = useState<SubmissionSent | null>(null);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  useEffect(() => {
+    if (id && form?.submissions) {
+      const submission = form.submissions.find((s) => s.id == id);
+      if (submission) {
+        setSelectedSubmission(submission);
+        setIsSheetOpen(true);
+      }
+    }
+  }, [id, form?.submissions]);
 
   if (!form) return null;
 
   const submissions = form.submissions || [];
   const columns = getColumns(submissions);
 
-  // const handleRowClick = (row: SubmissionSent) => {
-  //   console.log(row);
-  // };
+  const handleRowClick = (row: SubmissionSent) => {
+    console.log(row);
+    history.pushState(null, "", `/forms/${form.id}/submissions/${row.id}`);
+  };
 
   const filterProps = {
     column: getFirstDataField(submissions),
@@ -40,10 +52,10 @@ export default function FormsPage() {
       //   itemColumn: "status",
       //   items: [
       //     { title: "All statuses", value: undefined },
-      //     { title: "Pending", value: "pending" },
       //     { title: "Completed", value: "completed" },
-      //     { title: "Failed", value: "failed" },
+      //     { title: "Pending", value: "pending" },
       //     { title: "Blocked", value: "blocked" },
+      //     { title: "Failed", value: "failed" },
       //   ],
       // },
       {
@@ -63,15 +75,30 @@ export default function FormsPage() {
       {submissions.length === 0 ? (
         <DashCard title="No submissions yet." description="Get started by collecting submissions."></DashCard>
       ) : (
-        <DataTable
-          columns={columns}
-          data={submissions}
-          // onClickAction={handleRowClick}
-          filterProps={filterProps}
-          WrapperComponent={({ trigger, rowData }) => (
-            <SubmissionSheet trigger={trigger} submission={rowData} form={form} />
+        <>
+          <DataTable
+            columns={columns}
+            data={submissions}
+            onClickAction={handleRowClick}
+            filterProps={filterProps}
+            WrapperComponent={({ trigger, rowData }) => (
+              <SubmissionSheet trigger={trigger} submission={rowData} form={form} />
+            )}
+          />
+
+          {selectedSubmission && (
+            <SubmissionSheet
+              trigger={<span className="hidden" />}
+              submission={selectedSubmission}
+              form={form}
+              open={isSheetOpen}
+              setOpen={(open) => {
+                setIsSheetOpen(open);
+                if (!open) setSelectedSubmission(null);
+              }}
+            />
           )}
-        />
+        </>
       )}
     </>
   );

@@ -60,7 +60,7 @@ export default function MetricsPage() {
         <Filter forms={forms} />
       </DashTitle>
       <DashCardSkeleton>
-        <div className="flex flex-col gap-4 w-full p-6 pt-5">
+        <div className="flex flex-col gap-4 w-full p-6 pt-5 pb-4">
           <Metric
             range={selectedDateRange}
             value={chartData.reduce((acc, item) => acc + item.pending + item.completed + item.failed + item.blocked, 0)}
