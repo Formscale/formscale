@@ -213,6 +213,19 @@ export async function secureDelete<T extends keyof PrismaClient>(
   userId: string,
   id: string
 ) {
+  const record = await findUnique(prisma, model, { where: { id, userId } });
+  if (!record) throw new Error(`${String(model)} not found or you don't have permission to delete it`);
+
+  if (model === "form") {
+    const submissions = await prisma.submission.findMany({ where: { formId: id } });
+
+    for (const submission of submissions) {
+      await prisma.log.deleteMany({ where: { submissionId: submission.id } });
+    }
+
+    await prisma.submission.deleteMany({ where: { formId: id } });
+  }
+
   return await remove(prisma, model, { id, userId });
 }
 
@@ -225,21 +238,15 @@ export async function secureDeleteLinked<T extends keyof PrismaClient, P extends
   parentIdField: string = `${String(parentModel)}Id`
 ) {
   const child = await findUnique(prisma, childModel, { where: { id } });
-
-  if (!child) {
-    throw new Error(`${String(childModel)} not found`);
-  }
+  if (!child) throw new Error(`${String(childModel)} not found`);
 
   const parentId = child[parentIdField];
-
-  if (!parentId) {
-    throw new Error(`Invalid relationship: ${String(childModel)} has no ${parentIdField}`);
+  if (!parentId || !(await secureFind(prisma, parentModel, userId, parentId))) {
+    throw new Error(`Permission denied for this ${String(childModel)}`);
   }
 
-  const parent = await secureFind(prisma, parentModel, userId, parentId);
-
-  if (!parent) {
-    throw new Error(`Parent not found or you don't have permission to delete this ${String(childModel)}.`);
+  if (childModel === "submission") {
+    await prisma.log.deleteMany({ where: { submissionId: id } });
   }
 
   return await remove(prisma, childModel, { id });

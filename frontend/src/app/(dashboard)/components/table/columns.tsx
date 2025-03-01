@@ -125,9 +125,9 @@ const formatters = {
 
   boolean: (value: boolean) => <div>{contentFormatters.boolean(value)}</div>,
 
-  array: (value: any[]) => <div>{value.map((v) => contentFormatters.array(v.toString()))}</div>,
+  array: (value: any[]) => <div>{contentFormatters.array(value)}</div>,
 
-  object: (value: object) => <div>{contentFormatters.object(value)}</div>, // JSON.stringify?
+  object: (value: object) => <div>{contentFormatters.object(value)}</div>,
 
   default: (value: any) => <div>{contentFormatters.default(value)}</div>,
 };

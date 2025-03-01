@@ -28,7 +28,7 @@ interface FormPartProps<T extends FieldValues> {
 
 function Wrapper({ children, type }: { children: React.ReactNode; type: string }) {
   if (["switch", "checkbox"].includes(type)) {
-    return <div className="w-full flex justify-between items-start mt-0.5 -mb-0.5">{children}</div>;
+    return <div className="w-full flex justify-between items-start mt-0.5 -mb-1">{children}</div>;
   }
 
   return <>{children}</>;
@@ -60,6 +60,17 @@ export default function FormPart<T extends FieldValues>({
             {...field}
             disabled={disabled}
             className={className}
+            onChange={(e) => {
+              if (type === "number") {
+                const value = e.target.value === "" ? "" : Number(e.target.value);
+
+                if (!isNaN(value as number)) {
+                  field.onChange(value);
+                }
+              } else {
+                field.onChange(e.target.value);
+              }
+            }}
             autoComplete={type === "password" ? "new-password" : "on"}
             style={
               type === "password"

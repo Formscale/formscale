@@ -69,7 +69,8 @@ export default function LogsContent({ submission }: { submission: SubmissionSent
       {logs.map((log, index) => (
         <Link href={`/logs/${log.id}`} key={index}>
           <SubmissionItem
-            label={format(new Date(log.createdAt), "MM/dd/yyyy 'at' h:mm:ss a")}
+            // label={format(new Date(log.createdAt), "MM/dd/yyyy 'at' h:mm:ss a")}
+            label={format(new Date(log.createdAt), "h:mm:ss a")}
             value={`${log.code} - ${log.message}`}
           />
         </Link>

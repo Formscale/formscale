@@ -3,19 +3,7 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import {
-  CalendarIcon,
-  ChatBubbleIcon,
-  CheckboxIcon,
-  DropdownMenuIcon,
-  EnvelopeOpenIcon,
-  FileIcon,
-  Link1Icon,
-  MixIcon,
-  Pencil1Icon,
-  TextIcon,
-  TrashIcon,
-} from "@radix-ui/react-icons";
+import { EnvelopeOpenIcon, MixIcon, Pencil1Icon, TextIcon, TrashIcon } from "@radix-ui/react-icons";
 
 import { DialogSkeleton } from "@/components/default-dialog";
 import { useForm } from "@/providers/form";
@@ -23,17 +11,29 @@ import { useForm } from "@/providers/form";
 import { DataCardSkeleton } from "@/app/(dashboard)/components/data-card";
 import Item from "@/app/(dashboard)/components/item";
 import { DeleteDialog } from "@/components/default-dialog";
-import { Field, TextSchema } from "@formhook/types";
-import { ComponentType, useState } from "react";
+import { useValidation } from "@/hooks/use-validation";
+import { useError } from "@/providers";
+import { Field, TextSchema, Validation } from "@formhook/types";
+import { useEffect, useState } from "react";
+import TextDialog from "./fields/text";
+import ThemeCard from "./theme";
+import ValidationCard from "./validation";
 
-export default function HooksPage() {
+export default function BuilderPage() {
   const { form } = useForm();
-  const [fields, setFields] = useState<Field[]>([]);
+  const [validations, setValidations] = useState<Validation>({} as Validation);
+  const [unsavedChanges, setUnsavedChanges] = useState(false);
+  const { removeField } = useValidation(form?.id || "");
   const [open, setOpen] = useState(false);
+  const { handleToast } = useError();
 
   if (!form) return null;
 
-  const validations = form.settings.validation;
+  useEffect(() => {
+    const existingFields = form.settings.validation.fields as Field[];
+
+    setValidations({ ...form.settings.validation, fields: existingFields });
+  }, [form.settings.validation.fields]);
 
   const items = [
     {
@@ -41,14 +41,29 @@ export default function HooksPage() {
       title: "Text",
       icon: TextIcon,
       description: "Set a minimum and maximum length.",
+      dialog: <TextDialog {...validations?.fields?.find((field) => field.type === "text")!} />,
       onClick: () => {
-        setFields([
-          ...fields,
-          TextSchema.parse({
-            type: "text",
-          }),
-        ]);
-        setOpen(false);
+        if (!unsavedChanges) {
+          setValidations({
+            ...validations,
+            fields: [
+              ...validations.fields,
+              TextSchema.parse({
+                type: "text",
+                min: 0,
+                max: 0,
+              }),
+            ],
+          });
+
+          setUnsavedChanges(true);
+          handleToast("warning", "Unsaved changes. Save text settings by editing the field.");
+
+          setOpen(false);
+          return;
+        }
+
+        handleToast("warning", "Save previous changes before adding a new field.");
       },
     },
     {
@@ -67,55 +82,55 @@ export default function HooksPage() {
       //   dialog: <WebhookEditDialog {...form.settings.webhooks.find((w) => w.type === "webhook")!} />,
       onClick: () => console.log("email"),
     },
-    {
-      type: "date",
-      title: "Date",
-      icon: CalendarIcon,
-      description: "Set a minimum and maximum date.",
-      onClick: () => console.log("date"),
-    },
-    {
-      type: "url",
-      title: "URL",
-      icon: Link1Icon,
-      description: "Validate URLs, allow certain domains.",
-      onClick: () => console.log("url"),
-    },
-    {
-      type: "tel",
-      title: "Tel",
-      icon: ChatBubbleIcon,
-      description: "Validate phone numbers, allow certain countries.",
-      onClick: () => console.log("tel"),
-    },
-    {
-      type: "checkbox",
-      title: "Checkbox",
-      icon: CheckboxIcon,
-      description: "Create a list of options, allow selections.",
-      onClick: () => console.log("checkbox"),
-    },
-    {
-      type: "select",
-      title: "Select",
-      icon: DropdownMenuIcon,
-      description: "Create a list of options, allow selections.",
-      onClick: () => console.log("select"),
-    },
-    {
-      type: "file",
-      title: "File",
-      icon: FileIcon,
-      description: "Validate file types, set a maximum size and file count.",
-      onClick: () => console.log("file"),
-    },
-  ].map((service) => ({
-    ...service,
+    // {
+    //   type: "date",
+    //   title: "Date",
+    //   icon: CalendarIcon,
+    //   description: "Set a minimum and maximum date.",
+    //   onClick: () => console.log("date"),
+    // },
+    // {
+    //   type: "url",
+    //   title: "URL",
+    //   icon: Link1Icon,
+    //   description: "Validate URLs, allow certain domains.",
+    //   onClick: () => console.log("url"),
+    // },
+    // {
+    //   type: "tel",
+    //   title: "Tel",
+    //   icon: ChatBubbleIcon,
+    //   description: "Validate phone numbers, allow certain countries.",
+    //   onClick: () => console.log("tel"),
+    // },
+    // {
+    //   type: "checkbox",
+    //   title: "Checkbox",
+    //   icon: CheckboxIcon,
+    //   description: "Create a list of options, allow selections.",
+    //   onClick: () => console.log("checkbox"),
+    // },
+    // {
+    //   type: "select",
+    //   title: "Select",
+    //   icon: DropdownMenuIcon,
+    //   description: "Create a list of options, allow selections.",
+    //   onClick: () => console.log("select"),
+    // },
+    // {
+    //   type: "file",
+    //   title: "File",
+    //   icon: FileIcon,
+    //   description: "Validate file types, set a maximum size and file count.",
+    //   onClick: () => console.log("file"),
+    // },
+  ].map((field) => ({
+    ...field,
     dropdownItems: [
       {
         title: "Edit",
         icon: Pencil1Icon,
-        // dialog: service.dialog,
+        dialog: field?.dialog,
       },
       {
         title: "Delete",
@@ -124,8 +139,10 @@ export default function HooksPage() {
           <DeleteDialog
             title={`Delete field?`}
             description="This action cannot be undone."
-            buttonText={`Delete ${service.title}`}
-            onDeleteAction={() => console.log(`delete ${service.type}`)}
+            buttonText={`Delete ${field.title}`}
+            onDeleteAction={() => {
+              // removeField(field.id);
+            }}
           />
         ),
       },
@@ -152,7 +169,7 @@ export default function HooksPage() {
             ))}
             <div className="mt-2 w-full">
               <Button variant="secondary" className="text-xs font-bold w-full" asChild>
-                <Link href="/templates">Use A Template</Link>
+                <Link href="/components">Use A Component</Link>
               </Button>
             </div>
           </DialogSkeleton>
@@ -168,17 +185,22 @@ export default function HooksPage() {
               </Link>
             </span>
           </div>
-          {fields.map((item, index) => (
-            <Item
-              key={index}
-              {...item}
-              title={item.name || items.find((i) => i.type === item.type)?.title || ""}
-              description={item.description || items.find((i) => i.type === item.type)?.description || ""}
-              icon={items.find((i) => i.type === item.type)?.icon as ComponentType}
-            />
-          ))}
+          {validations?.fields?.map((item, index) => {
+            const matchingItem = items.find((i) => i.type === item.type)!;
+            return (
+              <Item
+                key={index}
+                {...matchingItem}
+                title={item?.name || matchingItem.title}
+                description={item?.description || matchingItem.description}
+              />
+            );
+          })}
         </div>
       </DataCardSkeleton>
+
+      <ValidationCard form={form} />
+      <ThemeCard form={form} />
     </div>
   );
 }

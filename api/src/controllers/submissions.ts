@@ -1,10 +1,11 @@
 import db from "@/db";
-import { create, secureDeleteLinked, secureFind, secureFindMany, update } from "@/db/crud";
+import { secureDeleteLinked, secureFind, secureFindMany, update } from "@/db/crud";
 import validator from "@/middleware/validation";
 import Response from "@/utils/response";
 import { getUser } from "@/utils/user";
 import { EditStatusSchema } from "@formhook/types";
 import { Hono } from "hono";
+import logger from "../utils/logs";
 
 const submissions = new Hono<{ Bindings: Env }>();
 
@@ -65,12 +66,11 @@ export const SubmissionsController = submissions
         data: { status },
       });
 
-      await create(db(ctx.env), "log", {
+      await logger({
+        env: ctx.env,
         submissionId: id,
-        type: "submission",
         message: `Submission status updated to ${status}`,
-        code: 200,
-        data: JSON.stringify({ status }),
+        data: { status },
       });
 
       return new Response(ctx).success({ message: "Submission status updated" });
@@ -81,17 +81,14 @@ export const SubmissionsController = submissions
       const { id } = ctx.req.param();
       const user = getUser(ctx);
 
-      console.log(id, user.id);
-
       await secureDeleteLinked(db(ctx.env), "submission", "form", user.id, id);
 
-      await create(db(ctx.env), "log", {
-        submissionId: id,
-        type: "submission",
-        message: `Submission deleted`,
-        code: 200,
-        data: JSON.stringify({ id }),
-      });
+      // await logger({
+      //   env: ctx.env,
+      //   submissionId: id,
+      //   message: `Submission deleted`,
+      //   data: { id },
+      // });
 
       return new Response(ctx).success({ message: "Submission deleted" });
     } catch (error) {

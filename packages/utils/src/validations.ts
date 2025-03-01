@@ -5,8 +5,8 @@ export function fieldToZodSchema(field: Field): z.ZodType {
   switch (field.type) {
     case "text": {
       let schema = z.string();
-      if (field.minLength) schema = schema.min(field.minLength);
-      if (field.maxLength) schema = schema.max(field.maxLength);
+      if (field.min) schema = schema.min(field.min);
+      if (field.max) schema = schema.max(field.max);
       return field.required ? schema.min(1, "This field is required") : schema.optional();
     }
 

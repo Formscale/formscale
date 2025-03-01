@@ -45,7 +45,7 @@ export default function HooksPage() {
   const [emailSettings, setEmailSettings] = useState<EmailSettings | null>(null);
   const [hooks, setHooks] = useState<Webhook[]>([]);
 
-  const { form, refreshForm, updateForm } = useForm();
+  const { form, updateForm } = useForm();
 
   if (!form) return null;
 

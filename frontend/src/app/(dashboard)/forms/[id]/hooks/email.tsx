@@ -41,6 +41,10 @@ export default function EmailEditDialog({ emailSettings, admins }: EmailEditDial
     await updateForm(form);
   }
 
+  const enabledChildren = formContext?.development ? (
+    <span className="text-xs text-muted-foreground">Email delivery is disabled in development mode.</span>
+  ) : null;
+
   const fields = [
     {
       name: "to",
@@ -58,14 +62,20 @@ export default function EmailEditDialog({ emailSettings, admins }: EmailEditDial
       children: (
         <span className="text-xs text-muted-foreground">
           Uses the default branding or a{" "}
-          <Link href={`/forms/${formContext?.id}/settings`} className="underline" target="_blank">
+          <Link href={`/forms/${formContext?.id}/builder`} className="underline" target="_blank">
             custom theme
           </Link>
           .
         </span>
       ),
     },
-    { name: "enabled", type: "switch", description: "Email Enabled", placeholder: "true" },
+    {
+      name: "enabled",
+      type: "switch",
+      description: "Email Enabled",
+      placeholder: "true",
+      children: enabledChildren,
+    },
   ];
 
   return (

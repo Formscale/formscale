@@ -1,6 +1,7 @@
 "use client";
 
 import Loading from "@/components/loading";
+import { useError } from "@/providers/error";
 import { useUser } from "@/providers/user";
 import { EditUser, EditUserSchema } from "@formhook/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,6 +12,7 @@ import DashTitle from "../components/title";
 
 export default function ProfilePage() {
   const { user, updateUser, isLoading } = useUser();
+  const { handleToast } = useError();
 
   const form = useForm<EditUser>({
     resolver: zodResolver(EditUserSchema),
@@ -27,6 +29,7 @@ export default function ProfilePage() {
         name: user.name || "",
         email: user.email || "",
         development: user.development,
+        twoFactor: user.twoFactor,
       });
     }
   }, [user, form]);
@@ -35,6 +38,7 @@ export default function ProfilePage() {
     // console.log(values);
 
     await updateUser(values);
+    // handleToast("success", "Profile updated successfully");
   }
 
   const fields = [
@@ -48,6 +52,18 @@ export default function ProfilePage() {
     },
   ];
 
+  const twoFactorField = {
+    name: "twoFactor",
+    description: "Enabled",
+    placeholder: "false",
+    type: "switch",
+    children: (
+      <p className="text-xs text-muted-foreground">
+        2FA secures your account by sending a code to your email before logging in.
+      </p>
+    ),
+  };
+
   if (isLoading) return <Loading />;
 
   return (
@@ -57,6 +73,14 @@ export default function ProfilePage() {
         title="Your account"
         description="Save Profile"
         fields={fields}
+        form={form}
+        disabled={isLoading}
+        onSubmitAction={onSubmit}
+      ></DataCard>
+      <DataCard
+        title="Two-Factor Auth (2FA)"
+        description={`${user?.twoFactor ? "Disable" : "Enable"} 2FA`}
+        fields={[twoFactorField]}
         form={form}
         disabled={isLoading}
         onSubmitAction={onSubmit}

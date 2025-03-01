@@ -20,3 +20,4 @@ export const LogSchema = z.object({
 });
 
 export type Log = z.infer<typeof LogSchema>;
+export type LogType = z.infer<typeof LogTypeSchema>;

@@ -36,6 +36,20 @@ export const ResendOtpSchema = z.object({
   email: z.string().email(),
 });
 
+export const ForgotPasswordSchema = z.object({
+  email: z.string().email(),
+});
+
+export const ResetPasswordSchema = z
+  .object({
+    password: password,
+    passwordConfirmation: password,
+  })
+  .refine((data) => data.password === data.passwordConfirmation, {
+    message: "Passwords don't match",
+    path: ["passwordConfirmation"],
+  });
+
 export const AuthResponseSchema = z.object({
   token: z.string(),
   user: SafeUserSchema,
@@ -46,3 +60,4 @@ export type Login = z.infer<typeof LoginSchema>;
 export type Otp = z.infer<typeof OtpSchema>;
 export type ResendOtp = z.infer<typeof ResendOtpSchema>;
 export type AuthResponse = z.infer<typeof AuthResponseSchema>;
+export type ForgotPassword = z.infer<typeof ForgotPasswordSchema>;

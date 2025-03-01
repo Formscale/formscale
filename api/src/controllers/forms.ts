@@ -7,6 +7,7 @@ import {
   Admin,
   CreateFormSchema,
   EmailSettings,
+  Field,
   Form,
   FormEditSchema,
   FormSettings,
@@ -15,6 +16,7 @@ import {
   ValidationSchema,
   Webhook,
 } from "@formhook/types";
+import { createFormSchema } from "@formhook/utils";
 import { Context, Hono } from "hono";
 import { customAlphabet } from "nanoid";
 
@@ -202,9 +204,28 @@ export const FormController = forms
       try {
         const user = getUser(ctx);
         const { id } = ctx.req.param();
-        const { validation } = await ctx.req.json();
+        const validation = await ctx.req.json();
+
+        console.log(validation);
 
         const currentForm = await getForm(ctx, user, id);
+
+        // filter out honeypot fields?
+
+        const validationFields = validation.fields.filter((field: Field) => field.type !== "honeypot");
+        const currentValidationFields = currentForm.settings.validation.fields.filter(
+          (field: Field) => field.type !== "honeypot"
+        );
+
+        if (validationFields.length > 0 && validationFields !== currentValidationFields) {
+          try {
+            const schema = createFormSchema(validationFields);
+
+            validation.schema = schema;
+          } catch (error) {
+            return new Response(ctx).error(error);
+          }
+        }
 
         return updateForm(ctx, currentForm, validation, "validation");
       } catch (error) {

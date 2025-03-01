@@ -13,7 +13,7 @@ export const getToken = async (user: User, secret: string) => {
 
   const payload = {
     data: safeUser,
-    exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7, // 30 days
+    exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // 1 day
   };
 
   const token = await sign(payload, secret);
@@ -65,7 +65,9 @@ export const AuthController = auth
         return new Response(ctx).error("Invalid password. Try again or reset your password.", 401);
       }
 
-      if (!existingUser.verified) {
+      const reason = existingUser.twoFactor ? "Two-factor authentication is enabled." : "Email not verified.";
+
+      if (!existingUser.verified || existingUser.twoFactor) {
         if (!existingUser.otpExpiry || !otpCooldown(existingUser.otpExpiry)) {
           const { otp, otpExpiry } = generateOtp();
 
@@ -76,12 +78,12 @@ export const AuthController = auth
 
           await sendVerifyEmail([email], otp, ctx.env);
 
-          return new Response(ctx).error("Email not verified. A new verification code has been sent.", 403);
+          return new Response(ctx).error(`${reason} A new verification code has been sent.`, 403);
         }
 
         const remainingSeconds = getCooldown(existingUser.otpExpiry);
         return new Response(ctx).error(
-          `Email not verified. Please wait ${remainingSeconds.toLocaleString()} seconds before requesting a new code.`,
+          `${reason}. Please wait ${remainingSeconds.toLocaleString()} seconds before requesting a new code.`,
           403
         );
       }
@@ -134,7 +136,7 @@ export const AuthController = auth
       return new Response(ctx).error("User not found. Try signing up instead.", 404);
     }
 
-    if (user.verified) {
+    if (user.verified && !user.twoFactor) {
       return new Response(ctx).error("Email already verified. Try logging in instead.", 400);
     }
 
@@ -168,7 +170,7 @@ export const AuthController = auth
       return new Response(ctx).error("User not found. Try signing up instead.", 404);
     }
 
-    if (existingUser.verified) {
+    if (existingUser.verified && !existingUser.twoFactor) {
       return new Response(ctx).error("User already verified. Try logging in instead.", 400);
     }
 

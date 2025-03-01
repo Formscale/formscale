@@ -13,6 +13,7 @@ import {
   SafeUser,
   Signup,
   SubmissionSent,
+  Validation,
 } from "@formhook/types";
 import { useState } from "react";
 
@@ -44,6 +45,10 @@ export interface Endpoints {
   };
   "forms/:id/edit": {
     input: FormEdit;
+    output: { form: Form };
+  };
+  "forms/:id/edit/validation": {
+    input: Validation;
     output: { form: Form };
   };
   "forms/:id/delete": {

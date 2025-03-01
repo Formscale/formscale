@@ -7,8 +7,6 @@ export async function uploadFile(file: File, env: Env, ctx: Context) {
     throw new Error("File size exceeds the maximum limit");
   }
 
-  // const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, "-").toLowerCase();
-  // const key = `${Date.now()}-${safeName}`;
   const ext = file.name.split(".").pop() || "";
   const key = `${nanoid(12)}.${ext}`;
 

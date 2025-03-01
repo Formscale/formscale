@@ -5,9 +5,10 @@ import { sendSubmissionEmail } from "@/services/email";
 import { uploadFiles } from "@/services/storage";
 import Response from "@/utils/response";
 import { getUser } from "@/utils/user";
-import { IdSchema, Webhook } from "@formhook/types";
+import { IdSchema, SubmissionStatus, Webhook } from "@formhook/types";
 import { Context, Hono } from "hono";
 import { z } from "zod";
+import logger from "../utils/logs";
 
 function getLocation(ctx: Context): string {
   const cf = ctx.req.raw.cf;
@@ -18,6 +19,16 @@ function getLocation(ctx: Context): string {
   const timezone = cf.timezone ? ` (${cf.timezone.toString().replace("_", " ")})` : "";
 
   return location.length !== 0 ? `${location.join(", ")}${timezone}` : "Unknown";
+}
+
+async function blockSubmission(ctx: Context, submissionId: string, message?: string, type?: SubmissionStatus) {
+  await update(db(ctx.env), "submission", {
+    where: { id: submissionId },
+    data: {
+      status: type || "blocked",
+      data: message ? JSON.stringify({ error: message }) : undefined,
+    },
+  });
 }
 
 const submit = new Hono<{ Bindings: Env }>();
@@ -51,31 +62,6 @@ export const SubmitController = submit.post("/:id", async (ctx) => {
       return new Response(ctx).error("Form not found", 404);
     }
 
-    if (!form.settings.isPublic) {
-      return new Response(ctx).error("Form is not active", 403);
-    }
-
-    if (form.settings.allowedOrigins.length > 0) {
-      if (!form.settings.allowedOrigins.includes("*")) {
-        const origin = ctx.req.header("origin");
-
-        if (!origin) {
-          return new Response(ctx).error("Origin is required.", 400);
-        }
-
-        const normalizedOrigin = origin?.toLowerCase().trim();
-        const normalizedAllowedOrigins = form.settings.allowedOrigins.map((o: string) => o.toLowerCase().trim());
-
-        if (!normalizedAllowedOrigins.includes(normalizedOrigin)) {
-          return new Response(ctx).error("Form cannot be submitted from this origin.", 403);
-        }
-      }
-    }
-
-    if (!form.settings.allowAnonymous && !getUser(ctx)) {
-      return new Response(ctx).error("Form is not public", 403);
-    }
-
     const saveResponses = form.settings.saveResponses;
 
     const submission = await create(db(ctx.env), "submission", {
@@ -84,14 +70,83 @@ export const SubmitController = submit.post("/:id", async (ctx) => {
 
     submissionId = submission.id;
 
-    await create(db(ctx.env), "log", {
+    if (!form.settings.isPublic) {
+      const message = "Form is not active";
+
+      await logger({
+        env: ctx.env,
+        submissionId,
+        message,
+        code: 403,
+        data: { formId, submissionId },
+      });
+
+      await blockSubmission(ctx, submissionId, message);
+
+      return new Response(ctx).error(message, 403);
+    }
+
+    if (form.settings.allowedOrigins.length > 0) {
+      if (!form.settings.allowedOrigins.includes("*")) {
+        const origin = ctx.req.header("origin");
+
+        const message = origin ? `Form cannot be submitted from ${origin}.` : "Origin is required.";
+
+        if (!origin) {
+          await logger({
+            env: ctx.env,
+            submissionId,
+            message,
+            code: 400,
+            data: { formId, submissionId },
+          });
+
+          await blockSubmission(ctx, submissionId, message);
+
+          // redirect to custom page instead of error?
+          return new Response(ctx).error(message, 400);
+        }
+
+        const normalizedOrigin = origin?.toLowerCase().trim();
+        const normalizedAllowedOrigins = form.settings.allowedOrigins.map((o: string) => o.toLowerCase().trim());
+
+        if (!normalizedAllowedOrigins.includes(normalizedOrigin)) {
+          await logger({
+            env: ctx.env,
+            submissionId,
+            message,
+            code: 403,
+            data: { formId, submissionId, origin },
+          });
+
+          await blockSubmission(ctx, submissionId, message);
+
+          return new Response(ctx).error(message, 403);
+        }
+      }
+    }
+
+    if (!form.settings.allowAnonymous && !getUser(ctx)) {
+      const message = "Form is not public";
+
+      await logger({
+        env: ctx.env,
+        submissionId,
+        message,
+        code: 403,
+        data: { formId, submissionId },
+      });
+
+      await blockSubmission(ctx, submissionId, message);
+
+      return new Response(ctx).error(message, 403);
+    }
+
+    await logger({
+      env: ctx.env,
       submissionId,
-      type: "submission",
-      data: JSON.stringify({
-        formId,
-      }),
       message: "Submission created",
-      code: 200,
+      data: { formId, submissionId },
     });
 
     const fileFormData = new FormData();
@@ -119,6 +174,14 @@ export const SubmitController = submit.post("/:id", async (ctx) => {
 
         data = validation;
       } catch (err) {
+        await logger({
+          env: ctx.env,
+          submissionId,
+          message: "Validation failed",
+          code: 400,
+          data: { formId, submissionId, error: err },
+        });
+
         await update(db(ctx.env), "submission", {
           where: { id: submissionId },
           data: {
@@ -129,14 +192,6 @@ export const SubmitController = submit.post("/:id", async (ctx) => {
           },
         });
 
-        await create(db(ctx.env), "log", {
-          submissionId,
-          type: "submission",
-          message: "Validation failed",
-          code: 400,
-          data: JSON.stringify({ formId, submissionId, error: err }),
-        });
-
         return new Response(ctx).error(err);
       }
     }
@@ -145,7 +200,8 @@ export const SubmitController = submit.post("/:id", async (ctx) => {
       // check user agent, rate limit ip, check email, check honeypot, check keywords
       // pkgs: hono-rate-limiter, isBot
       // check keywords
-      const spam = hasSpam(data);
+      const dataString = typeof data === "string" ? data : JSON.stringify(data);
+      const spam = hasSpam(dataString);
 
       if (spam) {
         await update(db(ctx.env), "submission", {
@@ -160,17 +216,19 @@ export const SubmitController = submit.post("/:id", async (ctx) => {
           },
         });
 
-        await create(db(ctx.env), "log", {
+        const message = "Spam detected";
+
+        await logger({
+          env: ctx.env,
           submissionId,
-          type: "submission",
-          message: "Spam detected",
+          message,
           code: 403,
-          data: JSON.stringify({ formId, submissionId, spam, error: "Spam detected" }),
+          data: { formId, submissionId, spam },
         });
 
         // redirect early
 
-        return new Response(ctx).error("Spam detected", 403);
+        return new Response(ctx).error(message, 403);
       }
     }
 
@@ -182,12 +240,11 @@ export const SubmitController = submit.post("/:id", async (ctx) => {
     }
 
     if (fileUploads.length > 0) {
-      await create(db(ctx.env), "log", {
+      await logger({
+        env: ctx.env,
         submissionId,
-        type: "submission",
         message: "Files uploaded",
-        code: 200,
-        data: JSON.stringify({ formId, submissionId, files: uploadedFiles }),
+        data: { formId, submissionId, files: uploadedFiles },
       });
     }
 
@@ -212,17 +269,15 @@ export const SubmitController = submit.post("/:id", async (ctx) => {
                 },
               });
 
-              await create(db(ctx.env), "log", {
+              const message = response.ok ? "Webhook delivered" : `Webhook failed: ${response.statusText}`;
+
+              await logger({
+                env: ctx.env,
                 submissionId,
                 type: "webhook",
-                message: response.ok ? "Webhook delivered" : `Webhook failed: ${response.statusText}`,
+                message,
                 code: response.status,
-                data: JSON.stringify({
-                  formId,
-                  submissionId,
-                  webhookUrl: webhook.url,
-                  method: webhook.method,
-                }),
+                data: { formId, submissionId, webhookUrl: webhook.url, method: webhook.method },
               });
 
               if (!response.ok) {
@@ -231,23 +286,26 @@ export const SubmitController = submit.post("/:id", async (ctx) => {
 
               return { success: true, url: webhook.url };
             } catch (error) {
-              await create(db(ctx.env), "log", {
+              const err = error instanceof Error ? error.message : "Unknown error";
+
+              await logger({
+                env: ctx.env,
                 submissionId,
                 type: "webhook",
-                message: `Webhook error: ${error instanceof Error ? error.message : "Unknown error"}`,
+                message: `Webhook error`,
                 code: 500,
-                data: JSON.stringify({
+                data: {
                   formId,
                   submissionId,
                   webhookUrl: webhook.url,
-                  error: error instanceof Error ? error.message : "Unknown error",
-                }),
+                  error: err,
+                },
               });
 
               return {
                 success: false,
                 url: webhook.url,
-                error: error instanceof Error ? error.message : "Unknown error",
+                error: err,
               };
             }
           })
@@ -303,24 +361,15 @@ export const SubmitController = submit.post("/:id", async (ctx) => {
       data: { updatedAt: new Date() },
     });
 
-    console.log(updatedSubmission);
-
-    // console.log(
-    //   "request",
-    //   ctx.req,
-    //   ctx.req.url,
-    //   ctx.req.header("host"),
-    //   ctx.req.header("origin"),
-    //   ctx.req.header("referer")
-    // );
+    // console.log(updatedSubmission);
 
     if (form.settings.successUrl) {
-      await create(db(ctx.env), "log", {
+      await logger({
+        env: ctx.env,
         submissionId,
-        type: "submission",
         message: `Redirected to ${form.settings.successUrl.replace(/^https?:\/\//, "")}`,
         code: 302,
-        data: JSON.stringify({ formId, submissionId, url: form.settings.successUrl }),
+        data: { formId, submissionId, url: form.settings.successUrl },
       });
 
       return new Response(ctx).redirect(form.settings.successUrl);
@@ -328,12 +377,16 @@ export const SubmitController = submit.post("/:id", async (ctx) => {
 
     return new Response(ctx).redirect(`${ctx.env.FRONTEND_URL}/success/${updatedSubmission.id}`);
   } catch (err) {
-    await create(db(ctx.env), "log", {
+    const message = typeof err === "string" ? err : (err as Error).message || "Unknown error";
+
+    await blockSubmission(ctx, submissionId, message, "failed");
+
+    await logger({
+      env: ctx.env,
       submissionId,
-      type: "submission",
-      message: typeof err === "string" ? err : (err as Error).message || "Unknown error",
+      message,
       code: 500,
-      data: JSON.stringify({ error: err }),
+      data: { error: err },
     });
 
     console.error(err);

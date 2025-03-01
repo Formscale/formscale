@@ -21,7 +21,7 @@ export const UserController = users
       return new Response(ctx).error(error);
     }),
     async (ctx) => {
-      const { name, email, development } = await ctx.req.json();
+      const { name, email, development, twoFactor } = await ctx.req.json();
       const user = getUser(ctx);
 
       const updatedUser = await update(db(ctx.env), "user", {
@@ -30,6 +30,7 @@ export const UserController = users
           name,
           // email,
           development,
+          twoFactor,
         },
       });
 

@@ -2,7 +2,7 @@ import { z } from "zod";
 import { SubmissionSentSchema, SubmissionStatusSchema } from "./submission";
 import { MAX_FILE_SIZE, ValidationSchema } from "./validations";
 
-export const HookEnum = z.enum(["webhook", "discord", "email"]);
+export const HookEnum = z.enum(["webhook", "discord", "email", "slack"]);
 
 export const WebhookSchema = z.object({
   type: HookEnum.default("webhook"),
@@ -19,6 +19,16 @@ export const DiscordSchema = WebhookSchema.extend({
     .string()
     .url()
     .regex(/^https:\/\/discord\.com\/api\/webhooks\/\d+\/[\w-]+$/, "Please enter a valid Discord webhook URL"),
+});
+
+export const SlackSchema = WebhookSchema.extend({
+  type: z.literal("slack").default("slack"),
+  url: z
+    .string()
+    .url()
+    .refine((url) => /^https:\/\/hooks\.slack\.com\/services\/T[A-Z0-9]+\/B[A-Z0-9]+\/[a-zA-Z0-9]+$/.test(url), {
+      message: "Must be a valid Slack webhook URL (https://hooks.slack.com/services/...)",
+    }),
 });
 
 export const EmailSettingsSchema = z.object({
@@ -70,6 +80,8 @@ export const UTMSettingsSchema = z.object({
   campaign: z.string().optional(),
 });
 
+// yeah i know this is cooked
+
 export const FormSettingsSchema = z.object({
   isPublic: z.boolean().optional().default(true),
   allowAnonymous: z.boolean().optional().default(true),
@@ -80,9 +92,10 @@ export const FormSettingsSchema = z.object({
   admins: z.array(AdminSchema).optional().default([]),
   theme: ThemeSchema.optional().default({}),
   utm: UTMSettingsSchema.optional().default({}),
+  captchaService: z.enum(["None", "reCAPTCHA", "hCAPTCHA", "Turnstile"]).optional().default("None"),
   reCaptcha: z
     .string()
-    .regex(/^[0-9a-f]{32}$/, "Please enter a valid ReCaptcha site key")
+    .regex(/^[0-9a-f]{32}$/, "Please enter a valid CAPTCHA site key")
     .optional()
     .or(z.literal("")),
   webhooks: z.array(WebhookSchema).optional().default([]),

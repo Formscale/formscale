@@ -21,7 +21,7 @@ export default function DefaultSheet<TData extends { id: string }, TValue>({
   open,
   setOpen,
 }: DefaultSheetProps<TData, TValue>) {
-  console.log("test", rowData);
+  // console.log("test", rowData);
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>

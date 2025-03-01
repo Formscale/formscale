@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /resend/
+Disallow: /verify/
+Disallow: /success/*
+Disallow: /error/*
+Disallow: /teams/verify/*
+Disallow: /dashboard/*

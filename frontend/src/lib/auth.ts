@@ -3,7 +3,7 @@ import { NextRequest } from "next/server";
 
 export class Auth {
   static setToken(token: string) {
-    document.cookie = `token=${token}; path=/; max-age=${60 * 60 * 24 * 7}`;
+    document.cookie = `token=${token}; path=/; max-age=${60 * 60 * 24}; SameSite=Strict; Secure`;
   }
 
   static removeToken() {

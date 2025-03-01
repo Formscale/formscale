@@ -34,23 +34,23 @@ export enum TEMPLATES {
 }
 
 export const BaseFieldSchema = z.object({
-  id: z.string().optional(),
-  name: z.string().optional(),
-  placeholder: z.string().optional(),
-  description: z.string().optional(),
+  id: z.string().optional().default(""),
+  name: z.string().optional().default(""),
+  placeholder: z.string().optional().default(""),
+  description: z.string().optional().default(""),
   required: z.boolean().default(false),
 });
 
 export const TextSchema = BaseFieldSchema.extend({
   type: z.literal("text"),
-  minLength: z.number().optional(),
-  maxLength: z.number().optional(),
+  min: z.number().min(0, "Minimum value cannot be less than 0").optional(),
+  max: z.number().min(0, "Maximum value cannot be less than 0").optional(),
 });
 
 export const NumberSchema = BaseFieldSchema.extend({
   type: z.literal("number"),
-  min: z.number().optional(),
-  max: z.number().optional(),
+  min: z.number().min(0, "Minimum value cannot be less than 0").optional(),
+  max: z.number().min(0, "Maximum value cannot be less than 0").optional(),
 });
 
 export const EmailSchema = BaseFieldSchema.extend({
@@ -60,8 +60,8 @@ export const EmailSchema = BaseFieldSchema.extend({
 
 export const DateSchema = BaseFieldSchema.extend({
   type: z.literal("date"),
-  min: z.string().optional(),
-  max: z.string().optional(),
+  min: z.number().min(0, "Minimum value cannot be less than 0").optional(),
+  max: z.number().min(0, "Maximum value cannot be less than 0").optional(),
 });
 
 export const UrlSchema = BaseFieldSchema.extend({
@@ -78,16 +78,16 @@ export const TelSchema = BaseFieldSchema.extend({
 export const CheckboxSchema = BaseFieldSchema.extend({
   type: z.literal("checkbox"),
   options: z.array(z.string()),
-  minSelected: z.number().optional(),
-  maxSelected: z.number().optional(),
+  minSelected: z.number().min(0, "Minimum selected value cannot be less than 0").optional(),
+  maxSelected: z.number().min(0, "Maximum selected value cannot be less than 0").optional(),
 });
 
 export const SelectSchema = BaseFieldSchema.extend({
   type: z.literal("select"),
   options: z.array(z.string()),
   multiple: z.boolean().default(false),
-  minSelected: z.number().optional(),
-  maxSelected: z.number().optional(),
+  minSelected: z.number().min(0, "Minimum selected value cannot be less than 0").optional(),
+  maxSelected: z.number().min(0, "Maximum selected value cannot be less than 0").optional(),
 });
 
 export const FileSchema = BaseFieldSchema.extend({
@@ -104,7 +104,7 @@ export const FileSchema = BaseFieldSchema.extend({
       FILE_TYPES.ZIP,
     ]),
   maxSize: z.number().max(MAX_FILE_SIZE).optional(),
-  maxFiles: z.number().optional(),
+  maxFiles: z.number().min(0, "Maximum files cannot be less than 0").optional(),
 });
 
 export const HoneypotSchema = BaseFieldSchema.extend({

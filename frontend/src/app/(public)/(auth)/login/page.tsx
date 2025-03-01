@@ -11,12 +11,18 @@ import { Form } from "@/components/ui/form";
 import { useFetch } from "@/hooks/fetch";
 import { useError } from "@/providers";
 import { useAuth } from "@/providers/auth";
+import Link from "next/link";
 import AuthButton from "../components/button";
 import AuthHeader from "../components/header";
 
 const formFields = [
   { name: "email", description: "Email", placeholder: "dris@formscale.dev", type: "email" },
-  { name: "password", description: "Password", placeholder: "********", type: "password" },
+  {
+    name: "password",
+    description: "Password",
+    placeholder: "********",
+    type: "password",
+  },
 ];
 
 export default function LoginPage() {
@@ -62,6 +68,11 @@ export default function LoginPage() {
             <FormPart key={field.name} form={form} {...field} />
           ))}
           <AuthButton text="Log In" props={{ disabled: isLoading }} />
+          <div className="flex w-full justify-end">
+            <Link href="/forgot" className="text-xs text-muted-foreground underline">
+              Forgot Password?
+            </Link>
+          </div>
         </form>
       </Form>
     </>

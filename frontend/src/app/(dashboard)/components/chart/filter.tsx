@@ -4,18 +4,23 @@ import { Form } from "@formhook/types";
 import { useState } from "react";
 import { Dropdown } from "../table/dropdown";
 
+export type Filters = {
+  dateRange: string | undefined;
+  formId: string | undefined;
+  status: string | undefined;
+};
+
 interface FilterProps {
   forms: Form[];
+  onFilterChangeAction: (filters: Filters) => void;
 }
 
-export function Filter({ forms }: FilterProps) {
+export function Filter({ forms, onFilterChangeAction }: FilterProps) {
   const [selectedTitles, setSelectedTitles] = useState({
-    dateRange: "All time",
+    dateRange: "Last 30 days",
     formName: "All forms",
     status: "All statuses",
   });
-
-  const [selectedDateRange, setSelectedDateRange] = useState<string>("all time");
 
   const filterGroups = [
     {
@@ -31,7 +36,6 @@ export function Filter({ forms }: FilterProps) {
     {
       itemColumn: "dateRange",
       items: [
-        { title: "All time", value: undefined },
         { title: "Last 30 days", value: "last_30_days" },
         { title: "Last 7 days", value: "last_7_days" },
         { title: "Last 24 hours", value: "last_24_hours" },
@@ -49,16 +53,33 @@ export function Filter({ forms }: FilterProps) {
     },
   ];
 
+  const [filters, setFilters] = useState<Filters>({
+    dateRange: "last_30_days",
+    formId: undefined,
+    status: undefined,
+  });
+
   const handleFilterSelect = (columnName: string, value: string | undefined, itemTitle: string) => {
     setSelectedTitles((prev) => ({ ...prev, [columnName]: itemTitle }));
 
+    const newFilters = { ...filters };
+
     switch (columnName) {
       case "dateRange":
-        setSelectedDateRange(value ?? "all time");
+        newFilters.dateRange = value;
+        break;
+      case "formName":
+        newFilters.formId = value;
+        break;
+      case "status":
+        newFilters.status = value;
         break;
       default:
         break;
     }
+
+    setFilters(newFilters);
+    onFilterChangeAction(newFilters);
   };
 
   return (

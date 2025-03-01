@@ -25,7 +25,7 @@ const filterProps = {
         { title: "Unauthorized (401)", value: 401 },
         { title: "Forbidden (403)", value: 403 },
         { title: "Not Found (404)", value: 404 },
-        { title: "Internal Server Error (500)", value: 500 },
+        { title: "Server Error (500)", value: 500 },
       ],
     },
     {

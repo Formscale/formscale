@@ -108,6 +108,7 @@ export function getColumns(submissions: SubmissionSent[]): ColumnDef<SubmissionS
             dialog: (
               <DeleteDialog
                 title="Delete submission?"
+                buttonText="Delete Submission, Logs, & Associated Data"
                 onDeleteAction={async () => {
                   await deleteItem("submissions/:id/delete", { id: submission.id }, { onSuccess: refreshForm });
                 }}

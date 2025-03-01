@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Bar, BarChart, XAxis, YAxis } from "recharts";
 
 const chartConfig = {
@@ -40,14 +33,25 @@ export default function Chart({ data }: { data: any[] }) {
           tickMargin={10}
           axisLine={false}
           tickFormatter={(value) => {
-            const date = new Date(value);
-            if (date.toLocaleDateString("en-US").length > 10) {
-              return date.toLocaleTimeString("en-US", { hour: "2-digit" });
+            try {
+              if (value.includes("T")) {
+                const [datePart, hourPart] = value.split("T");
+                const date = new Date(`${datePart}T${hourPart}:00:00`);
+                return date.toLocaleTimeString("en-US", { hour: "numeric", minute: "numeric" });
+              } else if (value.length === 10) {
+                const date = new Date(value);
+                return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+              } else {
+                const [year, month] = value.split("-");
+                const date = new Date(parseInt(year), parseInt(month) - 1, 1);
+                return date.toLocaleDateString("en-US", { month: "short", year: "2-digit" });
+              }
+            } catch (e) {
+              return value;
             }
-            return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
           }}
-          // interval={"preserveStartEnd"}
-          minTickGap={50}
+          interval="preserveEnd"
+          minTickGap={40}
         />
         <YAxis
           axisLine={false}
@@ -57,11 +61,11 @@ export default function Chart({ data }: { data: any[] }) {
           domain={["dataMin", "dataMax"]}
         />
         <ChartTooltip content={<ChartTooltipContent className="font-heading-pro" />} />
-        <ChartLegend content={<ChartLegendContent />} />
+        {/* <ChartLegend content={<ChartLegendContent />} /> */}
         <Bar dataKey="completed" fill="var(--color-completed)" radius={[6, 6, 0, 0]} barSize={10} />
         <Bar dataKey="pending" fill="var(--color-pending)" radius={[6, 6, 0, 0]} barSize={10} />
-        <Bar dataKey="failed" fill="var(--color-failed)" radius={[6, 6, 0, 0]} barSize={10} />
         <Bar dataKey="blocked" fill="var(--color-blocked)" radius={[6, 6, 0, 0]} barSize={10} />
+        <Bar dataKey="failed" fill="var(--color-failed)" radius={[6, 6, 0, 0]} barSize={10} />
       </BarChart>
     </ChartContainer>
   );

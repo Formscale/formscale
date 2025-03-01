@@ -25,6 +25,7 @@ model User {
   otpExpiry            DateTime?
   development          Boolean   @default(true)
   attempts             Int       @default(3)
+  twoFactor            Boolean   @default(false)
   verified             Boolean   @default(false)
   stripeCustomerId     String?
   subscriptionTier     String    @default("free")

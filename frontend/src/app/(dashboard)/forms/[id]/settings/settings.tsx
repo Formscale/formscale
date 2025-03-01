@@ -4,34 +4,41 @@ import DataCard from "@/app/(dashboard)/components/data-card";
 import { useForm as useFormProvider } from "@/providers/form";
 import { Form, FormEdit, FormEditSchema } from "@formhook/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
 import { useForm } from "react-hook-form";
+import { useProtectionFields } from "./captcha";
+
+export const getDefaultFormSettings = (form: Form) => {
+  return {
+    ...form,
+    settings: {
+      ...form.settings,
+      isPublic: form.settings.isPublic,
+      saveResponses: form.settings.saveResponses,
+      spamProtection: form.settings.spamProtection,
+      defaultStatus: form.settings.defaultStatus || "completed",
+      captchaService: form.settings.captchaService || "None",
+      reCaptcha: form.settings.reCaptcha || "",
+      allowedOrigins: form.settings.allowedOrigins || [],
+      successUrl: form.settings.successUrl || "",
+      theme: {
+        name: form.settings.theme?.name || "",
+        accent: form.settings.theme?.accent || "",
+        logo: form.settings.theme?.logo || "",
+        branding: form.settings.theme?.branding,
+      },
+    },
+  };
+};
 
 export default function Settings({ form }: { form: Form }) {
   const { updateForm, isLoading } = useFormProvider();
 
   const formSettings = useForm<FormEdit>({
     resolver: zodResolver(FormEditSchema),
-    defaultValues: {
-      ...form,
-      settings: {
-        ...form.settings,
-        isPublic: form.settings.isPublic,
-        saveResponses: form.settings.saveResponses,
-        spamProtection: form.settings.spamProtection,
-        defaultStatus: form.settings.defaultStatus || "completed",
-        reCaptcha: form.settings.reCaptcha || "",
-        allowedOrigins: form.settings.allowedOrigins || [],
-        successUrl: form.settings.successUrl || "",
-        theme: {
-          name: form.settings.theme?.name || "",
-          accent: form.settings.theme?.accent || "",
-          logo: form.settings.theme?.logo || "",
-          branding: form.settings.theme?.branding,
-        },
-      },
-    },
+    defaultValues: getDefaultFormSettings(form),
   });
+
+  const protectionFields = useProtectionFields(formSettings);
 
   console.log(formSettings.formState.errors);
 
@@ -92,102 +99,6 @@ export default function Settings({ form }: { form: Form }) {
         </span>
       ),
     },
-    // {
-    //   name: "settings.utm.enabled",
-    //   description: "UTM Tracking",
-    //   placeholder: "true",
-    //   type: "switch",
-    //   children: (
-    //     <p className="text-xs text-muted-foreground">
-    //       Formscale will automatically add UTM tracking parameters to your form submissions.
-    //     </p>
-    //   ),
-    // },
-    // {
-    //   name: "settings.utm.source",
-    //   description: "UTM Source",
-    //   placeholder: "formhook",
-    //   type: "text",
-    // },
-    // {
-    //   name: "settings.utm.medium",
-    //   description: "UTM Medium",
-    //   placeholder: "email",
-    //   type: "text",
-    // },
-    // {
-    //   name: "settings.utm.campaign",
-    //   description: "UTM Campaign",
-    //   placeholder: "formhook",
-    //   type: "text",
-    // },
-  ];
-
-  // move theme to builder w/ email settings?
-  const themeFields = [
-    {
-      name: "settings.theme.name",
-      description: "App Name",
-      placeholder: "Formscale",
-      type: "text",
-      children: (
-        <p className="text-xs text-muted-foreground">This name will be used within emails and default components.</p>
-      ),
-    },
-    {
-      name: "settings.theme.accent",
-      description: "Accent",
-      placeholder: "#ffce00",
-      type: "text",
-      children: <p className="text-xs text-muted-foreground">Used for buttons and highlights.</p>,
-    },
-    { name: "settings.theme.logo", description: "Logo", placeholder: "", type: "upload" },
-    {
-      name: "settings.theme.branding",
-      description: '"Powered by Formscale" branding',
-      placeholder: "true",
-      type: "switch",
-      disabled: true,
-      children: (
-        <p className="text-xs text-muted-foreground">Displays Formscale branding below emails and form components.</p>
-      ),
-    },
-  ];
-
-  const protectionFields = [
-    {
-      name: "settings.spamProtection",
-      description: "Spam Protection",
-      placeholder: "true",
-      type: "switch",
-      children: (
-        <p className="text-xs text-muted-foreground">
-          Formscale will automatically block spam submissions before reaching your inbox.
-        </p>
-      ),
-    },
-    {
-      name: "settings.reCaptcha",
-      description: "ReCaptcha Site Key",
-      placeholder: "MY_SITE_KEY",
-      type: "text",
-      children: (
-        <p className="text-xs text-muted-foreground">
-          Follow{" "}
-          <Link target="_blank" href="https://developers.google.com/recaptcha/docs/v3" className="underline">
-            these instructions
-          </Link>{" "}
-          to setup ReCaptcha with Formscale.
-        </p>
-      ),
-    },
-    {
-      name: "settings.allowedOrigins",
-      description: "Allowed Origins",
-      placeholder: "https://formscale.dev, http://localhost:3000",
-      type: "tags",
-      children: <p className="text-xs text-muted-foreground">Separate each origin with a comma or press enter.</p>,
-    },
   ];
 
   return (
@@ -204,14 +115,6 @@ export default function Settings({ form }: { form: Form }) {
         title="Processing"
         description="Save Changes"
         fields={processingFields}
-        form={formSettings}
-        disabled={isLoading}
-        onSubmitAction={onSubmit}
-      ></DataCard>
-      <DataCard
-        title="Theme"
-        description="Save Changes"
-        fields={themeFields}
         form={formSettings}
         disabled={isLoading}
         onSubmitAction={onSubmit}
