@@ -8,6 +8,8 @@ describe("number field validation", () => {
       id: "number",
       name: "Number",
       required: true,
+      placeholder: "Number",
+      description: "Number",
       min: 1,
       max: 10,
     };

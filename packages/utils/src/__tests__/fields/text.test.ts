@@ -8,6 +8,8 @@ describe("text field validation", () => {
       id: "name",
       name: "Name",
       required: true,
+      placeholder: "Name",
+      description: "Name",
     };
 
     const schema = fieldToZodSchema(field);
@@ -22,6 +24,8 @@ describe("text field validation", () => {
       id: "name",
       name: "Name",
       required: false,
+      placeholder: "Name",
+      description: "Name",
     };
 
     const schema = fieldToZodSchema(field);
@@ -36,7 +40,9 @@ describe("text field validation", () => {
       id: "name",
       name: "Name",
       required: true,
-      minLength: 3,
+      placeholder: "Name",
+      description: "Name",
+      min: 3,
     };
 
     const schema = fieldToZodSchema(field);
@@ -51,7 +57,9 @@ describe("text field validation", () => {
       id: "name",
       name: "Name",
       required: true,
-      maxLength: 5,
+      placeholder: "Name",
+      description: "Name",
+      max: 5,
     };
 
     const schema = fieldToZodSchema(field);
@@ -66,8 +74,10 @@ describe("text field validation", () => {
       id: "name",
       name: "Name",
       required: true,
-      minLength: 3,
-      maxLength: 5,
+      placeholder: "Name",
+      description: "Name",
+      min: 3,
+      max: 5,
     };
 
     const schema = fieldToZodSchema(field);

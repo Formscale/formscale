@@ -8,6 +8,8 @@ describe("email field validation", () => {
       id: "email",
       name: "Email",
       required: true,
+      placeholder: "Email",
+      description: "Email",
       allowedDomains: ["example.com"],
     };
 
