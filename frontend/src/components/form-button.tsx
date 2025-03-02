@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 
 import DefaultDialog from "@/components/default-dialog";
 import { Button } from "@/components/ui/button";
-import { useError, useForms } from "@/providers";
+import { useError, useForms, useUser } from "@/providers";
 
 const fields = [{ name: "name", type: "text", description: "Name", placeholder: "Untitled Form" }];
 
@@ -19,7 +19,8 @@ export default function FormButton({ variant = "action" }: { variant?: "action" 
   const [open, setOpen] = useState(false);
   const { post, isLoading } = useFetch();
   const { handleError } = useError();
-  const { refreshForms } = useForms();
+  const { user } = useUser();
+  const { forms, refreshForms } = useForms();
   const router = useRouter();
 
   const form = useForm<CreateForm>({
@@ -35,7 +36,13 @@ export default function FormButton({ variant = "action" }: { variant?: "action" 
 
       if (data.success && data.data?.form) {
         setOpen(false);
-        router.push(`/forms/${data.data?.form.id}`);
+
+        if (forms.length === 0 && user?.development) {
+          router.push(`/onboarding/${data.data?.form.id}`);
+        } else {
+          router.push(`/forms/${data.data?.form.id}`);
+        }
+
         refreshForms();
       }
     } catch (error) {

@@ -12,6 +12,7 @@ import Link from "next/link";
 import { FieldValues, Path, UseFormReturn } from "react-hook-form";
 import TagInput from "./tag-input";
 import { Button } from "./ui/button";
+import { Textarea } from "./ui/textarea";
 
 interface FormPartProps<T extends FieldValues> {
   form: UseFormReturn<T>;
@@ -32,6 +33,33 @@ function Wrapper({ children, type }: { children: React.ReactNode; type: string }
   }
 
   return <>{children}</>;
+}
+
+export function DefaultSelect({
+  field,
+  options,
+  placeholder,
+  disabled,
+}: {
+  field: FieldValues;
+  options: string[];
+  placeholder: string;
+  disabled?: boolean;
+}) {
+  return (
+    <Select {...field} onValueChange={field.onChange} disabled={disabled}>
+      <SelectTrigger className="max-w-sm">
+        <SelectValue placeholder={placeholder} />
+      </SelectTrigger>
+      <SelectContent className="w-full">
+        {options?.map((option: string) => (
+          <SelectItem key={option} value={option}>
+            {uppercase(option)}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
 }
 
 export default function FormPart<T extends FieldValues>({
@@ -81,6 +109,16 @@ export default function FormPart<T extends FieldValues>({
                   } as React.CSSProperties)
                 : undefined
             }
+          />
+        );
+      case "textarea":
+        return (
+          <Textarea
+            placeholder={placeholder}
+            {...field}
+            disabled={disabled}
+            rows={6}
+            className={`${className} resize-none bg-secondary/50`}
           />
         );
       case "upload":
@@ -134,20 +172,7 @@ export default function FormPart<T extends FieldValues>({
       case "checkbox":
         return <Checkbox {...field} checked={field.value} onCheckedChange={field.onChange} />;
       case "select":
-        return (
-          <Select {...field} onValueChange={field.onChange}>
-            <SelectTrigger className="max-w-sm">
-              <SelectValue placeholder={placeholder} />
-            </SelectTrigger>
-            <SelectContent>
-              {options?.map((option: string) => (
-                <SelectItem key={option} value={option}>
-                  {uppercase(option)}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        );
+        return <DefaultSelect field={field} options={options || []} placeholder={placeholder} />;
       case "tags":
         return (
           <TagInput

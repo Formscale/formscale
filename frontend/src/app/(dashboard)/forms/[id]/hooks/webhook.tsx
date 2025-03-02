@@ -38,7 +38,7 @@ export default function WebhookEditDialog(webhook: Webhook) {
 
   if (!webhook) return null;
 
-  console.log(form.formState.errors);
+  // console.log(form.formState.errors);
 
   async function onSubmit(values: Webhook) {
     await updateWebhook(values, formContext!, updateForm);

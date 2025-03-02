@@ -77,6 +77,10 @@ export interface Endpoints {
     input: EditStatus;
     output: { submission: SubmissionSent };
   };
+  "s/:id/click": {
+    input: null;
+    output: { message: string };
+  };
 
   "logs/all": {
     input: null;
@@ -94,7 +98,7 @@ interface FetchOptions<TEndpoint extends keyof Endpoints> extends RequestInit {
   params?: Record<string, string>;
 }
 
-interface ApiResponse<T> {
+export interface ApiResponse<T> {
   success: boolean;
   data?: T;
   error?: string | { field: string; message: string }[];
@@ -140,8 +144,25 @@ export function useFetch() {
         ...options,
       });
 
-      const data = (await response.json()) as ApiResponse<Endpoints[TEndpoint]["output"]>;
-      console.log("data", data);
+      if (response.status === 429) {
+        const retryAfter = response.headers.get("Retry-After");
+        const waitTime = retryAfter ? parseInt(retryAfter, 10) : 60;
+
+        const error = new Error(`Rate limit exceeded. Please try again in ${waitTime} seconds.`);
+        (error as any).status = 429;
+        (error as any).retryAfter = waitTime;
+        throw error;
+      }
+
+      let data;
+      try {
+        data = (await response.json()) as ApiResponse<Endpoints[TEndpoint]["output"]>;
+        console.log("data", data);
+      } catch (jsonError) {
+        const error = new Error(`Failed to parse response: ${response.statusText}`);
+        (error as any).status = response.status;
+        throw error;
+      }
 
       if (!response.ok) {
         const errorMessage = Array.isArray(data.error) ? data.error.map((e) => e.message).join(", ") : data.error;
@@ -154,6 +175,11 @@ export function useFetch() {
       return data;
     } catch (err) {
       const error = err instanceof Error ? err : new Error("An error occurred");
+
+      if ((error as any).status === 429) {
+        console.warn(`Rate limited. Retry after ${(error as any).retryAfter} seconds`);
+      }
+
       setError(error);
       options.onError?.(error);
       throw error;

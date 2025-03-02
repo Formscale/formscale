@@ -11,4 +11,5 @@ export function handleCopy(text: string, type?: string) {
 
   const message = type ? `${type} copied to clipboard` : "Copied to clipboard";
   toast.success(message);
+  toast.dismiss();
 }

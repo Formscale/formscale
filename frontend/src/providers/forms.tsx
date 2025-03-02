@@ -4,7 +4,6 @@ import { useFetch } from "@/hooks/fetch";
 import { useError } from "@/providers";
 import { Form } from "@formhook/types";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useRef, useState } from "react";
-
 interface FormsContextType {
   forms: Form[];
   isLoading: boolean;
@@ -18,9 +17,11 @@ const FormsContext = createContext<FormsContextType | undefined>(undefined);
 export function FormsProvider({ children }: { children: ReactNode }) {
   const { get } = useFetch();
   const [forms, setForms] = useState<Form[]>([]);
+  // const { user } = useUser();
   const [isLoading, setIsLoading] = useState(true);
   const { handleError } = useError();
   const fetchedRef = useRef(false);
+  // const router = useRouter();
 
   const refreshForms = useCallback(async () => {
     try {
@@ -34,8 +35,15 @@ export function FormsProvider({ children }: { children: ReactNode }) {
       }
     } catch (err) {
       const error = err instanceof Error ? err : new Error("Failed to fetch form");
-      handleError(error);
+      handleError({
+        message: "Failed to fetch form",
+        description: (err as Error).message,
+      });
       setForms([]);
+
+      // if (forms.length === 0 && user?.development) {
+      //   router.push("/onboarding");
+      // }
     } finally {
       setIsLoading(false);
     }

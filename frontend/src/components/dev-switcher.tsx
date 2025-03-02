@@ -8,7 +8,7 @@ import { useLayoutEffect, useState } from "react";
 import DefaultDropdown from "./default-dropdown";
 import { Button } from "./ui/button";
 
-function DevBadge({ current = "dev" }: { current?: string }) {
+export function DevBadge({ current = "dev" }: { current?: string }) {
   const bg = current === "dev" ? "bg-formhook/80" : "bg-success";
 
   return <div className={`w-2 h-2 rounded-full shadow-sm ${bg}`} />;
@@ -32,7 +32,12 @@ export function DevSwitcher() {
       await refreshForms();
       await refreshLogs();
 
-      if (pathname !== "/logs" && pathname !== "/forms" && pathname !== "/submissions") {
+      if (
+        pathname !== "/logs" &&
+        pathname !== "/forms" &&
+        pathname !== "/submissions" &&
+        pathname !== "/settings/team"
+      ) {
         const segments = pathname.split("/").filter(Boolean);
 
         if (segments.length > 1) {

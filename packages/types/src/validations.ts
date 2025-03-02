@@ -43,8 +43,8 @@ export const BaseFieldSchema = z.object({
 
 export const TextSchema = BaseFieldSchema.extend({
   type: z.literal("text"),
-  min: z.number().min(0, "Minimum value cannot be less than 0").optional(),
-  max: z.number().min(0, "Maximum value cannot be less than 0").optional(),
+  min: z.number().min(0, "Minimum value cannot be less than 0").optional().or(z.literal("")),
+  max: z.number().min(0, "Maximum value cannot be less than 0").optional().or(z.literal("")),
 });
 
 export const NumberSchema = BaseFieldSchema.extend({

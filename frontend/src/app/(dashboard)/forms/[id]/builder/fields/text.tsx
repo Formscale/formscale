@@ -16,16 +16,14 @@ export default function TextDialog(textField?: Text) {
     resolver: zodResolver(TextSchema),
     defaultValues: {
       ...textField,
-      min: textField?.min || 0,
-      max: textField?.max || 0,
+      min: textField?.min || "",
+      max: textField?.max || "",
     },
   });
 
   if (!textField) return null;
 
   async function onSubmit(values: Text) {
-    // values.id = values.name?.replace(/\s+/g, "_").toLowerCase();
-    values.id = values.name;
     console.log(values);
 
     await saveField(values);

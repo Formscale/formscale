@@ -10,7 +10,8 @@ import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { handleCopy } from "@/lib/utils";
 import { useForms, useLogs } from "@/providers";
 import { uppercase } from "@formhook/utils";
-import { DotsHorizontalIcon, Link1Icon } from "@radix-ui/react-icons";
+import { DotsHorizontalIcon, Link1Icon, ReloadIcon } from "@radix-ui/react-icons";
+import DashCard from "../../components/card";
 import SubmissionItem from "../../components/submission-item";
 import { getForm, getLogVariant } from "../columns";
 
@@ -22,7 +23,16 @@ export default function Log({ id }: { id?: string }) {
 
   const log = logs?.find((log) => log.id === id);
 
-  if (!log) return null;
+  if (!log) {
+    return (
+      <DashCard title="Log not found." description="This may be a new submission - refresh the page to try again.">
+        <Button className="w-full" size="sm" onClick={() => window.location.reload()}>
+          <ReloadIcon />
+          <span className="text-xs font-bold">Reload Page</span>
+        </Button>
+      </DashCard>
+    );
+  }
 
   let formId = "";
 
@@ -35,7 +45,7 @@ export default function Log({ id }: { id?: string }) {
     formId = log.data.formId || "";
   }
 
-  console.log(log);
+  // console.log(log);
 
   const dropdownItems = [
     {

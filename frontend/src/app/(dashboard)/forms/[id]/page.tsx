@@ -4,7 +4,7 @@ import { Form, SubmissionSent } from "@formhook/types";
 import Link from "next/link";
 
 import DashCard from "@/app/(dashboard)/components/card";
-import { DataCardSkeleton } from "@/app/(dashboard)/components/data-card";
+import { DataCardButton, DataCardSkeleton } from "@/app/(dashboard)/components/data-card";
 import Metric from "@/app/(dashboard)/components/metric";
 import { Limits, UsageSection } from "@/app/(dashboard)/components/usage-item";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { handleCopy } from "@/lib/utils";
 import { useForm } from "@/providers/form";
 import { LinkNone2Icon } from "@radix-ui/react-icons";
+import { CardTitle } from "../../../../components/ui/card";
 
 const filterStatus = (submissions: SubmissionSent[], status: string) => {
   return submissions.filter((submission) => submission.status === status);
@@ -32,7 +33,7 @@ function FormInsights({ form }: { form: Form }) {
         description="No submissions yet - get started by adding the endpoint to your form!"
       >
         <Button variant="action" className="w-full" size="sm" asChild>
-          <Link href="/onboarding">
+          <Link href={`/onboarding/${form.id}`}>
             <LinkNone2Icon />
             <span className="text-xs font-bold">View Setup</span>
           </Link>
@@ -91,36 +92,28 @@ export default function FormPage() {
   return (
     <div className="w-full flex flex-col gap-6">
       <FormInsights form={form} />
-      <DataCardSkeleton
-        title="Endpoint"
-        button={
-          <Button
-            type="submit"
-            size="sm"
-            onClick={() => handleCopy(`${process.env.NEXT_PUBLIC_API_URL}/s/${form.id}`, "Endpoint")}
-          >
-            <span className="text-xs font-bold">Copy Endpoint</span>
-          </Button>
+
+      <DataCardButton
+        titleHeader={<CardTitle className="text-md font-bold">Endpoint</CardTitle>}
+        buttonText="Copy Endpoint"
+        onClickAction={() => handleCopy(`${process.env.NEXT_PUBLIC_API_URL}/s/${form.id}`, "Endpoint")}
+        text={
+          <>
+            Copy this endpoint to use in your form.{" "}
+            <Link href={`/onboarding/${form.id}`} className="underline text-muted-foreground">
+              See guide.
+            </Link>{" "}
+          </>
         }
       >
-        <div className="space-y-2">
-          <div className="flex">
-            <span className="text-[0.8rem]">
-              Copy this endpoint to use in your form.{" "}
-              <Link target="_blank" href="/onboarding" className="underline text-muted-foreground">
-                See guide.
-              </Link>{" "}
-            </span>
-          </div>
-          <Input
-            type="text"
-            placeholder={`${process.env.NEXT_PUBLIC_API_URL}/s/${form.id}`}
-            value={`${process.env.NEXT_PUBLIC_API_URL}/s/${form.id}`}
-            disabled
-            className="max-w-sm"
-          />
-        </div>
-      </DataCardSkeleton>
+        <Input
+          type="text"
+          placeholder={`${process.env.NEXT_PUBLIC_API_URL}/s/${form.id}`}
+          value={`${process.env.NEXT_PUBLIC_API_URL}/s/${form.id}`}
+          disabled
+          className="max-w-sm"
+        />
+      </DataCardButton>
     </div>
   );
 }

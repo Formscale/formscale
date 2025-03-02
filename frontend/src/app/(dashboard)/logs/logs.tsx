@@ -52,8 +52,6 @@ export function LogsContent() {
 
   if (isLoading) return <Loading />;
 
-  console.log(logs);
-
   if (logs?.length === 0) {
     return (
       <DashCard

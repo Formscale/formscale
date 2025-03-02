@@ -24,8 +24,8 @@ function SheetContent({ submission }: { submission: SubmissionSent }) {
         <SubmissionItem label="Origin" value={submission.site} />
         <SubmissionItem label="Locality" value={submission.location} />
       </div>
-      <div className="grid gap-4 mt-6">
-        <h2 className="text-xs font-bold -mb-1">Logs</h2>
+      <div className="grid mt-6">
+        <h2 className="text-xs font-bold mb-3">Logs</h2>
         <LogsContent submission={submission} />
       </div>
     </>

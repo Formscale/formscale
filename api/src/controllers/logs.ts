@@ -34,6 +34,10 @@ export const LogsController = logs
       },
     });
 
+    // if (logs.length === 0) {
+    //   return new Response(ctx).error("Logs not found", 404);
+    // }
+
     return new Response(ctx).success({ logs });
   })
   .get("/submissions/:id", async (ctx) => {

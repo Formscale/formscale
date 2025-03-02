@@ -61,7 +61,7 @@ export default function LogsContent({ submission }: { submission: SubmissionSent
     );
 
   if (!logs || logs.length === 0) {
-    return <SubmissionItem label="N/A" value="No logs found" />;
+    return <SubmissionItem label="N/A" value="No logs found" log={true} />;
   }
 
   return (
@@ -72,6 +72,7 @@ export default function LogsContent({ submission }: { submission: SubmissionSent
             // label={format(new Date(log.createdAt), "MM/dd/yyyy 'at' h:mm:ss a")}
             label={format(new Date(log.createdAt), "h:mm:ss a")}
             value={`${log.code} - ${log.message}`}
+            log={true}
           />
         </Link>
       ))}

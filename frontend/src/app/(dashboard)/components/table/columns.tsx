@@ -55,7 +55,7 @@ export function StatusBadge({ status }: { status: string }) {
 
 export function FormatDate(date: Date) {
   return (
-    <div className="text-right" title={format(date, "MMM d, yyyy")}>
+    <div className="text-right whitespace-nowrap" title={format(date, "MMM d, yyyy")}>
       {formatDistanceToNow(date, { addSuffix: true }).replace("about ", "")}
     </div>
   );

@@ -38,7 +38,6 @@ export default function Submissions({ id }: { id?: string }) {
   const columns = getColumns(submissions);
 
   const handleRowClick = (row: SubmissionSent) => {
-    console.log(row);
     history.pushState(null, "", `/forms/${form.id}/submissions/${row.id}`);
   };
 

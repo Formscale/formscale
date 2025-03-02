@@ -1,4 +1,4 @@
-name = "formhook-api"
+name = "formscale-api"
 main = "src/index.ts"
 compatibility_date = "2023-12-01"
 compatibility_flags = ["nodejs_compat"]
@@ -14,5 +14,15 @@ bucket_name = "formscale-cdn"
 
 [[d1_databases]]
 binding = "DB"
-database_name = "formhook-db"
-database_id = "53924adf-62f7-4b57-9252-f64f9f4ab76c"
+database_name = "formscale"
+database_id = "bc39d3c2-1d95-4328-901b-0de2418e2c70"
+
+preview_database_name = "formhook-db"
+preview_database_id = "53924adf-62f7-4b57-9252-f64f9f4ab76c"
+
+[[unsafe.bindings]]
+name = "RATE_LIMITER"
+type = "ratelimit"
+namespace_id = "1001"
+
+simple = { limit = 10, period = 60 }

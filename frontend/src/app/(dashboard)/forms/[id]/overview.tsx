@@ -5,12 +5,14 @@ import Link from "next/link";
 import DashCard from "@/app/(dashboard)/components/card";
 import RefreshButton from "@/app/(dashboard)/components/refresh-button";
 import DashTitle from "@/app/(dashboard)/components/title";
+// import { DevBadge } from "@/components/dev-switcher";
 import Loading from "@/components/loading";
 import SuspenseWrapper from "@/components/suspense-wrapper";
 import Tabs from "@/components/tabs";
 import { Button } from "@/components/ui/button";
 import { useForm } from "@/providers/form";
 import { TriangleLeftIcon } from "@radix-ui/react-icons";
+
 export default function FormLayoutContent({ children, id }: { children: React.ReactNode; id: string }) {
   const { form, isLoading, refreshForm } = useForm();
 
@@ -43,7 +45,10 @@ export default function FormLayoutContent({ children, id }: { children: React.Re
 
   return (
     <>
-      <DashTitle title={`${form?.name}` || "Untitled Form"}>
+      <DashTitle
+        title={`${form?.name}` || "Untitled Form"}
+        // indicator={form.development ? <DevBadge current={form.development ? "dev" : "prod"} /> : null}
+      >
         <RefreshButton refresh={refreshForm} type="form" />
       </DashTitle>
       <Tabs tabs={tabs} basePath={basePath} />

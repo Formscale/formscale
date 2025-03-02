@@ -4,4 +4,10 @@ Disallow: /verify/
 Disallow: /success/*
 Disallow: /error/*
 Disallow: /teams/verify/*
-Disallow: /dashboard/*
+Disallow: /forms/*
+Disallow: /metrics/
+Disallow: /logs/*
+Disallow: /integrations/
+Disallow: /settings/
+Disallow: /profile/
+Disallow: /onboarding/

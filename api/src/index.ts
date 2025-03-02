@@ -11,22 +11,35 @@ import Response from "@/utils/response";
 import { cors } from "hono/cors";
 import { jwt } from "hono/jwt";
 
+const baseCorsOptions = {
+  allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowHeaders: ["Content-Type", "Authorization"],
+  exposeHeaders: ["Content-Length", "X-Requested-With"],
+  maxAge: 3600,
+};
+
 app.use(
   "*",
   cors({
-    origin: ["http://localhost:3000"],
+    origin: ["http://localhost:3000", "https://formscale.dev"],
     credentials: true,
-    allowMethods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowHeaders: ["Content-Type", "Authorization"],
-    exposeHeaders: ["Content-Length", "X-Requested-With"],
-    maxAge: 3600,
+    ...baseCorsOptions,
   })
 );
 
-const publicRoutes = ["/auth/login", "/auth/signup", "/auth/resend", "/auth/verify", "/s/:id"];
+app.use(
+  "/s/:id",
+  cors({
+    origin: "*",
+    ...baseCorsOptions,
+  })
+);
+
+const publicRoutes = ["/auth/login", "/auth/signup", "/auth/resend", "/auth/verify", "/s/:id", "/s/:id/click"];
 
 app.use("*", (ctx, next) => {
   const path = ctx.req.path;
+
   if (publicRoutes.includes(path) || (path.startsWith("/s") && !path.includes("/submissions"))) {
     return next();
   }

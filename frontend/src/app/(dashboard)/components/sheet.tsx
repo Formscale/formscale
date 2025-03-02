@@ -26,12 +26,12 @@ export default function DefaultSheet<TData extends { id: string }, TValue>({
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>{trigger}</SheetTrigger>
-      <SheetContent>
+      <SheetContent className="w-full max-h-[100vh] overflow-y-auto">
         <SheetHeader>
           <SheetTitle className="-mb-1">{title}</SheetTitle>
           <SheetDescription className="text-xs text-muted-foreground">{description}</SheetDescription>
         </SheetHeader>
-        <div className="grid gap-1 py-4">{children}</div>
+        <div className="grid gap-1 py-4 w-fit">{children}</div>
         {/* <SheetFooter className="w-full flex justify-start">
           <SheetClose asChild>
           <Button type="submit" className="text-xs font-bold">

@@ -69,6 +69,9 @@ importers:
 
   api:
     dependencies:
+      '@hono-rate-limiter/cloudflare':
+        specifier: ^0.2.2
+        version: 0.2.2(@cloudflare/workers-types@4.20250124.3)(hono@4.6.19)
       '@hono/zod-validator':
         specifier: ^0.2.2
         version: 0.2.2(hono@4.6.19)(zod@3.24.1)
@@ -1125,6 +1128,12 @@ packages:
 
   '@floating-ui/utils@0.2.9':
     resolution: {integrity: sha512-MDWhGtE+eHw5JW7lq4qhc5yRLS11ERl1c7Z6Xd0a58DozHES6EnNNwUWbMiG4J9Cgj053Bhk8zvlhFYKVhULwg==}
+
+  '@hono-rate-limiter/cloudflare@0.2.2':
+    resolution: {integrity: sha512-wMnqeV+cb5Wov2npLIMFtCVm3tiNMtqw9LhPWSzSMwHOzh2qbhI3mCS6s962fxcJ6UUNJhRqDbVMEsB/NinCIQ==}
+    peerDependencies:
+      '@cloudflare/workers-types': ^4.20240529.0
+      hono: ^4.4.8
 
   '@hono/zod-validator@0.2.2':
     resolution: {integrity: sha512-dSDxaPV70Py8wuIU2QNpoVEIOSzSXZ/6/B/h4xA7eOMz7+AarKTSGV8E6QwrdcCbBLkpqfJ4Q2TmBO0eP1tCBQ==}
@@ -7054,6 +7063,11 @@ snapshots:
       react-dom: 19.0.0(react@19.0.0)
 
   '@floating-ui/utils@0.2.9': {}
+
+  '@hono-rate-limiter/cloudflare@0.2.2(@cloudflare/workers-types@4.20250124.3)(hono@4.6.19)':
+    dependencies:
+      '@cloudflare/workers-types': 4.20250124.3
+      hono: 4.6.19
 
   '@hono/zod-validator@0.2.2(hono@4.6.19)(zod@3.24.1)':
     dependencies:

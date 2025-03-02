@@ -157,6 +157,18 @@ export const FormController = forms
           }
         }
 
+        // require allowed origins if in production
+
+        if (form.settings.isPublic && !form.development) {
+          const allowedOrigins = form.settings.allowedOrigins;
+
+          if (allowedOrigins.length === 0 || allowedOrigins.includes("*")) {
+            const type = allowedOrigins.includes("*") ? "non-wildcard " : "";
+
+            return new Response(ctx).error(`Must set ${type}allowed origins to accept submissions in production.`, 400);
+          }
+        }
+
         // check if emailsettings were changed and do validation stuff
 
         if (form.settings.emailSettings && form.settings.emailSettings.enabled) {
@@ -206,11 +218,21 @@ export const FormController = forms
         const { id } = ctx.req.param();
         const validation = await ctx.req.json();
 
-        console.log(validation);
-
         const currentForm = await getForm(ctx, user, id);
 
         // filter out honeypot fields?
+
+        validation.fields.map((field: Field) => {
+          const name = field.name;
+
+          if (!name) {
+            return new Response(ctx).error(`Field name for "${field.type}" cannot be empty.`, 400);
+          }
+
+          field.id = `formscale-${name.replace(/\s+/g, "_").toLowerCase()}`;
+        });
+
+        console.log(validation);
 
         const validationFields = validation.fields.filter((field: Field) => field.type !== "honeypot");
         const currentValidationFields = currentForm.settings.validation.fields.filter(

@@ -16,12 +16,28 @@ import { useError } from "@/providers";
 import { Field, TextSchema, Validation } from "@formhook/types";
 import { useEffect, useState } from "react";
 import TextDialog from "./fields/text";
-import ThemeCard from "./theme";
+// import ThemeCard from "./theme";
 import ValidationCard from "./validation";
+
+function getFieldWithDefaults(type: string, id: string = "", validations: Validation) {
+  const field = validations?.fields?.find((f) => f.type === type && (id ? f.id === id : true));
+
+  const defaults = {
+    type,
+    required: false,
+    name: "",
+    id: id || "",
+    placeholder: "",
+    description: "",
+  };
+
+  return { ...defaults, ...field };
+}
 
 export default function BuilderPage() {
   const { form } = useForm();
   const [validations, setValidations] = useState<Validation>({} as Validation);
+  const [fieldId, setFieldId] = useState<string>("");
   const [unsavedChanges, setUnsavedChanges] = useState(false);
   const { removeField } = useValidation(form?.id || "");
   const [open, setOpen] = useState(false);
@@ -41,7 +57,17 @@ export default function BuilderPage() {
       title: "Text",
       icon: TextIcon,
       description: "Set a minimum and maximum length.",
-      dialog: <TextDialog {...validations?.fields?.find((field) => field.type === "text")!} />,
+      dialog: (
+        <TextDialog
+          {...validations?.fields?.find((field) => field.type === "text")!}
+          // type="text"
+          // required={false}
+          // name=""
+          // id=""
+          // placeholder=""
+          // description=""
+        />
+      ),
       onClick: () => {
         if (!unsavedChanges) {
           setValidations({
@@ -167,17 +193,16 @@ export default function BuilderPage() {
             {items.map((item) => (
               <Item key={item.title} {...item} button />
             ))}
-            <div className="mt-2 w-full">
+            {/* <div className="mt-2 w-full">
               <Button variant="secondary" className="text-xs font-bold w-full" asChild>
-                <Link href="/components">Use A Component</Link>
+                <Link href="/components">Use Component</Link>
               </Button>
-            </div>
+            </div> */}
           </DialogSkeleton>
         }
       >
         <div className="space-y-2">
-          {/* <div className="mb-4 flex"> */}
-          <div className="flex">
+          <div className={`${validations?.fields?.length !== 0 ? "mb-4" : ""} flex`}>
             <span className="text-[0.8rem]">
               Add form fields to validate submission data.{" "}
               <Link href="/docs/validation" className="text-muted-foreground underline">
@@ -200,7 +225,7 @@ export default function BuilderPage() {
       </DataCardSkeleton>
 
       <ValidationCard form={form} />
-      <ThemeCard form={form} />
+      {/* <ThemeCard form={form} /> */}
     </div>
   );
 }

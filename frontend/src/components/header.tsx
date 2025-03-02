@@ -1,5 +1,6 @@
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
+import { FeedbackForm } from "./contact";
 import { DevSwitcher } from "./dev-switcher";
 import Logo from "./logo";
 import { Button } from "./ui/button";
@@ -9,7 +10,7 @@ const links = [
   { label: "Features", href: "/features" },
   { label: "Pricing", href: "/pricing" },
   { label: "Components", href: "/components" },
-  { label: "Docs", href: "/docs" },
+  // { label: "Docs", href: "/docs" },
 ];
 
 const socialLinks = [
@@ -18,8 +19,7 @@ const socialLinks = [
 ];
 
 const dashboardLinks = [
-  { label: "Feedback", href: "/feedback" },
-  { label: "Components", href: "/components" },
+  // { label: "Components", href: "/components" },
   { label: "Docs", href: "/docs" },
 ];
 
@@ -32,15 +32,14 @@ export function HeaderDashboard() {
           <DevSwitcher />
         </div>
         <div className="flex flex-row items-center gap-2">
-          {dashboardLinks.map((link, index) => (
-            <Button
-              variant={index === 0 ? "outline" : "ghost"}
-              size="sm"
-              // className={index === 0 ? "" : "text-muted-foreground"}
-              className={"text-muted-foreground"}
-              key={link.href}
-            >
-              {/* {index === 0 && <ChatBubbleIcon />} */}
+          <FeedbackForm>
+            <Button variant={"outline"} size="sm" className={"text-muted-foreground"}>
+              Feedback
+            </Button>
+          </FeedbackForm>
+
+          {dashboardLinks.map((link) => (
+            <Button variant="ghost" size="sm" className={"text-muted-foreground"} key={link.href}>
               <Link href={link.href}>{link.label}</Link>
             </Button>
           ))}

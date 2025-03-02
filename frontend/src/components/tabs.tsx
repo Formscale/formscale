@@ -1,8 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+
+interface TabProps {
+  title: string;
+  onClickAction: () => void;
+  isActive: boolean;
+}
 
 interface TabsProps {
   tabs: {
@@ -13,8 +18,17 @@ interface TabsProps {
   basePath?: string;
 }
 
+export function Tab({ title, onClickAction, isActive, ...props }: TabProps) {
+  return (
+    <Button variant="ghost" size="sm" {...props} className={isActive ? "bg-accent" : ""} onClick={onClickAction}>
+      {title}
+    </Button>
+  );
+}
+
 export default function Tabs({ tabs, basePath }: TabsProps) {
   const pathname = usePathname();
+  const router = useRouter();
 
   const isActive = (href: string) => {
     return pathname === href || (href !== basePath && pathname.startsWith(href));
@@ -23,9 +37,7 @@ export default function Tabs({ tabs, basePath }: TabsProps) {
   return (
     <div className="flex items-center gap-2 mb-4">
       {tabs.map((tab) => (
-        <Button key={tab.title} variant="ghost" size="sm" className={isActive(tab.href) ? "bg-accent" : ""} asChild>
-          <Link href={tab.href}>{tab.title}</Link>
-        </Button>
+        <Tab key={tab.title} {...tab} isActive={isActive(tab.href)} onClickAction={() => router.push(tab.href)} />
       ))}
     </div>
   );

@@ -48,7 +48,7 @@ export default function UsagePage() {
       <DataCardSkeleton
         title="Forms"
         button={
-          <Button className="w-fit">
+          <Button className="w-fit" size="sm">
             <span className="font-bold text-xs">Upgrade</span>
           </Button>
         }

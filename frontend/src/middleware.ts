@@ -14,12 +14,20 @@ export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get("token");
 
+  const isUnprotectedRoute = routes.unprotected.some((route) => {
+    if (route.includes(":")) {
+      const pattern = new RegExp("^" + route.replace(/:\w+/g, "[^/]+") + "$");
+      return pattern.test(pathname);
+    }
+    return route === pathname;
+  });
+
   if (token?.value && !Auth.validateToken(request)) {
     request.cookies.delete("token");
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  if (routes.public.includes(pathname) || routes.unprotected.includes(pathname)) {
+  if (routes.public.includes(pathname) || isUnprotectedRoute) {
     if (token && routes.public.includes(pathname) && pathname !== "/") {
       return NextResponse.redirect(new URL("/forms", request.url));
     }

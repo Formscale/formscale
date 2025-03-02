@@ -126,6 +126,7 @@ export async function create<T extends keyof PrismaClient>(
 
     const defaultSettings = FormSettingsSchema.parse({
       ...data.settings,
+      ...(!user.development ? { isPublic: false } : {}),
       emailSettings: {
         ...data.settings?.emailSettings,
         to: [user?.email || ""],

@@ -9,6 +9,7 @@ import { FieldValues, UseFormReturn } from "react-hook-form";
 import { DefaultFormProps } from "@/components/default-dialog";
 import { useError } from "@/providers/error";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 /* yeah this code is also scuffed im sorry */
 
@@ -35,12 +36,14 @@ function Wrapper<T extends FieldValues>({
 export function DataCardSkeleton<T extends FieldValues>({
   children,
   title,
+  titleHeader,
   button,
   form,
   onSubmitAction,
 }: {
   children: React.ReactNode;
-  title: string;
+  title?: string;
+  titleHeader?: React.ReactNode;
   button?: React.ReactNode;
   form?: UseFormReturn<T>;
   onSubmitAction?: (values: T) => void | Promise<void>;
@@ -48,7 +51,8 @@ export function DataCardSkeleton<T extends FieldValues>({
   return (
     <Card className="w-full shadow-sm">
       <CardHeader className="py-4 pb-3 border-b border-border">
-        <CardTitle className="text-md font-bold">{title}</CardTitle>
+        {title && <CardTitle className="text-md font-bold">{title}</CardTitle>}
+        {titleHeader}
       </CardHeader>
       <Wrapper form={form} onSubmitAction={async (values) => Promise.resolve(onSubmitAction?.(values))}>
         <CardContent className="py-6 pt-5">
@@ -61,6 +65,42 @@ export function DataCardSkeleton<T extends FieldValues>({
         )}
       </Wrapper>
     </Card>
+  );
+}
+
+export function DataCardButton({
+  buttonText,
+  onClickAction,
+  disabled,
+  titleHeader,
+  children,
+  text,
+}: {
+  buttonText: string;
+  onClickAction: () => void;
+  titleHeader?: React.ReactNode;
+  children: React.ReactNode;
+  text?: React.ReactNode;
+  disabled?: boolean;
+}) {
+  return (
+    <DataCardSkeleton
+      titleHeader={titleHeader}
+      button={
+        <Button size="sm" onClick={onClickAction} disabled={disabled}>
+          <span className="text-xs font-bold">{buttonText}</span>
+        </Button>
+      }
+    >
+      <div className="space-y-2">
+        {text && (
+          <div className="flex">
+            <span className="text-[0.8rem]">{text}</span>
+          </div>
+        )}
+        {children}
+      </div>
+    </DataCardSkeleton>
   );
 }
 
@@ -90,6 +130,8 @@ export default function DataCard<T extends FieldValues>({
   useEffect(() => {
     if (isDirty) {
       handleToast("warning", "Unsaved changes");
+    } else {
+      toast.dismiss();
     }
   }, [isDirty, handleToast]);
 

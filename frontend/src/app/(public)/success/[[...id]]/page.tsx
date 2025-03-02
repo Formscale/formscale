@@ -24,7 +24,7 @@ export default async function SuccessPage({ params }: { params: { id: string } }
           <h2 className="text-2xl font-bold mt-8">Submission received!</h2>
           <p className="text-xs text-muted-foreground mt-2">Your form has been submitted.</p>
 
-          <SuccessButton />
+          <SuccessButton id={id} />
         </CardContent>
       </Card>
       <Watermark className="mt-5 z-10" />
