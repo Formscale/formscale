@@ -82,10 +82,10 @@ export function FeedbackForm({ children }: { children: React.ReactNode }) {
     },
     {
       name: "anonymous",
-      type: "switch",
+      type: "checkbox",
       description: "Send Anonymously",
       placeholder: "false",
-      children: <p className="text-xs text-muted-foreground -mt-1">We'll take your feedback either way.</p>,
+      children: <p className="text-xs text-muted-foreground -mt-1">Don't be shy, we'll listen either way.</p>,
     },
   ];
 

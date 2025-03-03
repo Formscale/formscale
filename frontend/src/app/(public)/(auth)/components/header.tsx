@@ -13,7 +13,7 @@ export default function AuthHeader({ title, description, link, linkText }: AuthH
     <>
       <Image
         src="/assets/logos/formscale-icon.svg"
-        className="mb-4 -ml-1 aspect-square"
+        className="mb-5 -ml-1 aspect-square"
         alt="Formscale"
         width={52}
         height={52}

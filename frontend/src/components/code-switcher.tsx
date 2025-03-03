@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BundledLanguage } from "shiki";
 
-export default function CodeSwitcher({ formId = "YOUR_FORM_ID" }: { formId?: string }) {
+export default function CodeSwitcher({ formId = "YOUR_FORM_ID", demo = false }: { formId?: string; demo?: boolean }) {
   const [activeTab, setActiveTab] = useState("html");
   const [highlightedCode, setHighlightedCode] = useState<string | null>(null);
   const router = useRouter();
@@ -224,7 +224,18 @@ export default function Form() {
         const { codeToHtml } = await import("shiki");
         const lang = tab.language.split("-").length > 1 ? tab.language.split("-")[1] : tab.language;
 
-        const highlighted = await codeToHtml(tab.code, {
+        const code = demo
+          ? tab.code
+              .replace(/<!--[\s\S]*?-->/g, "")
+              .replace(/(?<!https?:)\/\/[^\n]*/g, "")
+              .replace(/\/\*[\s\S]*?\*\//g, "")
+              .replace(/\{\/\*[\s\S]*?\*\/\}/g, "")
+              .replace(/^\s*[\r\n]/gm, "")
+              .replace(/\n\s*\n/g, "\n")
+              .trim()
+          : tab.code;
+
+        const highlighted = await codeToHtml(code, {
           lang: lang as BundledLanguage,
           theme: "github-light",
         });
@@ -238,7 +249,7 @@ export default function Form() {
       }
     }
     highlightCode();
-  }, [activeTab, formId]);
+  }, [activeTab, formId, tabs]);
 
   async function sendSubmission(formId: string) {
     setIsLoading(true);
@@ -305,7 +316,7 @@ export default function Form() {
       }
       buttonText={isLoading ? "Sending..." : "Send Submission"}
       disabled={isLoading}
-      onClickAction={() => sendSubmission(formId)}
+      onClickAction={() => (demo ? router.push(`/forms`) : sendSubmission(formId))}
     >
       <div className="overflow-auto">
         {Object.entries(tabs).map(

@@ -1,5 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
+import { DotPattern } from "@/components/ui/dot-pattern";
 import Watermark from "@/components/watermark";
+import { cn } from "@/lib/utils";
 import { CheckCircledIcon } from "@radix-ui/react-icons";
 import SuccessButton from "./button";
 
@@ -29,6 +31,11 @@ export default async function SuccessPage({ params }: { params: { id: string } }
       </Card>
       <Watermark className="mt-5 z-10" />
       {/* <DotBackground /> */}
+      <DotPattern
+        width={16}
+        height={16}
+        className={cn("opacity-60", "[mask-image:radial-gradient(1000px_circle_at_top,white,transparent)]")}
+      />
     </>
   );
 }
