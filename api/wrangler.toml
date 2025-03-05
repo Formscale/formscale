@@ -25,3 +25,6 @@ simple = { limit = 20, period = 60 }
 routes = [
   { pattern = "api.formscale.dev", custom_domain = true }
 ]
+
+[observability.logs]
+enabled = true
