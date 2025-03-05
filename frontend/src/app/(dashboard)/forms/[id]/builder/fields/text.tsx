@@ -3,7 +3,7 @@
 import { DialogContentSkeleton, FormSkeleton } from "@/components/default-dialog";
 import { useValidation } from "@/hooks/use-validation";
 import { useForm as useFormProvider } from "@/providers/form";
-import { Text, TextSchema } from "@formhook/types";
+import { Text, TextSchema } from "@formscale/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { baseFields, requiredFields } from ".";

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 import { useFetch } from "@/hooks/fetch";
 import { useError } from "@/providers";
-import { Signup, SignupSchema } from "@formhook/types";
+import { Signup, SignupSchema } from "@formscale/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { ResendOtp, ResendOtpSchema } from "@formhook/types";
+import { ResendOtp, ResendOtpSchema } from "@formscale/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";

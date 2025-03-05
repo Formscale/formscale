@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { uppercase } from "@formhook/utils";
+import { uppercase } from "@formscale/utils";
 import { TrashIcon, UploadIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { FieldValues, Path, UseFormReturn } from "react-hook-form";

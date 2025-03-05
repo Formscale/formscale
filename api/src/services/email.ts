@@ -1,6 +1,6 @@
 import { SubmissionEmail, TeamInviteEmail, VerifyEmail, splitLink } from "@/lib/emails";
 import logger from "@/utils/logs";
-import { Form, SubmissionSent } from "@formhook/types";
+import { Form, SubmissionSent } from "@formscale/types";
 import { Resend } from "resend";
 
 export async function sendEmail(to: string[], subject: string, description: string, email: React.ReactNode, env: Env) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { Form } from "@formhook/types";
+import { Form } from "@formscale/types";
 import { useState } from "react";
 import { Dropdown } from "../table/dropdown";
 

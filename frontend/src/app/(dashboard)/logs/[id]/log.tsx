@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { handleCopy } from "@/lib/utils";
 import { useForms, useLogs } from "@/providers";
-import { uppercase } from "@formhook/utils";
+import { uppercase } from "@formscale/utils";
 import { DotsHorizontalIcon, Link1Icon, ReloadIcon } from "@radix-ui/react-icons";
 import DashCard from "../../components/card";
 import SubmissionItem from "../../components/submission-item";

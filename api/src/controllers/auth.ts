@@ -3,7 +3,7 @@ import { create, findUnique, update } from "@/db/crud";
 import validator from "@/middleware/validation";
 import { sendVerifyEmail } from "@/services";
 import Response from "@/utils/response";
-import { LoginSchema, SafeUserSchema, SignupSchema, User } from "@formhook/types";
+import { LoginSchema, SafeUserSchema, SignupSchema, User } from "@formscale/types";
 import { compareSync, hashSync } from "bcrypt-edge";
 import { Hono } from "hono";
 import { sign } from "hono/jwt";

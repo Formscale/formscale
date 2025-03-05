@@ -1,4 +1,4 @@
-import { Field } from "@formhook/types";
+import { Field } from "@formscale/types";
 import { createFormSchema, validateField } from "../validations";
 
 describe("createFormSchema", () => {

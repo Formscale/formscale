@@ -1,7 +1,7 @@
 import db from "@/db";
 import Response from "@/utils/response";
 import { getUser } from "@/utils/user";
-import { Form, SubmissionSent } from "@formhook/types";
+import { Form, SubmissionSent } from "@formscale/types";
 import { Hono } from "hono";
 import { findMany, secureFind, secureFindMany } from "../db/crud";
 

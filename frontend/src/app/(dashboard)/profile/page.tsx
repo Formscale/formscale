@@ -3,7 +3,7 @@
 import Loading from "@/components/loading";
 import { useError } from "@/providers/error";
 import { useUser } from "@/providers/user";
-import { EditUser, EditUserSchema } from "@formhook/types";
+import { EditUser, EditUserSchema } from "@formscale/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";

@@ -31,7 +31,7 @@ export default function Home() {
 
         <Badge variant="outline" className="rounded-full mb-2 bg-background">
           <Link href="/" className="flex justify-center items-center gap-2 p-1 hover:underline">
-            <div className="w-2 h-2 rounded-full shadow-sm bg-formhook animate-pulse" />
+            <div className="w-2 h-2 rounded-full shadow-sm bg-formscale animate-pulse" />
             <span className="text-xs font-normal text-foreground/80">Formscale Beta Live!</span>
           </Link>
         </Badge>
@@ -72,7 +72,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="bg-formhook/60 shadow-sm rounded-2xl overflow-hidden p-2 mt-4 cursor-pointer relative">
+        <div className="bg-formscale/60 shadow-sm rounded-2xl overflow-hidden p-2 mt-4 cursor-pointer relative">
           {/* replace with video */}
           <div className="w-full max-w-[1280px] mx-auto min-w-[960px] ">
             <Image
@@ -98,7 +98,7 @@ export default function Home() {
 
         <div className="flex flex-col gap-4 items-center mt-24 scroll-mt-24" id="features">
           {/* <h2 className="text-3xl md:text-4xl font-bold leading-tight md:leading-tight">
-            The <span className="bg-formhook/60 rounded-lg px-2 py-1">Most Powerful</span>
+            The <span className="bg-formscale/60 rounded-lg px-2 py-1">Most Powerful</span>
             <br className="hidden md:block" /> Form Builder & Management Tool.
           </h2> */}
           <h2 className="text-3xl md:text-4xl font-bold leading-tight md:leading-tight">
@@ -145,7 +145,7 @@ export default function Home() {
         {/* <div className="flex flex-col gap-4 items-center mt-24">
           <h2 className="text-3xl md:text-4xl font-bold leading-tight md:leading-tight">
             Join Teams Saving
-            <br className="hidden md:block" /> <span className="bg-formhook/60 rounded-lg px-2 py-1">$$$ & Time</span>{" "}
+            <br className="hidden md:block" /> <span className="bg-formscale/60 rounded-lg px-2 py-1">$$$ & Time</span>{" "}
             with Formscale.
           </h2>
           <p className="text-sm text-muted-foreground/80 leading-relaxed max-w-xl">
@@ -162,7 +162,7 @@ export default function Home() {
           <div className="flex flex-col gap-4 items-start text-left w-full max-w-2xl">
             <h2 className="text-3xl md:text-4xl font-bold leading-tight md:leading-tight">
               Join Teams Saving
-              <br className="hidden md:block" /> <span className="bg-formhook/60 rounded-lg px-2 py-1">$$$ & Time</span>{" "}
+              <br className="hidden md:block" /> <span className="bg-formscale/60 rounded-lg px-2 py-1">$$$ & Time</span>{" "}
               with Formscale.
             </h2>
             <p className="text-sm text-muted-foreground/80 leading-relaxed">
@@ -172,7 +172,7 @@ export default function Home() {
           </div>
         </div> */}
 
-        {/* <div className="bg-formhook/60 text-left shadow-sm rounded-2xl overflow-hidden p-3 w-full max-w-7xl mt-12 cursor-pointer">
+        {/* <div className="bg-formscale/60 text-left shadow-sm rounded-2xl overflow-hidden p-3 w-full max-w-7xl mt-12 cursor-pointer">
           <Bento />
         </div> */}
       </div>

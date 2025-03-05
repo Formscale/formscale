@@ -4,7 +4,7 @@ import { DataCardSkeleton } from "@/app/(dashboard)/components/data-card";
 import { UsageSection } from "@/app/(dashboard)/components/usage-item";
 import { Button } from "@/components/ui/button";
 import { useForms, useUser } from "@/providers";
-import { SubscriptionTier, TierLimits, Usage } from "@formhook/types";
+import { SubscriptionTier, TierLimits, Usage } from "@formscale/types";
 
 export default function UsagePage() {
   const { forms } = useForms();

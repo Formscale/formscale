@@ -14,7 +14,7 @@ import {
   Signup,
   SubmissionSent,
   Validation,
-} from "@formhook/types";
+} from "@formscale/types";
 import { useState } from "react";
 
 export interface Endpoints {

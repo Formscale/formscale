@@ -1,6 +1,6 @@
 import DefaultSheet from "@/app/(dashboard)/components/sheet";
 import SubmissionItem from "@/app/(dashboard)/components/submission-item";
-import { Form, SubmissionSent } from "@formhook/types";
+import { Form, SubmissionSent } from "@formscale/types";
 import { format } from "date-fns";
 import LogsContent from "./logs";
 import StatusSwitch from "./status";

@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import { Login, LoginSchema, User } from "@formhook/types";
+import { Login, LoginSchema, User } from "@formscale/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 

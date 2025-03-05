@@ -2,7 +2,7 @@
 
 import { useFetch } from "@/hooks/fetch";
 import { Auth } from "@/lib/auth";
-import { EditUser, SafeUser } from "@formhook/types";
+import { EditUser, SafeUser } from "@formscale/types";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
 import { useError } from "./error";
 

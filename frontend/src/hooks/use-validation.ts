@@ -1,7 +1,7 @@
 import { useFetch } from "@/hooks/fetch";
 import { useError } from "@/providers";
 import { useForm as useFormProvider } from "@/providers/form";
-import { Field, TEMPLATES } from "@formhook/types";
+import { Field, TEMPLATES } from "@formscale/types";
 import { useCallback, useState } from "react";
 
 export function useValidation(formId: string) {

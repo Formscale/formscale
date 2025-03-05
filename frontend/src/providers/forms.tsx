@@ -2,7 +2,7 @@
 
 import { useFetch } from "@/hooks/fetch";
 import { useError } from "@/providers";
-import { Form } from "@formhook/types";
+import { Form } from "@formscale/types";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useRef, useState } from "react";
 interface FormsContextType {
   forms: Form[];

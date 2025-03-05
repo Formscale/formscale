@@ -1,4 +1,4 @@
-// import { Form, Roles, SubscriptionTier, User } from "@formhook/types";
+// import { Form, Roles, SubscriptionTier, User } from "@formscale/types";
 
 // export const userData: User[] = [
 //   {
@@ -58,9 +58,9 @@
 //       ],
 //       utm: {
 //         enabled: true,
-//         source: "formhook",
+//         source: "formscale",
 //         medium: "email",
-//         campaign: "formhook",
+//         campaign: "formscale",
 //       },
 //       emailSettings: {
 //         enabled: true,
@@ -126,9 +126,9 @@
 //       },
 //       utm: {
 //         enabled: true,
-//         source: "formhook",
+//         source: "formscale",
 //         medium: "email",
-//         campaign: "formhook",
+//         campaign: "formscale",
 //       },
 //     },
 //     submissions: [

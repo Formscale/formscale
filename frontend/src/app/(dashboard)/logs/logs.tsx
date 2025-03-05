@@ -1,6 +1,6 @@
 "use client";
 
-import { Log } from "@formhook/types";
+import { Log } from "@formscale/types";
 
 import Loading from "@/components/loading";
 import { useLogs } from "@/providers";

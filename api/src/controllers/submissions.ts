@@ -3,7 +3,7 @@ import { secureDeleteLinked, secureFind, secureFindMany, update } from "@/db/cru
 import validator from "@/middleware/validation";
 import Response from "@/utils/response";
 import { getUser } from "@/utils/user";
-import { EditStatusSchema } from "@formhook/types";
+import { EditStatusSchema } from "@formscale/types";
 import { Hono } from "hono";
 import logger from "../utils/logs";
 

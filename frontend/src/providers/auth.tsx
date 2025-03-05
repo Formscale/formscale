@@ -1,6 +1,6 @@
 "use client";
 
-import { User } from "@formhook/types";
+import { User } from "@formscale/types";
 import { useRouter } from "next/navigation";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
 import { Auth } from "../lib/auth";

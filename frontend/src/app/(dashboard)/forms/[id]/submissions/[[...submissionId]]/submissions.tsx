@@ -1,6 +1,6 @@
 "use client";
 
-import { SubmissionSent } from "@formhook/types";
+import { SubmissionSent } from "@formscale/types";
 
 import DashCard from "@/app/(dashboard)/components/card";
 import { DataTable } from "@/app/(dashboard)/components/table/table";

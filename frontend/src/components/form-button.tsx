@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { useFetch } from "@/hooks/fetch";
-import { CreateForm, CreateFormSchema } from "@formhook/types";
+import { CreateForm, CreateFormSchema } from "@formscale/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 

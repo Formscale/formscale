@@ -1,6 +1,6 @@
 "use client";
 
-import { SubmissionSent } from "@formhook/types";
+import { SubmissionSent } from "@formscale/types";
 import { DotsHorizontalIcon, Link1Icon } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
 
@@ -13,7 +13,7 @@ import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { useDelete } from "@/hooks/use-delete";
 import { handleCopy } from "@/lib/utils";
 import { useForm } from "@/providers";
-import { uppercase } from "@formhook/utils";
+import { uppercase } from "@formscale/utils";
 import { exportData } from "./export-button";
 
 // import CheckboxColumn from "@/app/(dashboard)/components/table/checkbox";

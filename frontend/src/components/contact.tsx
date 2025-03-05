@@ -4,7 +4,7 @@ import { FormSkeleton } from "@/components/default-dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useUser } from "@/providers";
 import { useError } from "@/providers/error";
-import { Feedback, FeedbackSchema } from "@formhook/types";
+import { Feedback, FeedbackSchema } from "@formscale/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";

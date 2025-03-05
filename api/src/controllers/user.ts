@@ -2,7 +2,7 @@ import db from "@/db";
 import validator from "@/middleware/validation";
 import Response from "@/utils/response";
 import { getUser } from "@/utils/user";
-import { EditUserSchema } from "@formhook/types";
+import { EditUserSchema } from "@formscale/types";
 import { Hono } from "hono";
 import { update } from "../db/crud";
 import { getToken } from "./auth";

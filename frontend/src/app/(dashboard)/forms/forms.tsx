@@ -1,6 +1,6 @@
 "use client";
 
-import { Form } from "@formhook/types";
+import { Form } from "@formscale/types";
 
 import FormButton from "@/components/form-button";
 import Loading from "@/components/loading";

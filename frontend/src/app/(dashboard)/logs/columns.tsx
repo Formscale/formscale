@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { Form, Log, SubmissionSent } from "@formhook/types";
+import { Form, Log, SubmissionSent } from "@formscale/types";
 import { DotsHorizontalIcon, EnvelopeClosedIcon, LayersIcon, Link1Icon, TokensIcon } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
 
@@ -12,7 +12,7 @@ import { DropdownItem, DropdownSkeleton } from "@/components/default-dropdown";
 import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { handleCopy } from "@/lib/utils";
 import { useForms } from "@/providers";
-import { uppercase } from "@formhook/utils";
+import { uppercase } from "@formscale/utils";
 import DashBadge from "../components/badge";
 import { FormatDate, SortButton } from "../components/table/columns";
 

@@ -36,7 +36,7 @@ body {
 
 @layer base {
   :root {
-    --formhook: 48 100% 50%;
+    --formscale: 48 100% 50%;
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;

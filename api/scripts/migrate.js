@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 
 const MIGRATIONS_DIR = path.join(__dirname, "../migrations");
-const DB_NAME = "formhook-db";
+const DB_NAME = "formscale";
 
 function getNextMigration() {
   const files = fs.readdirSync(MIGRATIONS_DIR);
@@ -70,8 +70,8 @@ if (isInitial) {
   createMigration(name, isRemote, shouldApply);
 }
 
-// "apply": "wrangler d1 migrations apply formhook-db && pnpm run generate",
-// "apply:remote": "wrangler d1 migrations apply formhook-db --remote && pnpm run generate",
-// "create": "npx wrangler d1 migrations create formhook-db add_logs",
+// "apply": "wrangler d1 migrations apply formscale && pnpm run generate",
+// "apply:remote": "wrangler d1 migrations apply formscale --remote && pnpm run generate",
+// "create": "npx wrangler d1 migrations create formscale add_logs",
 // "initial": "npx prisma migrate diff --from-empty --to-schema-datamodel ./prisma/schema.prisma --script --output migrations/0001_create_user_table.sql",
 // "update": "npx prisma migrate diff --from-local-d1 --to-schema-datamodel ./prisma/schema.prisma --script --output migrations/0004_add_logs.sql",

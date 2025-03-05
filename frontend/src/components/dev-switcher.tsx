@@ -1,7 +1,7 @@
 "use client";
 
 import { useError, useForms, useLogs, useUser } from "@/providers";
-import { EditUser } from "@formhook/types";
+import { EditUser } from "@formscale/types";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { usePathname, useRouter } from "next/navigation";
 import { useLayoutEffect, useState } from "react";
@@ -9,7 +9,7 @@ import DefaultDropdown from "./default-dropdown";
 import { Button } from "./ui/button";
 
 export function DevBadge({ current = "dev" }: { current?: string }) {
-  const bg = current === "dev" ? "bg-formhook/80" : "bg-success";
+  const bg = current === "dev" ? "bg-formscale/80" : "bg-success";
 
   return <div className={`w-2 h-2 rounded-full shadow-sm ${bg}`} />;
 }

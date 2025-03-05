@@ -1,4 +1,4 @@
-import { uppercase } from "@formhook/utils";
+import { uppercase } from "@formscale/utils";
 import { FieldValues } from "react-hook-form";
 import { FormatCell } from "./table/columns";
 

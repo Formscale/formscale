@@ -13,7 +13,7 @@ import Item from "@/app/(dashboard)/components/item";
 import { DeleteDialog } from "@/components/default-dialog";
 import { useValidation } from "@/hooks/use-validation";
 import { useError } from "@/providers";
-import { Field, TextSchema, Validation } from "@formhook/types";
+import { Field, TextSchema, Validation } from "@formscale/types";
 import { useEffect, useState } from "react";
 import TextDialog from "./fields/text";
 // import ThemeCard from "./theme";

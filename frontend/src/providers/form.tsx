@@ -1,7 +1,7 @@
 "use client";
 
 import { useFetch } from "@/hooks/fetch";
-import { Form, FormEdit } from "@formhook/types";
+import { Form, FormEdit } from "@formscale/types";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useError } from "./error";
 import { useForms } from "./forms";

@@ -1,6 +1,6 @@
 /** @jsxImportSource react */
 
-import { Form } from "@formhook/types";
+import { Form } from "@formscale/types";
 import { Section } from "@react-email/components";
 import { BaseEmail } from "./base";
 import { EmailButton, Item } from "./submission";

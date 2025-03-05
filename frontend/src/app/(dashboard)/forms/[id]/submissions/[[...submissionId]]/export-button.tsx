@@ -2,7 +2,7 @@ import DefaultDropdown from "@/components/default-dropdown";
 import { Button } from "@/components/ui/button";
 import { DownloadIcon } from "@radix-ui/react-icons";
 
-import { Form, SubmissionSent } from "@formhook/types";
+import { Form, SubmissionSent } from "@formscale/types";
 
 import { getDataFields } from "./columns";
 

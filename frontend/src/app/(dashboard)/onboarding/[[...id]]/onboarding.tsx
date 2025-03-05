@@ -6,7 +6,7 @@ import { DefaultSelect } from "@/components/form-part";
 import Loading from "@/components/loading";
 import { Button } from "@/components/ui/button";
 import { useForms } from "@/providers";
-import { Form } from "@formhook/types";
+import { Form } from "@formscale/types";
 import { RocketIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

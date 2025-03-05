@@ -2,7 +2,7 @@ import SubmissionItem from "@/app/(dashboard)/components/submission-item";
 import Loading from "@/components/loading";
 import { useFetch } from "@/hooks/fetch";
 import { useError } from "@/providers/error";
-import { Log, SubmissionSent } from "@formhook/types";
+import { Log, SubmissionSent } from "@formscale/types";
 import { format } from "date-fns";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";

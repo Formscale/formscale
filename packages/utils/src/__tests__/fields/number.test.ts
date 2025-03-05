@@ -1,4 +1,4 @@
-import { Field } from "@formhook/types";
+import { Field } from "@formscale/types";
 import { fieldToZodSchema } from "../../validations";
 
 describe("number field validation", () => {

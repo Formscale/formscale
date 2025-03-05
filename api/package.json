@@ -1,5 +1,5 @@
 {
-  "name": "@formhook/api",
+  "name": "@formscale/api",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -11,9 +11,9 @@
     "migrate:apply": "node scripts/migrate.js --apply",
     "migrate:initial": "node scripts/migrate.js --initial",
     "generate": "prisma generate",
-    "list": "wrangler d1 migrations list formhook-db",
-    "apply": "wrangler d1 migrations apply formhook-db && pnpm run generate",
-    "apply:remote": "wrangler d1 migrations apply formhook-db --remote && pnpm run generate",
+    "list": "wrangler d1 migrations list formscale",
+    "apply": "wrangler d1 migrations apply formscale && pnpm run generate",
+    "apply:remote": "wrangler d1 migrations apply formscale --remote && pnpm run generate",
     "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --write .",
     "cf-types": "wrangler types",
@@ -37,8 +37,8 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240529.0",
-    "@formhook/types": "workspace:*",
-    "@formhook/utils": "workspace:*",
+    "@formscale/types": "workspace:*",
+    "@formscale/utils": "workspace:*",
     "@types/bcrypt": "^5.0.2",
     "@types/eslint": "^9.6.1",
     "@types/react": "^19.0.8",

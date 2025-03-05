@@ -7,11 +7,11 @@ const chartConfig = {
   completed: {
     label: "Completed",
     color: "hsl(var(--success))",
-    // color: "hsl(var(--formhook))",
+    // color: "hsl(var(--formscale))",
   },
   pending: {
     label: "Pending",
-    color: "hsl(var(--formhook)/0.6)",
+    color: "hsl(var(--formscale)/0.6)",
   },
   blocked: {
     label: "Blocked",

@@ -1,5 +1,5 @@
 import db from "@/db";
-import { LogType } from "@formhook/types";
+import { LogType } from "@formscale/types";
 import { create } from "../db/crud";
 
 interface LoggerProps {

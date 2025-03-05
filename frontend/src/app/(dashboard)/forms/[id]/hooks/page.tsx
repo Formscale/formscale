@@ -14,7 +14,7 @@ import { DeleteDialog } from "@/components/default-dialog";
 
 import { useError } from "@/providers/error";
 import { useUser } from "@/providers/user";
-import { Discord, EmailSettings, Form, FormEdit, Webhook } from "@formhook/types";
+import { Discord, EmailSettings, Form, FormEdit, Webhook } from "@formscale/types";
 import { useEffect, useState } from "react";
 import DiscordEditDialog from "./discord";
 import EmailEditDialog from "./email";

@@ -1,4 +1,4 @@
-# Formscale (FormHook)
+# Formscale
 
 The most powerful form builder for any site.
 
@@ -37,7 +37,7 @@ The most powerful form builder for any site.
   - `ui/*` - UI components
   - `templates/*` - UI templates
   - `utils/*` - Shared utilities
-- `cli` - CLI for managing FormHook
+- `cli` - CLI for managing Formscale
 - `react` - React SDK
 
 ## Getting Started
@@ -45,7 +45,7 @@ The most powerful form builder for any site.
 1. Clone repository:
 
 ```bash
-git clone https://github.com/dris-e/formhook.git
+git clone https://github.com/dris-e/formscale.git
 ```
 
 2. Install dependencies:
@@ -83,7 +83,7 @@ WIP
 
 ## Contributing
 
-Contributions are welcome! Please feel free to [open an issue](https://github.com/dris-e/formhook/issues) or submit a [pull request](https://github.com/dris-e/formhook/pulls).
+Contributions are welcome! Please feel free to [open an issue](https://github.com/dris-e/formscale/issues) or submit a [pull request](https://github.com/dris-e/formscale/pulls).
 
 DM on Discord for questions (dris404).
 

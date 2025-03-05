@@ -1,4 +1,4 @@
-import { MAX_FILE_SIZE } from "@formhook/types";
+import { MAX_FILE_SIZE } from "@formscale/types";
 import { Context } from "hono";
 import { nanoid } from "nanoid";
 

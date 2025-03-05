@@ -1,7 +1,7 @@
 import db from "@/db";
 import { findUnique, secureFind } from "@/db/crud";
 import Response from "@/utils/response";
-import { Admin, TeamPayload } from "@formhook/types";
+import { Admin, TeamPayload } from "@formscale/types";
 import { Hono } from "hono";
 import { verify as verifyJWT } from "hono/jwt";
 import { updateForm } from "./forms";

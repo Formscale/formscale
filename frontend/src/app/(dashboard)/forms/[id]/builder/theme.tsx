@@ -2,7 +2,7 @@
 
 import DataCard from "@/app/(dashboard)/components/data-card";
 import { useForm as useFormProvider } from "@/providers/form";
-import { Form, FormEdit, FormEditSchema } from "@formhook/types";
+import { Form, FormEdit, FormEditSchema } from "@formscale/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { getDefaultFormSettings } from "../settings/settings";

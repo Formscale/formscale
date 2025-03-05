@@ -11,7 +11,7 @@ export default function Loading({ size = "normal" }: { size?: "mini" | "normal" 
         width={100}
         height={100}
       />
-      {/* <Loader2 className="h-12 w-12 text-formhook animate-spin shadow-sm" /> */}
+      {/* <Loader2 className="h-12 w-12 text-formscale animate-spin shadow-sm" /> */}
     </div>
   );
 }

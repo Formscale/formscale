@@ -5,7 +5,7 @@ import { sendSubmissionEmail } from "@/services/email";
 import { uploadFiles } from "@/services/storage";
 import Response from "@/utils/response";
 import { getUser } from "@/utils/user";
-import { Admin, IdSchema, SubmissionStatus, Webhook } from "@formhook/types";
+import { Admin, IdSchema, SubmissionStatus, Webhook } from "@formscale/types";
 import { Context, Hono } from "hono";
 import { z } from "zod";
 import logger from "../utils/logs";

@@ -1,4 +1,4 @@
-import { CreateForm, FormSettings, FormSettingsSchema, Log, SubmissionSent } from "@formhook/types";
+import { CreateForm, FormSettings, FormSettingsSchema, Log, SubmissionSent } from "@formscale/types";
 import { PrismaClient } from "@prisma/client";
 
 interface FormResult {

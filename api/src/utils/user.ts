@@ -1,4 +1,4 @@
-import { SafeUser } from "@formhook/types";
+import { SafeUser } from "@formscale/types";
 import { Context } from "hono";
 import db from "../db";
 import { findUnique } from "../db/crud";

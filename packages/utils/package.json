@@ -1,5 +1,5 @@
 {
-  "name": "@formhook/utils",
+  "name": "@formscale/utils",
   "version": "0.0.1",
   "private": true,
   "main": "./dist/index.js",
@@ -18,7 +18,7 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@formhook/types": "workspace:*",
+    "@formscale/types": "workspace:*",
     "date-fns": "^4.1.0",
     "react-hook-form": "^7.54.2",
     "zod": "^3.22.4"

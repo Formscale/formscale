@@ -5,7 +5,7 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { useFetch } from "@/hooks/fetch";
 import { useDelete } from "@/hooks/use-delete";
 import { useError, useForms, useLogs, useUser } from "@/providers";
-import { EditUser, Form } from "@formhook/types";
+import { EditUser, Form } from "@formscale/types";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 

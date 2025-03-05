@@ -2,7 +2,7 @@
 
 import { DialogContentSkeleton, FormSkeleton } from "@/components/default-dialog";
 import { useForm as useFormProvider } from "@/providers/form";
-import { Discord, DiscordSchema } from "@formhook/types";
+import { Discord, DiscordSchema } from "@formscale/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { updateWebhook } from "./webhook";

@@ -1,4 +1,4 @@
-import { Field } from "@formhook/types";
+import { Field } from "@formscale/types";
 import { z } from "zod";
 
 export function fieldToZodSchema(field: Field): z.ZodType {

@@ -1,5 +1,5 @@
 {
-  "name": "@formhook/frontend",
+  "name": "@formscale/frontend",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -60,8 +60,8 @@
     "@cloudflare/next-on-pages": "1",
     "@cloudflare/workers-types": "^4.20250124.3",
     "@eslint/eslintrc": "^3",
-    "@formhook/types": "workspace:*",
-    "@formhook/utils": "workspace:*",
+    "@formscale/types": "workspace:*",
+    "@formscale/utils": "workspace:*",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

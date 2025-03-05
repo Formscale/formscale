@@ -1,6 +1,6 @@
 "use client";
 
-import { Form, SubmissionSent } from "@formhook/types";
+import { Form, SubmissionSent } from "@formscale/types";
 import Link from "next/link";
 
 import DashCard from "@/app/(dashboard)/components/card";

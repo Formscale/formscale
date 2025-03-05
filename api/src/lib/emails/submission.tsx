@@ -1,7 +1,7 @@
 /** @jsxImportSource react */
 
-import { Form, SubmissionSent } from "@formhook/types";
-import { contentFormatter, FormatCell, uppercase } from "@formhook/utils";
+import { Form, SubmissionSent } from "@formscale/types";
+import { contentFormatter, FormatCell, uppercase } from "@formscale/utils";
 import { Button, Section, Text } from "@react-email/components";
 import { format } from "date-fns";
 import { Fragment } from "react/jsx-runtime";

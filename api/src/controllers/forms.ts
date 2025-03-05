@@ -15,8 +15,8 @@ import {
   SafeUser,
   ValidationSchema,
   Webhook,
-} from "@formhook/types";
-import { createFormSchema } from "@formhook/utils";
+} from "@formscale/types";
+import { createFormSchema } from "@formscale/utils";
 import { Context, Hono } from "hono";
 import { sign } from "hono/jwt";
 import { customAlphabet } from "nanoid";

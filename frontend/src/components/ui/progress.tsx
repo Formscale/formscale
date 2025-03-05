@@ -9,8 +9,8 @@ export type ProgressVariant = "default" | "secondary" | "destructive" | "success
 
 const variantClassesMap = {
   default: {
-    root: "bg-formhook/20",
-    indicator: "bg-formhook",
+    root: "bg-formscale/20",
+    indicator: "bg-formscale",
   },
   secondary: {
     root: "bg-secondary/20",

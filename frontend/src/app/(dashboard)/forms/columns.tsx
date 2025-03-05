@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { Form } from "@formhook/types";
+import { Form } from "@formscale/types";
 import { DotsHorizontalIcon, EyeNoneIcon, EyeOpenIcon, Link1Icon } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
 

@@ -1,3 +1,3 @@
-# Formhook API
+# Formscale API
 
 Send forms and stuff
