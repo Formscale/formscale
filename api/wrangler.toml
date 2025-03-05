@@ -3,10 +3,6 @@ main = "src/index.ts"
 compatibility_date = "2023-12-01"
 compatibility_flags = ["nodejs_compat"]
 
-# [[kv_namespaces]]
-# binding = "MY_KV_NAMESPACE"
-# id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-
 [[r2_buckets]]
 binding = "BUCKET"
 preview_bucket_name = "formscale-dev"
@@ -25,3 +21,7 @@ type = "ratelimit"
 namespace_id = "1001"
 
 simple = { limit = 20, period = 60 }
+
+routes = [
+  { pattern = "api.formscale.dev", custom_domain = true }
+]

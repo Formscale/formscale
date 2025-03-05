@@ -1,6 +1,6 @@
 import Log from "./log";
 
-export default async function LogPage({ params }: { params: { id: string } }) {
+export default async function LogPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
   if (!id) return null;

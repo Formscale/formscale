@@ -5,7 +5,7 @@ import { useForm as useFormProvider } from "@/providers/form";
 import { Admin, EmailSettings, EmailSettingsSchema } from "@formscale/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { parseForm } from "./page";
+import parseForm from "./parse";
 
 interface EmailEditDialogProps {
   emailSettings: EmailSettings;

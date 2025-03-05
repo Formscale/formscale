@@ -14,10 +14,11 @@ import { DeleteDialog } from "@/components/default-dialog";
 
 import { useError } from "@/providers/error";
 import { useUser } from "@/providers/user";
-import { Discord, EmailSettings, Form, FormEdit, Webhook } from "@formscale/types";
+import { Discord, EmailSettings, FormEdit, Webhook } from "@formscale/types";
 import { useEffect, useState } from "react";
 import DiscordEditDialog from "./discord";
 import EmailEditDialog from "./email";
+import parseForm from "./parse";
 import WebhookEditDialog from "./webhook";
 
 const defaultWebhook = {
@@ -26,17 +27,6 @@ const defaultWebhook = {
   method: "POST" as const,
   headers: {},
 };
-
-export function parseForm(form: Form) {
-  const formEdit: FormEdit = {
-    id: form.id,
-    name: form.name,
-    development: form.development,
-    settings: form.settings,
-  };
-
-  return formEdit;
-}
 
 export default function HooksPage() {
   const [open, setOpen] = useState(false);

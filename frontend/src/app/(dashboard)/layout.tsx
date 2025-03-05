@@ -4,6 +4,8 @@ import SuspenseWrapper from "@/components/suspense-wrapper";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { FormsProvider, LogsProvider } from "@/providers";
 
+export const runtime = "edge";
+
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <FormsProvider>

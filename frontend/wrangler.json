@@ -6,5 +6,10 @@
   "pages_build_output_dir": ".vercel/output/static",
   "observability": {
     "enabled": true
+  },
+  "vars": {
+    "NEXT_PUBLIC_API_URL": "https://api.formscale.dev",
+    "NEXT_PUBLIC_FRONTEND_URL": "https://formscale.dev",
+    "NEXT_PUBLIC_BUCKET_URL": "https://cdn.formscale.dev"
   }
 }
