@@ -6,6 +6,7 @@ import { Form, FormEdit, FormEditSchema } from "@formhook/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useProtectionFields } from "./captcha";
+import DangerCard from "./danger";
 
 export const getDefaultFormSettings = (form: Form) => {
   return {
@@ -127,6 +128,7 @@ export default function Settings({ form }: { form: Form }) {
         disabled={isLoading}
         onSubmitAction={onSubmit}
       ></DataCard>
+      <DangerCard form={form} />
     </div>
   );
 }

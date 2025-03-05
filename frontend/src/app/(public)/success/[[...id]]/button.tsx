@@ -5,8 +5,6 @@ import { useFetch } from "@/hooks/fetch";
 import { TriangleLeftIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 
-// make request to log the user action (see if user is logged in?)
-
 export default function SuccessButton({ id }: { id?: string }) {
   const { get } = useFetch();
   const [isLoading, setIsLoading] = useState(false);

@@ -1,1 +1,0 @@
-// process recaptcha, hcaptcha, & turnstile

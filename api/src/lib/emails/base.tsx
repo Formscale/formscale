@@ -9,17 +9,33 @@ interface BaseEmailProps {
   footer: string;
   env: Env;
   link?: string;
+
+  logo?: string;
+  siteUrl?: string;
+  footerInfo?: string;
 }
 
-export const BaseEmail = ({ title, description, children, footer, env, link }: BaseEmailProps) => {
-  const frontendUrl = env.FRONTEND_URL;
+export const BaseEmail = ({
+  title,
+  description,
+  children,
+  footer,
+  env,
+  link,
+  logo,
+  siteUrl,
+  footerInfo,
+}: BaseEmailProps) => {
+  const frontendUrl = siteUrl ?? env.FRONTEND_URL;
   // const bucketUrl = env.BUCKET_URL;
 
   // const logoUrl = bucketUrl
   //   ? `${bucketUrl}/assets/formscale-logo.png`
   //   : `${frontendUrl}/assets/logos/formscale-logo.png`;
 
-  const logoUrl = `${frontendUrl}/assets/logos/formscale-logo.png`;
+  const logoUrl = logo ?? `${frontendUrl}/assets/logos/formscale-logo.png`;
+
+  const bottomText = footerInfo ?? footer;
 
   return (
     <Html>
@@ -43,7 +59,7 @@ export const BaseEmail = ({ title, description, children, footer, env, link }: B
 
           {children}
 
-          <Text style={text}>{footer}</Text>
+          <Text style={text}>{bottomText}</Text>
 
           {/* <Section>
             <Row style={footerLogos}>

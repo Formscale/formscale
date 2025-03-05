@@ -55,6 +55,10 @@ export interface Endpoints {
     input: null;
     output: { message: string };
   };
+  "forms/:id/copy": {
+    input: null;
+    output: { form: Form };
+  };
   "forms/create": {
     input: CreateForm;
     output: { form: Form };
@@ -77,10 +81,6 @@ export interface Endpoints {
     input: EditStatus;
     output: { submission: SubmissionSent };
   };
-  "s/:id/click": {
-    input: null;
-    output: { message: string };
-  };
 
   "logs/all": {
     input: null;
@@ -89,6 +89,22 @@ export interface Endpoints {
   "logs/submissions/:id": {
     input: null;
     output: { logs: Log[] };
+  };
+
+  // public
+
+  "s/:id/click": {
+    input: null;
+    output: { message: string };
+  };
+
+  "verify/form/:id": {
+    input: null;
+    output: { name: string };
+  };
+  "verify/team/:token": {
+    input: null;
+    output: { message: string };
   };
 }
 

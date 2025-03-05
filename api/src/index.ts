@@ -6,6 +6,7 @@ import {
   SubmissionsController,
   SubmitController,
   UserController,
+  VerifyController,
 } from "@/controllers";
 import Response from "@/utils/response";
 import { cors } from "hono/cors";
@@ -35,12 +36,24 @@ app.use(
   })
 );
 
-const publicRoutes = ["/auth/login", "/auth/signup", "/auth/resend", "/auth/verify", "/s/:id", "/s/:id/click"];
+const publicRoutes = [
+  "/auth/login",
+  "/auth/signup",
+  "/auth/resend",
+  "/auth/verify",
+  "/s/:id",
+  "/s/:id/click",
+  "/verify",
+];
 
 app.use("*", (ctx, next) => {
   const path = ctx.req.path;
 
-  if (publicRoutes.includes(path) || (path.startsWith("/s") && !path.includes("/submissions"))) {
+  if (
+    publicRoutes.includes(path) ||
+    (path.startsWith("/s") && !path.includes("/submissions")) ||
+    path.startsWith("/verify")
+  ) {
     return next();
   }
 
@@ -57,6 +70,7 @@ app.route("/forms", FormController);
 app.route("/user", UserController);
 app.route("/submissions", SubmissionsController);
 app.route("/logs", LogsController);
+app.route("/verify", VerifyController);
 
 app.all("*", async (ctx) => {
   return new Response(ctx).error("Route not found", 404);

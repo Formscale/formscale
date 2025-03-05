@@ -5,7 +5,7 @@ import { sendSubmissionEmail } from "@/services/email";
 import { uploadFiles } from "@/services/storage";
 import Response from "@/utils/response";
 import { getUser } from "@/utils/user";
-import { IdSchema, SubmissionStatus, Webhook } from "@formhook/types";
+import { Admin, IdSchema, SubmissionStatus, Webhook } from "@formhook/types";
 import { Context, Hono } from "hono";
 import { z } from "zod";
 import logger from "../utils/logs";
@@ -352,13 +352,36 @@ export const SubmitController = submit
         form.settings.emailSettings.enabled &&
         form.settings.emailSettings.to.length > 0
       ) {
+        const admins = form.settings.admins || [];
+        const toEmails = form.settings.emailSettings.to;
+
+        const adminEmails = admins.map((admin: Admin) => admin.email);
+        const userEmail = toEmails.filter((email: string) => !adminEmails.includes(email));
+
+        const verifiedAdmins = admins.filter(
+          (admin: Admin) => toEmails.includes(admin.email) && admin.verified === true
+        );
+        const verifiedAdminEmails = verifiedAdmins.map((admin: Admin) => admin.email);
+
+        const allRecipients = [...userEmail, ...verifiedAdminEmails];
+
+        if (!verifiedAdmins || verifiedAdmins.length === 0) {
+          await logger({
+            env: ctx.env,
+            submissionId,
+            message: "Admin email(s) pending verification",
+            code: 404,
+            data: { formId: form.id, submissionId, toEmails, adminEmails },
+          });
+        }
+
         const submissionData = {
           ...updatedSubmission,
           data:
             typeof updatedSubmission.data === "string" ? JSON.parse(updatedSubmission.data) : updatedSubmission.data,
         };
 
-        await sendSubmissionEmail(form.settings.emailSettings.to, form, submissionData, ctx.env);
+        await sendSubmissionEmail(allRecipients, form, submissionData, ctx.env);
       }
 
       await update(db(ctx.env), "form", {

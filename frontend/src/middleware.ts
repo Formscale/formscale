@@ -3,7 +3,7 @@ import { Auth } from "./lib/auth";
 
 const routes = {
   public: ["/", "/login", "/signup", "/resend", "/verify", "/forgot"],
-  unprotected: ["/components", "/success", "/success/:id", "/teams/verify/:id"],
+  unprotected: ["/components", "/success", "/success/:id", "/verify/team/:token"],
 };
 
 export const config = {

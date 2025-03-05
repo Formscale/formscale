@@ -17,6 +17,23 @@ export const splitLink = (link: string) => {
   return link.split("/").slice(0, 3).join("/");
 };
 
+export const EmailButton = ({ link, text }: { link: string; text: string }) => {
+  return (
+    <Button style={button} href={link} target="_blank">
+      {text}
+    </Button>
+  );
+};
+
+export const Item = ({ label, value }: { label: string; value: string }) => {
+  return (
+    <Fragment>
+      <Text style={submissionLabel}>{label}</Text>
+      <Text style={submissionText}>{value}</Text>
+    </Fragment>
+  );
+};
+
 export const SubmissionEmail = ({ form, submission, env }: SubmissionEmailProps) => {
   const development = form.development ? " (Development)" : "";
   const frontendUrl = env.FRONTEND_URL;
@@ -35,18 +52,21 @@ export const SubmissionEmail = ({ form, submission, env }: SubmissionEmailProps)
         {Object.keys(submission.data).map((key) => {
           const formattedValue = FormatCell(submission.data[key], contentFormatter, env.BUCKET_URL);
           return (
-            <Fragment key={key}>
-              <Text style={submissionLabel}>{uppercase(key)}</Text>
-              <Text style={submissionText}>
-                {typeof formattedValue === "string" ? formattedValue : formattedValue.content}
-              </Text>
-            </Fragment>
+            // <Fragment key={key}>
+            //   <Text style={submissionLabel}>{uppercase(key)}</Text>
+            //   <Text style={submissionText}>
+            //     {typeof formattedValue === "string" ? formattedValue : formattedValue.content}
+            //   </Text>
+            // </Fragment>
+            <Item
+              key={key}
+              label={uppercase(key)}
+              value={typeof formattedValue === "string" ? formattedValue : formattedValue.content}
+            />
           );
         })}
       </Section>
-      <Button style={button} href={`${frontendUrl}/forms/${form.id}/submissions/${submission.id}`} target="_blank">
-        View Submission
-      </Button>
+      <EmailButton link={`${frontendUrl}/forms/${form.id}/submissions/${submission.id}`} text="View Submission" />
       <Text style={descriptionText}>
         Submitted at {format(new Date(submission.createdAt), "h:mm a 'on' MMMM do, yyyy")} from{" "}
         {submission.location.split(" (")[0]}.
@@ -62,6 +82,7 @@ SubmissionEmail.PreviewProps = {
     development: true,
   },
   submission: {
+    id: "123",
     data: {
       name: "John Doe",
       email: "john.doe@example.com",

@@ -3,7 +3,7 @@ Disallow: /resend/
 Disallow: /verify/
 Disallow: /success/*
 Disallow: /error/*
-Disallow: /teams/verify/*
+Disallow: /verify/team/*
 Disallow: /forms/*
 Disallow: /metrics/
 Disallow: /logs/*

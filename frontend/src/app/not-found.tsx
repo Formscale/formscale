@@ -1,58 +1,33 @@
-export const runtime = "edge";
+import Footer from "@/components/footer";
+import { Header } from "@/components/header";
+import Loading from "@/components/loading";
+import { Button } from "@/components/ui/button";
+import { TriangleLeftIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
 
 export default function NotFound() {
   return (
     <>
-      <title>404: This page could not be found.</title>
-      <div style={styles.error}>
-        <div>
-          <style
-            dangerouslySetInnerHTML={{
-              __html: `body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}`,
-            }}
-          />
-          <h1 className="next-error-h1" style={styles.h1}>
-            404
-          </h1>
-          <div style={styles.desc}>
-            <h2 style={styles.h2}>This page could not be found.</h2>
-          </div>
-        </div>
-      </div>
+      <Header />
+      <main className="flex flex-col items-center justify-center min-h-screen gap-2 relative">
+        <Loading size="large" />
+
+        <h2 className="text-2xl font-bold mt-6">404 - Not Found</h2>
+        <p className="text-sm text-muted-foreground">The page you're looking for was removed or doesn't exist.</p>
+        <Button variant="default" className="text-xs font-bold mt-4" asChild>
+          <Link href="/">
+            <TriangleLeftIcon />
+            Go Home
+          </Link>
+        </Button>
+
+        {/* <DotPattern
+          width={16}
+          height={16}
+          className={cn("opacity-60", "[mask-image:radial-gradient(1000px_circle_at_top,white,transparent)]")}
+        /> */}
+      </main>
+      <Footer />
     </>
   );
 }
-
-const styles = {
-  error: {
-    fontFamily:
-      'system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"',
-    height: "100vh",
-    textAlign: "center",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  desc: {
-    display: "inline-block",
-  },
-
-  h1: {
-    display: "inline-block",
-    margin: "0 20px 0 0",
-    padding: "0 23px 0 0",
-    fontSize: 24,
-    fontWeight: 500,
-    verticalAlign: "top",
-    lineHeight: "49px",
-  },
-
-  h2: {
-    fontSize: 14,
-    fontWeight: 400,
-    lineHeight: "49px",
-    margin: 0,
-  },
-} as const;

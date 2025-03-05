@@ -18,7 +18,9 @@ import {
 } from "@formhook/types";
 import { createFormSchema } from "@formhook/utils";
 import { Context, Hono } from "hono";
+import { sign } from "hono/jwt";
 import { customAlphabet } from "nanoid";
+import { sendTeamInviteEmail } from "../services/email";
 
 async function getForm(ctx: Context, user: SafeUser, id: string) {
   const currentForm = await findOne(db(ctx.env), "form", {
@@ -32,11 +34,12 @@ async function getForm(ctx: Context, user: SafeUser, id: string) {
   return currentForm;
 }
 
-async function updateForm(
+export async function updateForm(
   ctx: Context,
   currentForm: Form,
   data: EmailSettings | Webhook[] | FormSettings,
-  settingKey?: "validation" | "emailSettings"
+  settingKey?: "validation" | "emailSettings" | "admins",
+  userId?: string
 ) {
   let settings;
 
@@ -54,7 +57,7 @@ async function updateForm(
     settings: JSON.stringify(settings),
   };
 
-  const updatedForm = await secureUpdate(db(ctx.env), "form", getUser(ctx).id, currentForm.id, formData, {
+  const updatedForm = await secureUpdate(db(ctx.env), "form", userId ?? getUser(ctx).id, currentForm.id, formData, {
     include: { submissions: true },
   });
 
@@ -84,7 +87,7 @@ export const FormController = forms
       }
 
       const form = await create(db(ctx.env), "form", {
-        id: generateId(),
+        id: `${generateId()}${user.development ? "-dev" : ""}`,
         name,
         development: user.development,
         userId: user.id,
@@ -185,17 +188,30 @@ export const FormController = forms
           if (unverifiedEmails.length > 0) {
             const newAdmins = unverifiedEmails.map((email: string) => ({
               email,
-              role: "admin" as const,
+              role: "viewer" as const,
               verified: false,
             }));
 
             form.settings.admins = [...(form.settings.admins || []), ...newAdmins];
 
-            console.log("sending email(s) to ", unverifiedEmails.join(", "));
+            Promise.all(
+              unverifiedEmails.map(async (email: string, index: number) => {
+                const payload = {
+                  data: {
+                    email,
+                    formId: form.id,
+                    invitee: user.id,
+                  },
+                  exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // 1 day
+                };
 
-            // send verification email
-            // create route to add admins
-            // update form with admins via email link to confirm
+                const code = await sign(payload, ctx.env.JWT_SECRET);
+
+                await sendTeamInviteEmail(email, code, form, user.name, ctx.env);
+
+                console.log("email sent to ", email);
+              })
+            );
           }
         }
 
@@ -266,4 +282,40 @@ export const FormController = forms
     } catch (error) {
       return new Response(ctx).error(error as Error);
     }
+  })
+  .post("/:id/copy", async (ctx) => {
+    const { id } = ctx.req.param();
+    const user = getUser(ctx);
+
+    const existingForm = await findOne(db(ctx.env), "form", {
+      where: { id, userId: user.id, development: true },
+    });
+
+    if (!existingForm) {
+      return new Response(ctx).error("Form not found.", 404);
+    }
+
+    const existingName = await findOne(db(ctx.env), "form", {
+      where: { name: existingForm.name, userId: user.id, development: false },
+    });
+
+    if (existingName) {
+      return new Response(ctx).error(`Form named "${existingForm.name}" already exists in production.`, 400);
+    }
+
+    const safeForm = FormEditSchema.parse(existingForm);
+
+    console.log(safeForm);
+
+    const form = await create(db(ctx.env), "form", {
+      ...safeForm,
+      id: existingForm.id.endsWith("-dev") ? existingForm.id.replace(/-dev$/, "") : generateId(),
+      development: false,
+      userId: user.id,
+      ...(existingForm.settings.isPublic ? { settings: { isPublic: false } } : {}),
+    });
+
+    console.log(form);
+
+    return new Response(ctx).success({ form });
   });

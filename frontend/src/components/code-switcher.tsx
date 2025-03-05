@@ -297,7 +297,7 @@ export default function Form() {
   return (
     <DataCardButton
       titleHeader={
-        <div className="flex justify-between items-center -m-1 -ml-2 -mr-4">
+        <div className="flex justify-between items-center -m-1 -ml-2 -mr-4 overflow-x-auto">
           <div className="flex items-center gap-2">
             {Object.entries(tabs).map(([key, tab]) => (
               <Tab key={tab.title} {...tab} isActive={activeTab === key} onClickAction={() => setActiveTab(key)} />
@@ -318,7 +318,7 @@ export default function Form() {
       disabled={isLoading}
       onClickAction={() => (demo ? router.push(`/forms`) : sendSubmission(formId))}
     >
-      <div className="overflow-auto">
+      <div className={`overflow-auto ${demo ? "max-h-[300px]" : ""}`}>
         {Object.entries(tabs).map(
           ([key, tab]) =>
             activeTab === key && (

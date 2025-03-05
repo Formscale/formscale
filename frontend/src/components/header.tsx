@@ -2,16 +2,10 @@ import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { FeedbackForm } from "./contact";
 import { DevSwitcher } from "./dev-switcher";
+import { HeaderButtons, HeaderDashButtons } from "./header-buttons";
 import Logo from "./logo";
 import { Button } from "./ui/button";
 import { SidebarTrigger } from "./ui/sidebar";
-
-const links = [
-  { label: "Features", href: "/features" },
-  { label: "Pricing", href: "/pricing" },
-  { label: "Components", href: "/components" },
-  // { label: "Docs", href: "/docs" },
-];
 
 const socialLinks = [
   { label: "GitHub", href: "/github", icon: GitHubLogoIcon },
@@ -66,22 +60,11 @@ export function Header() {
         <Logo />
 
         <div className="absolute left-1/2 -translate-x-1/2">
-          <div className="flex flex-row items-center gap-1">
-            {links.map((link) => (
-              <Button variant="ghost" size="sm" key={link.href}>
-                <Link href={link.href}>{link.label}</Link>
-              </Button>
-            ))}
-          </div>
+          <HeaderButtons />
         </div>
 
         <div className="flex flex-row items-center gap-2">
-          <Button variant="ghost" size="sm">
-            <Link href="/login">Log In</Link>
-          </Button>
-          <Button variant="action" size="sm" className="font-bold">
-            <Link href="/signup">Get Started</Link>
-          </Button>
+          <HeaderDashButtons />
           <div className="w-px h-6 bg-border ml-2" />
 
           {socialLinks.map((link) => (

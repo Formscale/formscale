@@ -69,8 +69,14 @@ export const LogoUploadSchema = z.object({
 
 export const AdminSchema = z.object({
   email: z.string().email(),
-  role: z.enum(["admin", "owner"]).default("admin"),
+  role: z.enum(["admin", "owner", "viewer"]).default("viewer"),
   verified: z.boolean().optional().default(false),
+});
+
+export const TeamPayloadSchema = z.object({
+  email: z.string().email(),
+  formId: z.string(),
+  invitee: z.string().min(1),
 });
 
 export const UTMSettingsSchema = z.object({
@@ -116,7 +122,12 @@ export const FormSettingsSchema = z.object({
 });
 
 export const idString = "23456789abcdefghjkmnpqrstuvwxyz";
-export const IdSchema = z.string().regex(new RegExp(`^[${idString}]{8}$`), "Please use a valid form ID");
+export const IdSchema = z
+  .string()
+  .regex(
+    new RegExp(`^[${idString}]{8}(-dev)?$`),
+    "Please use a valid form ID (8 characters, followed by '-dev' for development)"
+  );
 
 export const FormSchema = z.object({
   id: IdSchema,
@@ -153,3 +164,4 @@ export type Webhook = z.infer<typeof WebhookSchema>;
 export type Discord = z.infer<typeof DiscordSchema>;
 export type EmailSettings = z.infer<typeof EmailSettingsSchema>;
 export type Admin = z.infer<typeof AdminSchema>;
+export type TeamPayload = z.infer<typeof TeamPayloadSchema>;

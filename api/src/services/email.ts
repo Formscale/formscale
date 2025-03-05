@@ -1,4 +1,4 @@
-import { SubmissionEmail, VerifyEmail, splitLink } from "@/lib/emails";
+import { SubmissionEmail, TeamInviteEmail, VerifyEmail, splitLink } from "@/lib/emails";
 import logger from "@/utils/logs";
 import { Form, SubmissionSent } from "@formhook/types";
 import { Resend } from "resend";
@@ -28,6 +28,16 @@ export async function sendVerifyEmail(to: string[], otp: string, env: Env) {
     "Verify your email",
     `Your OTP for Formscale is ${otp}. This code will expire in 15 minutes.`,
     VerifyEmail({ otp, env }),
+    env
+  );
+}
+
+export async function sendTeamInviteEmail(to: string, code: string, form: Form, invitee: string, env: Env) {
+  await sendEmail(
+    [to],
+    `Accept form invitation from ${invitee}`,
+    `You've been invited to join the form "${form.name}". Click the button below to accept the invitation.`,
+    TeamInviteEmail({ code, form, email: to, invitee, env }),
     env
   );
 }

@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function Loading({ size = "normal" }: { size?: "mini" | "normal" | "large" }) {
   return (
-    <div className="flex w-full flex-col items-center justify-center gap-6 min-h-[50vh]">
+    <div className={`flex w-full flex-col items-center justify-center gap-6 ${size === "large" ? "" : "min-h-[50vh]"}`}>
       <Image
         src="/assets/logos/formscale-icon.svg"
         alt="Formscale loader"

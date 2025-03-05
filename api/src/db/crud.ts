@@ -129,7 +129,7 @@ export async function create<T extends keyof PrismaClient>(
       ...(!user.development ? { isPublic: false } : {}),
       emailSettings: {
         ...data.settings?.emailSettings,
-        to: [user?.email || ""],
+        to: [user?.email, ...(data.settings?.emailSettings?.to.filter((email: string) => email !== user?.email) || [])],
       },
     });
 

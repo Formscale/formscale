@@ -6,8 +6,8 @@ import { DotPattern } from "./ui/dot-pattern";
 
 const links = {
   product: [
-    { label: "Features", href: "/?features" },
-    { label: "Pricing", href: "/?pricing" },
+    { label: "Features", href: "/#features" },
+    { label: "Pricing", href: "/pricing" },
     { label: "Components", href: "/components" },
   ],
   company: [
@@ -32,8 +32,8 @@ const links = {
 export default function Footer() {
   return (
     <>
-      <div className="z-10 w-full overflow-hidden py-8 px-4 pb-10 relative">
-        <div className="flex flex-row items-start justify-between max-w-6xl mx-auto pb-14 border-b border-border">
+      <div className="z-10 w-full overflow-hidden py-8 px-8 pb-10 relative">
+        <div className="flex flex-col md:flex-row gap-12 items-start justify-between max-w-6xl mx-auto pb-14 border-b border-border">
           <div className="flex flex-col items-start w-full gap-6">
             <Image
               src="/assets/logos/formscale-icon.svg"
@@ -47,13 +47,13 @@ export default function Footer() {
             {/* <span className="text-sm text-muted-foreground">A better way to build forms.</span> */}
           </div>
 
-          <div className="flex w-full flex-row items-start gap-12">
+          <div className="flex w-full flex-wrap md:flex-nowrap flex-row items-start gap-10 md:gap-12">
             {Object.keys(links).map((key) => (
-              <div className="flex flex-col items-start w-full gap-4">
+              <div key={key} className="flex flex-col items-start md:w-full gap-4">
                 <p className="text-sm font-bold text-foreground">{uppercase(key)}</p>
 
                 {links[key as keyof typeof links].map((link) => (
-                  <Link href={link.href} className="text-xs text-muted-foreground hover:underline">
+                  <Link key={link.label} href={link.href} className="text-xs text-muted-foreground hover:underline">
                     {link.label}
                   </Link>
                 ))}
@@ -61,7 +61,7 @@ export default function Footer() {
             ))}
           </div>
         </div>
-        <div className="flex w-full items-start justify-between gap-2 max-w-6xl mx-auto pt-6">
+        <div className="flex w-full items-center justify-between gap-2 max-w-6xl mx-auto pt-6">
           <span className="text-xs text-muted-foreground/80">© 2025 Formscale, All rights reserved.</span>
 
           <div className="flex flex-row items-center gap-3 text-xs text-muted-foreground underline">
