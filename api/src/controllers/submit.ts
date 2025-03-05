@@ -1,6 +1,6 @@
 import db from "@/db";
 import { create, findOne, update } from "@/db/crud";
-import hasSpam from "@/lib/spam";
+// import hasSpam from "@/lib/spam";
 import { sendSubmissionEmail } from "@/services/email";
 import { uploadFiles } from "@/services/storage";
 import Response from "@/utils/response";
@@ -204,36 +204,31 @@ export const SubmitController = submit
         // check user agent, rate limit ip, check email, check honeypot, check keywords
         // pkgs: hono-rate-limiter, isBot
         // check keywords
-        const dataString = typeof data === "string" ? data : JSON.stringify(data);
-        const spam = hasSpam(dataString);
-
-        if (spam) {
-          await update(db(ctx.env), "submission", {
-            where: { id: submission.id },
-            data: {
-              data: JSON.stringify(
-                saveResponses
-                  ? { ...data, error: "Spam detected" }
-                  : { message: "Response not saved", error: "Spam detected" }
-              ),
-              status: "blocked",
-            },
-          });
-
-          const message = "Spam detected";
-
-          await logger({
-            env: ctx.env,
-            submissionId,
-            message,
-            code: 403,
-            data: { formId, submissionId, spam },
-          });
-
-          // redirect early
-
-          return new Response(ctx).error(message, 403);
-        }
+        // const dataString = typeof data === "string" ? data : JSON.stringify(data);
+        // const spam = hasSpam(dataString);
+        // if (spam) {
+        //   await update(db(ctx.env), "submission", {
+        //     where: { id: submission.id },
+        //     data: {
+        //       data: JSON.stringify(
+        //         saveResponses
+        //           ? { ...data, error: "Spam detected" }
+        //           : { message: "Response not saved", error: "Spam detected" }
+        //       ),
+        //       status: "blocked",
+        //     },
+        //   });
+        //   const message = "Spam detected";
+        //   await logger({
+        //     env: ctx.env,
+        //     submissionId,
+        //     message,
+        //     code: 403,
+        //     data: { formId, submissionId, spam },
+        //   });
+        //   // redirect early
+        //   return new Response(ctx).error(message, 403);
+        // }
       }
 
       const fileUploads = await uploadFiles(fileFormData, ctx.env, ctx);

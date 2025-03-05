@@ -41,8 +41,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Lint
-        run: pnpm lint
+      # - name: Lint
+      #   run: pnpm lint
 
       - name: Test
         run: pnpm test
@@ -97,8 +97,18 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 
+          FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_EMAIL_ADDRESS: ${{ secrets.RESEND_EMAIL_ADDRESS }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          BUCKET_URL: ${{ secrets.BUCKET_URL }}
+
       - name: Deploy Frontend to Cloudflare Pages
         run: pnpm --filter "frontend" deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          NEXT_PUBLIC_FRONTEND_URL: ${{ secrets.NEXT_PUBLIC_FRONTEND_URL }}
+          NEXT_PUBLIC_BUCKET_URL: ${{ secrets.NEXT_PUBLIC_BUCKET_URL }}

@@ -45,7 +45,7 @@ The most powerful form builder for any site.
 1. Clone repository:
 
 ```bash
-git clone https://github.com/dris-e/formscale.git
+git clone https://github.com/Formscale/formscale.git
 ```
 
 2. Install dependencies:
@@ -83,7 +83,7 @@ WIP
 
 ## Contributing
 
-Contributions are welcome! Please feel free to [open an issue](https://github.com/dris-e/formscale/issues) or submit a [pull request](https://github.com/dris-e/formscale/pulls).
+Contributions are welcome! Please feel free to [open an issue](https://github.com/Formscale/formscale/issues) or submit a [pull request](https://github.com/Formscale/formscale/pulls).
 
 DM on Discord for questions (dris404).
 
