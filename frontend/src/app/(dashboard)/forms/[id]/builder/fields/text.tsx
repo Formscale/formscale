@@ -24,8 +24,6 @@ export default function TextDialog(textField?: Text) {
   if (!textField) return null;
 
   async function onSubmit(values: Text) {
-    console.log(values);
-
     await saveField(values);
   }
 

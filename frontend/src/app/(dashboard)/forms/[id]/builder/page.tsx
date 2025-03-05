@@ -43,13 +43,14 @@ export default function BuilderPage() {
   const [open, setOpen] = useState(false);
   const { handleToast } = useError();
 
-  if (!form) return null;
-
   useEffect(() => {
+    if (!form) return;
     const existingFields = form.settings.validation.fields as Field[];
 
     setValidations({ ...form.settings.validation, fields: existingFields });
-  }, [form.settings.validation.fields]);
+  }, [form?.settings?.validation?.fields]);
+
+  if (!form) return null;
 
   const items = [
     {
@@ -59,13 +60,14 @@ export default function BuilderPage() {
       description: "Set a minimum and maximum length.",
       dialog: (
         <TextDialog
-          {...validations?.fields?.find((field) => field.type === "text")!}
-          // type="text"
-          // required={false}
-          // name=""
-          // id=""
-          // placeholder=""
-          // description=""
+          {...(validations?.fields?.find((field) => field.type === "text") || {
+            type: "text",
+            required: false,
+            name: "",
+            id: "",
+            placeholder: "",
+            description: "",
+          })}
         />
       ),
       onClick: () => {
@@ -98,7 +100,7 @@ export default function BuilderPage() {
       icon: MixIcon,
       description: "Set a minimum and maximum value.",
       //   dialog: <DiscordEditDialog {...discordWebhook} />,
-      onClick: () => console.log("number"),
+      // onClick: () => console.log("number"),
     },
     {
       type: "email",
@@ -106,7 +108,7 @@ export default function BuilderPage() {
       icon: EnvelopeOpenIcon,
       description: "Validate email addresses, allow certain domains.",
       //   dialog: <WebhookEditDialog {...form.settings.webhooks.find((w) => w.type === "webhook")!} />,
-      onClick: () => console.log("email"),
+      // onClick: () => console.log("email"),
     },
     // {
     //   type: "date",

@@ -5,18 +5,10 @@ import { useEffect, useState } from "react";
 import Loading from "@/components/loading";
 import { useForms } from "@/providers";
 import { DashCardSkeleton } from "../components/card";
-import Chart from "../components/chart/chart";
+import Chart, { ChartDataPoint } from "../components/chart/chart";
 import { Filter, Filters } from "../components/chart/filter";
 import Metric from "../components/metric";
 import DashTitle from "../components/title";
-
-interface ChartDataPoint {
-  date: string;
-  pending: number;
-  completed: number;
-  failed: number;
-  blocked: number;
-}
 
 export default function MetricsPage() {
   const { forms, isLoading } = useForms();
@@ -106,7 +98,7 @@ export default function MetricsPage() {
         );
         const oldestDateObj = new Date(oldestDate);
 
-        let currentDate = new Date(oldestDateObj.getFullYear(), oldestDateObj.getMonth(), 1);
+        const currentDate = new Date(oldestDateObj.getFullYear(), oldestDateObj.getMonth(), 1);
         while (currentDate <= now) {
           const dateKey = formatDateKey(currentDate);
           allDates[dateKey] = { date: dateKey, pending: 0, completed: 0, failed: 0, blocked: 0 };
@@ -154,8 +146,6 @@ export default function MetricsPage() {
     (acc, item) => acc + item.pending + item.completed + item.failed + item.blocked,
     0
   );
-
-  console.log(chartData);
 
   return (
     <>

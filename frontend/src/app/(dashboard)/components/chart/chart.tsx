@@ -3,6 +3,14 @@
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Bar, BarChart, XAxis, YAxis } from "recharts";
 
+export interface ChartDataPoint {
+  date: string;
+  pending: number;
+  completed: number;
+  failed: number;
+  blocked: number;
+}
+
 const chartConfig = {
   completed: {
     label: "Completed",
@@ -23,7 +31,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function Chart({ data }: { data: any[] }) {
+export default function Chart({ data }: { data: ChartDataPoint[] }) {
   return (
     <ChartContainer config={chartConfig} className="min-h-[200px] max-h-[350px] w-full">
       <BarChart accessibilityLayer data={data}>
@@ -47,6 +55,7 @@ export default function Chart({ data }: { data: any[] }) {
                 return date.toLocaleDateString("en-US", { month: "short", year: "2-digit" });
               }
             } catch (e) {
+              console.error(e);
               return value;
             }
           }}

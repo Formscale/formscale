@@ -13,7 +13,9 @@ export default function NotFound() {
         <Loading size="large" />
 
         <h2 className="text-2xl font-bold mt-6">404 - Not Found</h2>
-        <p className="text-sm text-muted-foreground">The page you're looking for was removed or doesn't exist.</p>
+        <p className="text-sm text-muted-foreground">
+          The page you&apos;re looking for was removed or doesn&apos;t exist.
+        </p>
         <Button variant="default" className="text-xs font-bold mt-4" asChild>
           <Link href="/">
             <TriangleLeftIcon />

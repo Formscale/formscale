@@ -38,7 +38,7 @@ export function getLogVariant(log: Log) {
   return log.code >= 200 && log.code < 300 ? "success" : log.code >= 300 && log.code < 400 ? "action" : "destructive";
 }
 
-export function getColumns(logs: Log[]): ColumnDef<Log>[] {
+export function useLogColumns(logs: Log[]): ColumnDef<Log>[] {
   const { forms } = useForms();
 
   return [

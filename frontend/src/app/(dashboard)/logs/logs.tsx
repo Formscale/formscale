@@ -9,7 +9,7 @@ import DashCard from "../components/card";
 import RefreshButton from "../components/refresh-button";
 import { DataTable } from "../components/table/table";
 import DashTitle from "../components/title";
-import { getColumns } from "./columns";
+import { useLogColumns } from "./columns";
 
 const filterProps = {
   column: "submissionId",
@@ -44,7 +44,7 @@ export function LogsContent() {
   const router = useRouter();
   const { logs, isLoading } = useLogs();
 
-  const columns = getColumns(logs || []);
+  const columns = useLogColumns(logs || []);
 
   const handleRowClick = (row: Log) => {
     router.push(`/logs/${row.id}`);

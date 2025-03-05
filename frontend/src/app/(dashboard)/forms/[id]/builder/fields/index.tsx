@@ -4,7 +4,9 @@ export const baseFields = [
     type: "text",
     description: "Field Name",
     placeholder: "name",
-    children: <span className="text-xs text-muted-foreground">Used for the "name" attribute in your form.</span>,
+    children: (
+      <span className="text-xs text-muted-foreground">Used for the &quot;name&quot; attribute in your form.</span>
+    ),
   },
   // {
   //   name: "placeholder",

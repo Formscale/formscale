@@ -8,7 +8,7 @@ import { useForms } from "@/providers";
 import { useRouter } from "next/navigation";
 import DashCard from "../components/card";
 import { DataTable } from "../components/table/table";
-import { getColumns } from "./columns";
+import { useSubmissionColumns } from "./columns";
 
 const filterProps = {
   column: "name",
@@ -37,7 +37,7 @@ export default function FormsContent() {
   const router = useRouter();
   const { forms, isLoading } = useForms();
 
-  const columns = getColumns(forms);
+  const columns = useSubmissionColumns(forms);
 
   const handleRowClick = (row: Form) => {
     router.push(`/forms/${row.id}`);

@@ -6,7 +6,7 @@ import DashCard from "@/app/(dashboard)/components/card";
 import { DataTable } from "@/app/(dashboard)/components/table/table";
 import { useForm } from "@/providers/form";
 import { useEffect, useState } from "react";
-import { getColumns } from "./columns";
+import { useSubmissionColumns } from "./columns";
 import { ExportButton } from "./export-button";
 import SubmissionSheet from "./sheet/sheet";
 
@@ -32,10 +32,10 @@ export default function Submissions({ id }: { id?: string }) {
     }
   }, [id, form?.submissions]);
 
-  if (!form) return null;
+  const submissions = form?.submissions || [];
+  const columns = useSubmissionColumns(submissions);
 
-  const submissions = form.submissions || [];
-  const columns = getColumns(submissions);
+  if (!form) return null;
 
   const handleRowClick = (row: SubmissionSent) => {
     history.pushState(null, "", `/forms/${form.id}/submissions/${row.id}`);

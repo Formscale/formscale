@@ -173,7 +173,7 @@ export function useFetch() {
       let data;
       try {
         data = (await response.json()) as ApiResponse<Endpoints[TEndpoint]["output"]>;
-        console.log("data", data);
+        // console.log("data", data);
       } catch (jsonError) {
         const error = new Error(`Failed to parse response: ${response.statusText}`);
         (error as any).status = response.status;

@@ -5,7 +5,7 @@ import { useError } from "@/providers/error";
 import { Log, SubmissionSent } from "@formscale/types";
 import { format } from "date-fns";
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function LogsContent({ submission }: { submission: SubmissionSent }) {
   const { get } = useFetch();
@@ -24,34 +24,33 @@ export default function LogsContent({ submission }: { submission: SubmissionSent
   //   code: 200,
   // };
 
-  const fetchLogs = useCallback(async () => {
-    if (!isLoading) return;
-
-    try {
-      const response = await get("logs/submissions/:id", {
-        params: { id: submission.id },
-      });
-
-      if (response.success && response.data?.logs) {
-        // const logs: Log[] = response.data.logs.sort(
-        //   (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        // );
-
-        setLogs(response.data.logs);
-      }
-    } catch (err) {
-      handleError({
-        message: "Failed to fetch logs",
-        description: (err as Error).message,
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  const hasFetchedRef = useRef(false);
 
   useEffect(() => {
+    if (!isLoading || hasFetchedRef.current) return;
+    hasFetchedRef.current = true;
+
+    async function fetchLogs() {
+      try {
+        const response = await get("logs/submissions/:id", {
+          params: { id: submission.id },
+        });
+
+        if (response.success && response.data?.logs) {
+          setLogs(response.data.logs);
+        }
+      } catch (err) {
+        handleError({
+          message: "Failed to fetch logs",
+          description: (err as Error).message,
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
     fetchLogs();
-  }, [fetchLogs]);
+  }, []);
 
   if (isLoading)
     return (

@@ -16,7 +16,6 @@ export default function ValidationCard({ form }: { form: Form }) {
   });
 
   async function onSubmit(values: FormEdit) {
-    console.log(values);
     await updateForm(values);
   }
 

@@ -47,12 +47,13 @@ export default function HooksPage() {
 
   const { form, updateForm } = useForm();
 
-  if (!form) return null;
-
   useEffect(() => {
+    if (!form) return;
     setHooks(form.settings.webhooks);
     setEmailSettings(form.settings.emailSettings);
-  }, [form.settings.webhooks, form.settings.emailSettings]);
+  }, [form?.settings?.webhooks, form?.settings?.emailSettings]);
+
+  if (!form) return null;
 
   const items = [
     {

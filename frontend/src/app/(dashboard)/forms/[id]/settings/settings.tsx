@@ -41,10 +41,9 @@ export default function Settings({ form }: { form: Form }) {
 
   const protectionFields = useProtectionFields(formSettings);
 
-  console.log(formSettings.formState.errors);
+  // console.log(formSettings.formState.errors);
 
   async function onSubmit(values: FormEdit) {
-    console.log(values);
     await updateForm(values);
   }
 

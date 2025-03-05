@@ -17,7 +17,7 @@ import { useForms } from "@/providers";
 import DashBadge from "../components/badge";
 import { FormatDate, FormatNumber, SortButton } from "../components/table/columns";
 
-export function getColumns(forms: Form[]): ColumnDef<Form>[] {
+export function useSubmissionColumns(forms: Form[]): ColumnDef<Form>[] {
   const { deleteItem } = useDelete();
   const { refreshForms } = useForms();
 

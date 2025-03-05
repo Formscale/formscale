@@ -22,8 +22,6 @@ export default function StatusSwitch({ submission }: { submission: SubmissionSen
     },
   });
 
-  if (!submission) return null;
-
   const status = form.watch("status");
 
   useEffect(() => {
@@ -52,6 +50,8 @@ export default function StatusSwitch({ submission }: { submission: SubmissionSen
 
     submitForm();
   }, [status]);
+
+  if (!submission) return null;
 
   const fields = [
     {

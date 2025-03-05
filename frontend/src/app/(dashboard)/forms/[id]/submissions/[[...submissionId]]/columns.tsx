@@ -35,7 +35,7 @@ function DropdownWrapper({ children, index }: { children: React.ReactNode; index
   return <>{children}</>;
 }
 
-export function getColumns(submissions: SubmissionSent[]): ColumnDef<SubmissionSent>[] {
+export function useSubmissionColumns(submissions: SubmissionSent[]): ColumnDef<SubmissionSent>[] {
   const { deleteItem } = useDelete();
   const { refreshForm } = useForm();
 
