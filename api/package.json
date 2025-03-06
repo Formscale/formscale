@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "wrangler dev src/index.ts --port 3001",
     "dev:remote": "wrangler dev src/index.ts --remote --port 3001",
-    "deploy": "wrangler deploy --minify src/index.ts",
+    "deploy": "pnpm run generate && wrangler deploy --minify src/index.ts",
     "migrate": "node scripts/migrate.js",
     "migrate:remote": "node scripts/migrate.js --remote",
     "migrate:apply": "node scripts/migrate.js --apply",
@@ -17,6 +17,7 @@
     "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --write .",
     "cf-types": "wrangler types",
+    "logs": "wrangler tail formscale-api",
     "email": "email dev --dir src/lib/emails --port 3030"
   },
   "dependencies": {
