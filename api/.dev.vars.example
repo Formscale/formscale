@@ -1,3 +1,4 @@
+DATABASE_URL="file:./dev.db"
 FRONTEND_URL="http://localhost:3000"
 RESEND_API_KEY="re_XXX"
 RESEND_EMAIL_ADDRESS="no-reply@emails.formscale.dev"

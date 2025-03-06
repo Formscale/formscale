@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "wrangler dev src/index.ts --port 3001",
     "dev:remote": "wrangler dev src/index.ts --remote --port 3001",
-    "deploy": "pnpm run generate && wrangler deploy --minify src/index.ts",
+    "deploy": "pnpm run apply:remote && wrangler deploy --minify src/index.ts",
     "migrate": "node scripts/migrate.js",
     "migrate:remote": "node scripts/migrate.js --remote",
     "migrate:apply": "node scripts/migrate.js --apply",
@@ -24,7 +24,7 @@
     "@hono-rate-limiter/cloudflare": "^0.2.2",
     "@hono/zod-validator": "^0.2.2",
     "@prisma/adapter-d1": "^5.22.0",
-    "@prisma/client": "^5.22.0",
+    "@prisma/client": "^6.4.1",
     "@react-email/components": "^0.0.32",
     "@react-email/render": "^1.0.4",
     "bcrypt-edge": "^0.0.6",
@@ -53,7 +53,7 @@
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "prettier": "^3.2.5",
-    "prisma": "^5.22.0",
+    "prisma": "^6.4.1",
     "wrangler": "^3.57.2"
   }
 }
