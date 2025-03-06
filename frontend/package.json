@@ -10,8 +10,10 @@
     "lint:fix": "eslint src/ --fix",
     "pages:build": "pnpm next-on-pages",
     "preview": "pnpm pages:build && wrangler pages dev",
-    "deploy": "pnpm pages:build && wrangler pages deploy",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv env.d.ts"
+    "deploy": "pnpm runtime:uncomment && pnpm pages:build && wrangler pages deploy",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv env.d.ts",
+    "runtime:comment": "node scripts/toggle-runtime.js comment",
+    "runtime:uncomment": "node scripts/toggle-runtime.js uncomment"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
