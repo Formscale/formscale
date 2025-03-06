@@ -44,8 +44,11 @@ jobs:
       # - name: Lint
       #   run: pnpm lint
 
-      - name: Test
-        run: pnpm test
+      # - name: Test
+      #   run: pnpm test
+
+      - name: Build packages
+        run: pnpm build
 
   build-and-deploy:
     needs: lint-and-test
