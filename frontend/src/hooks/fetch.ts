@@ -124,7 +124,10 @@ export function useFetch() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  const baseUrl =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:3001"
+      : process.env.NEXT_PUBLIC_API_URL || "https://api.formscale.dev";
 
   const fetchData = async <TEndpoint extends keyof Endpoints>(
     endpoint: TEndpoint,

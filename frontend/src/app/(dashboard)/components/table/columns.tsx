@@ -141,7 +141,10 @@ export function FormatCell(value: FieldValues[keyof FieldValues]) {
     if (typeof value === "object" && value !== null) return formatters.object(value);
     return formatters.default(value);
   }
-  if (value.includes(process.env.NEXT_PUBLIC_BUCKET_URL || ".png")) return formatters.link(value, "file");
+
+  const bucketUrl = process.env.NEXT_PUBLIC_BUCKET_URL || "https://cdn.formscale.dev";
+
+  if (value.includes(bucketUrl)) return formatters.link(value, "file");
   if (/^-?\d+\.?\d*%$/.test(value)) return formatters.percentage(value);
   if (/^(https?:\/\/[^\s]+)$/.test(value)) return formatters.link(value, "url");
   if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return formatters.link(value, "email");

@@ -41,7 +41,7 @@ export function FeedbackForm({ children }: { children: React.ReactNode }) {
   async function onSubmit(values: Feedback) {
     setIsLoading(true);
 
-    fetch("http://localhost:3001/s/esz69qzc", {
+    fetch("https://api.formscale.dev/s/6za5792f", {
       method: "POST",
       body: (() => {
         const formData = new FormData();
