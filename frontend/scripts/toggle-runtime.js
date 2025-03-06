@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const EXPECTED_FILES = 3;
+const EXPECTED_FILES = 5;
 const action = process.argv[2];
 
 if (action !== "comment" && action !== "uncomment") {

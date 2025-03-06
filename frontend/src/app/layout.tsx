@@ -60,7 +60,7 @@ export const metadata: Metadata = {
   description: "Formscale",
 };
 
-export const runtime = "edge";
+// export const runtime = "edge";
 
 export default function RootLayout({
   children,
