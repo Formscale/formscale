@@ -38,7 +38,7 @@ export default function FormLayoutContent({ children, id }: { children: React.Re
   const tabs = [
     { title: "Overview", href: basePath },
     { title: "Submissions", href: `${basePath}/submissions` },
-    { title: "Builder", href: `${basePath}/builder` },
+    // { title: "Builder", href: `${basePath}/builder` },
     { title: "Hooks", href: `${basePath}/hooks` },
     { title: "Settings", href: `${basePath}/settings` },
   ];

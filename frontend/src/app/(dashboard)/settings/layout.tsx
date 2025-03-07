@@ -6,8 +6,8 @@ export default async function SettingsLayout({ children }: { children: React.Rea
 
   const tabs = [
     { title: "Usage", href: basePath },
-    { title: "Team", href: `${basePath}/team` },
-    { title: "Billing", href: `${basePath}/billing` }, // change to stripe billing page
+    // { title: "Team", href: `${basePath}/team` },
+    // { title: "Billing", href: `${basePath}/billing` }, // change to stripe billing page
     // add more stuff future maybe
   ];
 

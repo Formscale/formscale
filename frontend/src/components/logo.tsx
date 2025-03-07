@@ -1,9 +1,10 @@
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Logo() {
+export default function Logo({ className }: { className?: string }) {
   return (
-    <Link href="/" className="flex items-center gap-2.5">
+    <Link href="/" className={cn("flex items-center gap-2.5", className)}>
       <Image
         src="/assets/logos/formscale-icon.svg"
         alt="Formscale"

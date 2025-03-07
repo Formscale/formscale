@@ -1,10 +1,12 @@
 name: Build and Deploy
 
+# will fix this later
+
 on:
   push:
-    branches: [master]
+    branches: [branch]
   pull_request:
-    branches: [master]
+    branches: [branch]
   workflow_dispatch:
 
 jobs:
@@ -46,9 +48,6 @@ jobs:
 
       # - name: Test
       #   run: pnpm test
-
-      - name: Build packages
-        run: pnpm build
 
   build-and-deploy:
     needs: lint-and-test

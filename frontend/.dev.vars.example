@@ -1,0 +1,3 @@
+NEXT_PUBLIC_API_URL=http://localhost:3001
+NEXT_PUBLIC_FRONTEND_URL=http://localhost:3000
+NEXT_PUBLIC_BUCKET_URL=https://test.formscale.dev

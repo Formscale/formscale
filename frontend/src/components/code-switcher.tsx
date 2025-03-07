@@ -242,7 +242,7 @@ export default function Form() {
         setHighlightedCode(highlighted);
       } catch (error) {
         setHighlightedCode(
-          `<pre className="text-sm font-mono">
+          `<pre className="text-xs sm:text-sm font-mono">
             <code>${tab?.code}</code>
           </pre>`
         );
@@ -324,7 +324,7 @@ export default function Form() {
             activeTab === key && (
               <div
                 key={tab.title}
-                className="h-full overflow-auto bg-background font-mono text-sm [&>pre]:h-full [&>pre]:!bg-transparent [&_code]:break-all"
+                className="h-full overflow-auto bg-background font-mono text-xs sm:text-sm [&>pre]:h-full [&>pre]:!bg-transparent [&_code]:break-all"
                 dangerouslySetInnerHTML={{ __html: highlightedCode || "" }}
               />
             )

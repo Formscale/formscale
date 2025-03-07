@@ -1,21 +1,35 @@
-import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
+import { FaDiscord, FaGithub } from "react-icons/fa";
 import { FeedbackForm } from "./contact";
 import { DevSwitcher } from "./dev-switcher";
-import { HeaderButtons, HeaderDashButtons } from "./header-buttons";
+import { HeaderDashButtons } from "./header-buttons";
 import Logo from "./logo";
 import { Button } from "./ui/button";
 import { SidebarTrigger } from "./ui/sidebar";
 
 const socialLinks = [
-  { label: "GitHub", href: "/github", icon: GitHubLogoIcon },
-  // { label: "Discord", href: "/discord", icon: DiscordLogoIcon },
+  { label: "GitHub", href: "https://github.com/Formscale/formscale", icon: FaGithub },
+  { label: "Discord", href: "https://discord.gg/wwSujZF69Y", icon: FaDiscord },
 ];
 
 const dashboardLinks = [
   // { label: "Components", href: "/components" },
   { label: "Docs", href: "/docs" },
 ];
+
+function SocialLinks() {
+  return (
+    <>
+      {socialLinks.map((link, index) => (
+        <Button variant="ghost" size="icon" key={link.href} className={`${index === 1 ? "-ml-1.5" : ""}`}>
+          <Link href={link.href} target="_blank">
+            <link.icon />
+          </Link>
+        </Button>
+      ))}
+    </>
+  );
+}
 
 export function HeaderDashboard() {
   return (
@@ -38,15 +52,8 @@ export function HeaderDashboard() {
             </Button>
           ))}
 
-          <div className="w-px h-6 bg-border ml-2" />
-
-          {socialLinks.map((link) => (
-            <Button variant="ghost" size="icon" key={link.href}>
-              <Link href={link.href}>
-                <link.icon className="w-4 h-4" />
-              </Link>
-            </Button>
-          ))}
+          <div className="w-px h-6 bg-border ml-2 hidden sm:flex" />
+          <SocialLinks />
         </div>
       </div>
     </div>
@@ -59,21 +66,14 @@ export function Header() {
       <div className="flex flex-row items-center justify-between max-w-6xl mx-auto">
         <Logo />
 
-        <div className="absolute left-1/2 -translate-x-1/2">
+        {/* <div className="md:block hidden absolute left-1/2 -translate-x-1/2">
           <HeaderButtons />
-        </div>
+        </div> */}
 
         <div className="flex flex-row items-center gap-2">
           <HeaderDashButtons />
-          <div className="w-px h-6 bg-border ml-2" />
-
-          {socialLinks.map((link) => (
-            <Button variant="ghost" size="icon" key={link.href}>
-              <Link href={link.href}>
-                <link.icon className="w-4 h-4" />
-              </Link>
-            </Button>
-          ))}
+          <div className="w-px h-6 bg-border ml-2 hidden sm:flex" />
+          <SocialLinks />
         </div>
       </div>
     </div>

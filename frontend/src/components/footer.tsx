@@ -19,13 +19,13 @@ const links = {
   resources: [
     { label: "Docs", href: "/docs" },
     { label: "Changelog", href: "/changelog" },
-    { label: "GitHub", href: "/github" },
-    { label: "Discord", href: "/discord" },
+    { label: "GitHub", href: "https://github.com/Formscale/formscale" },
+    { label: "Discord", href: "https://discord.gg/wwSujZF69Y" },
   ],
   social: [
-    { label: "LinkedIn", href: "/linkedin" },
-    { label: "Instagram", href: "/instagram" },
-    { label: "YouTube", href: "/youtube" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/company/formscale" },
+    { label: "Instagram", href: "https://www.instagram.com/formscale" },
+    { label: "YouTube", href: "https://www.youtube.com/@formscale" },
   ],
 };
 
@@ -61,12 +61,16 @@ export default function Footer() {
             ))}
           </div>
         </div>
-        <div className="flex w-full items-center justify-between gap-2 max-w-6xl mx-auto pt-6">
+        <div className="flex flex-col md:flex-row w-full items-center justify-between gap-4 max-w-6xl mx-auto pt-6">
           <span className="text-xs text-muted-foreground/80">© 2025 Formscale, All rights reserved.</span>
 
           <div className="flex flex-row items-center gap-3 text-xs text-muted-foreground underline">
-            <Link href="/privacy">Privacy Policy</Link>
-            <Link href="/terms">Terms of Service</Link>
+            <Link href="https://dris.llc/privacy-policy?v=Formscale" target="_blank">
+              Privacy Policy
+            </Link>
+            <Link href="https://dris.llc/terms-of-service?v=Formscale" target="_blank">
+              Terms of Service
+            </Link>
           </div>
         </div>
       </div>

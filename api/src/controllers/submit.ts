@@ -360,7 +360,9 @@ export const SubmitController = submit
 
         const allRecipients = [...userEmail, ...verifiedAdminEmails];
 
-        if (verifiedAdmins && verifiedAdmins.length === 0) {
+        console.log(adminEmails, verifiedAdminEmails);
+
+        if (adminEmails.length !== 0 && verifiedAdminEmails.length === 0) {
           await logger({
             env: ctx.env,
             submissionId,

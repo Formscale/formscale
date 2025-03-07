@@ -12,15 +12,15 @@ export function HeaderDashButtons() {
     <>
       {!user ? (
         <>
-          <Button variant="ghost" size="sm" asChild>
+          <Button variant="ghost" size="sm" className="hidden md:flex" asChild>
             <Link href="/login">Log In</Link>
           </Button>
-          <Button variant="action" size="sm" className="font-bold" asChild>
+          <Button variant="action" size="sm" className="font-bold hidden sm:flex" asChild>
             <Link href="/signup">Get Started</Link>
           </Button>
         </>
       ) : (
-        <Button variant="action" size="sm" className="font-bold" asChild>
+        <Button variant="action" size="sm" className="font-bold hidden sm:flex" asChild>
           <Link href="/forms">Dashboard</Link>
         </Button>
       )}

@@ -62,7 +62,7 @@ export function FormsProvider({ children }: { children: ReactNode }) {
       fetchedRef.current = true;
       refreshForms();
     }
-  }, []);
+  }, [refreshForms]);
 
   const value = { forms, isLoading, refreshForms, addForm, updateForm };
 

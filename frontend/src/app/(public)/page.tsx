@@ -20,7 +20,7 @@ const logos = [
 export default function Home() {
   return (
     <>
-      <div className="flex flex-col items-center justify-center w-full pt-32 md:pt-48 pb-20 gap-4 text-center relative z-10 px-8 overflow-hidden">
+      <div className="flex flex-col items-center justify-center w-full pt-36 md:pt-48 pb-20 gap-4 text-center relative z-10 px-8 overflow-hidden">
         {/* <Image
           src="/assets/logos/formscale-icon.svg"
           alt="Formscale logo"
@@ -40,22 +40,28 @@ export default function Home() {
         </h1>
         <p className="text-sm text-muted-foreground/80 leading-relaxed">
           With Formscale, create & manage scalable forms
-          <br className="hidden md:block" />
-          in minutes - not days - from static sites to full-stack-apps.
+          <br className="hidden md:block" /> in minutes - not days - from static sites to full-stack-apps.
         </p>
 
         <div className="flex justify-center gap-4 mt-3">
-          <Button variant="action" className="font-bold text-foreground/80 hover:text-foreground group" size="lg">
-            {/* Get Started for Free */}
-            Join the Waitlist
-            <TriangleRightIcon className="-mr-1 group-hover:translate-x-0.5 transition-transform duration-300" />
+          <Button
+            variant="action"
+            className="font-bold text-foreground/80 hover:text-foreground group"
+            size="lg"
+            asChild
+          >
+            <Link href="/forms">
+              Try for Free
+              {/* Join the Waitlist */}
+              <TriangleRightIcon className="-mr-1 group-hover:translate-x-0.5 transition-transform duration-300" />
+            </Link>
           </Button>
           {/* <Button variant="outline" className="font-bold text-muted-foreground" size="lg">
             Browse Docs
           </Button> */}
         </div>
 
-        <div className="flex flex-col gap-4 items-center mt-8 md:mt-12">
+        <div className="flex flex-col gap-4 items-center mt-10 md:mt-12">
           <span className="text-xs text-muted-foreground/80">Tested by top engineering teams at</span>
           <div className="flex flex-wrap md:flex-nowrap w-full justify-center md:justify-between gap-8 cursor-pointer">
             {logos.map((logo, index) => (
@@ -66,7 +72,7 @@ export default function Home() {
                 width={120}
                 height={100}
                 // fix height on mobile
-                className={`${index > logos.length - 3 ? "hidden sm:block" : ""} md:w-full md:h-10 h-8 w-auto`}
+                className={`${index > logos.length - 3 ? "hidden sm:block" : ""} md:w-full md:h-10 sm-h-8 h-7 w-auto`}
               />
             ))}
           </div>
@@ -74,7 +80,7 @@ export default function Home() {
 
         <div className="bg-formscale/60 shadow-sm rounded-2xl overflow-hidden p-2 mt-4 cursor-pointer relative">
           {/* replace with video */}
-          <div className="w-full max-w-[1280px] mx-auto min-w-[960px] ">
+          <div className="w-full max-w-[1280px] mx-auto min-w-[720px]">
             <Image
               draggable={false}
               src="/assets/images/formscale-dashboard.png"
@@ -96,13 +102,16 @@ export default function Home() {
           - Self-Host For Free!
         </span>
 
-        <div className="flex flex-col gap-4 items-center mt-24 scroll-mt-24" id="features">
+        <div
+          className="flex flex-col gap-4 items-center mt-16 sm:mt-24 scroll-mt-24 text-left sm:text-center"
+          id="features"
+        >
           {/* <h2 className="text-3xl md:text-4xl font-bold leading-tight md:leading-tight">
             The <span className="bg-formscale/60 rounded-lg px-2 py-1">Most Powerful</span>
             <br className="hidden md:block" /> Form Builder & Management Tool.
           </h2> */}
           <h2 className="text-3xl md:text-4xl font-bold leading-tight md:leading-tight">
-            Build Forms Faster <br className="hidden md:block" />
+            Build <span className="hidden sm:inline">Forms</span> Faster <br className="hidden md:block" />
             Than Pressing Submit.
           </h2>
           <p className="text-sm text-muted-foreground/80 leading-relaxed max-w-xl">
@@ -179,7 +188,10 @@ export default function Home() {
       <DotPattern
         width={16}
         height={16}
-        className={cn("opacity-60", "[mask-image:radial-gradient(800px_circle_at_top,white,transparent)]")}
+        className={cn(
+          "opacity-60",
+          "[mask-image:radial-gradient(400px_circle_at_top,white,transparent)] md:[mask-image:radial-gradient(800px_circle_at_top,white,transparent)]"
+        )}
       />
     </>
   );

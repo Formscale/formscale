@@ -70,11 +70,15 @@ export default function SignupPage() {
           <AuthButton text="Create Account" props={{ disabled: isLoading }} />
           <span className="text-xs mt-2 text-muted-foreground">
             By signing up, you agree to our{" "}
-            <Link href="/terms" className="text-primary underline">
+            <Link
+              href="https://dris.llc/terms-of-service?v=Formscale"
+              className="text-primary underline"
+              target="_blank"
+            >
               Terms of Service
             </Link>{" "}
             and{" "}
-            <Link href="/privacy" className="text-primary underline">
+            <Link href="https://dris.llc/privacy-policy?v=Formscale" className="text-primary underline" target="_blank">
               Privacy Policy
             </Link>
             .
