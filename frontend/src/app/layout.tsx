@@ -56,8 +56,33 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Formscale",
-  description: "Formscale",
+  title: "Formscale - Create & Manage Custom Forms",
+  description:
+    "Build forms in minutes with Formscale, from static sites to full-stack-apps, with minimal code. The best form builder for websites, apps, and businesses of all sizes.",
+  keywords: ["form builder", "custom forms", "form management", "online forms", "form creation tool"],
+  openGraph: {
+    title: "Formscale - Create & Manage Custom Forms | The Most Powerful Form Builder",
+    description:
+      "Build and manage scalable forms in minutes with Formscale. The most powerful form builder for websites, apps, and businesses of all sizes.",
+    url: "https://formscale.dev",
+    siteName: "Formscale",
+    images: [
+      {
+        url: "https://formscale.dev/assets/images/formscale-og.png",
+        width: 1200,
+        height: 630,
+        alt: "Formscale - The Most Powerful Form Builder & Management Tool",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Formscale - Create & Manage Custom Forms",
+    description: "Build and manage scalable forms in minutes with Formscale.",
+    images: ["https://formscale.dev/assets/images/formscale-og.png"],
+  },
 };
 
 // export const runtime = "edge";
