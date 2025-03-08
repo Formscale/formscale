@@ -15,9 +15,6 @@
     "./components/ui/*": "./src/components/ui/*.{ts,tsx}",
     "./components/form/*": "./src/components/ui/*.{ts,tsx}"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
