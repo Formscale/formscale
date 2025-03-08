@@ -1,7 +1,6 @@
 "use client";
 
 import FormPart from "@/components/form-part";
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -11,6 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
+import { Button } from "@formscale/ui/components";
 import { DialogProps } from "@radix-ui/react-dialog";
 import { XIcon } from "lucide-react";
 import { FieldValues, UseFormReturn } from "react-hook-form";

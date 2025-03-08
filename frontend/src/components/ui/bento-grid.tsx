@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { ComponentPropsWithoutRef, ReactNode } from "react";
 
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Button } from "@formscale/ui/components";
 import { TriangleRightIcon } from "@radix-ui/react-icons";
 interface BentoGridProps extends ComponentPropsWithoutRef<"div"> {
   children: ReactNode;

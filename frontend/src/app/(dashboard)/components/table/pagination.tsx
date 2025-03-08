@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@formscale/ui/components";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 

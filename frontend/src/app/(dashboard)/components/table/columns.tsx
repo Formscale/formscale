@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@formscale/ui/components";
 import { CaretSortIcon, CheckIcon, Cross2Icon, CrossCircledIcon, DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { Column } from "@tanstack/react-table";
 import { format, formatDistanceToNow } from "date-fns";

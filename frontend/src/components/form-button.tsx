@@ -10,8 +10,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import DefaultDialog from "@/components/default-dialog";
-import { Button } from "@/components/ui/button";
 import { useError, useForms, useUser } from "@/providers";
+import { Button } from "@formscale/ui/components";
 
 const fields = [{ name: "name", type: "text", description: "Name", placeholder: "Untitled Form" }];
 

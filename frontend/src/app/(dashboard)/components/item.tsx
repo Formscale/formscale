@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@formscale/ui/components";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 
 import { DefaultDropdownItem, DropdownItem, DropdownSkeleton } from "@/components/default-dropdown";

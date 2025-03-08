@@ -6,7 +6,7 @@ import { Form } from "@formscale/types";
 import { DotsHorizontalIcon, EyeNoneIcon, EyeOpenIcon, Link1Icon } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@formscale/ui/components";
 
 import { DeleteDialog } from "@/components/default-dialog";
 import { DropdownItem, DropdownSkeleton } from "@/components/default-dropdown";

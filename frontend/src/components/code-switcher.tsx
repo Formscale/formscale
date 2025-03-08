@@ -2,10 +2,10 @@
 
 import { DataCardButton } from "@/app/(dashboard)/components/data-card";
 import { Tab } from "@/components/tabs";
-import { Button } from "@/components/ui/button";
 import { ApiResponse } from "@/hooks/fetch";
 import { handleCopy } from "@/lib/utils";
 import { useError } from "@/providers";
+import { Button } from "@formscale/ui/components";
 import { CopyIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

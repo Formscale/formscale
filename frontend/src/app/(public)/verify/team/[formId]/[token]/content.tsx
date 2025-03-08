@@ -2,8 +2,8 @@
 
 import CardTemplate from "@/components/card-template";
 import Loading from "@/components/loading";
-import { Button } from "@/components/ui/button";
 import { useFetch } from "@/hooks/fetch";
+import { Button } from "@formscale/ui/components";
 import {
   CheckCircledIcon,
   CheckIcon,

@@ -4,7 +4,7 @@ import { SubmissionSent } from "@formscale/types";
 import { DotsHorizontalIcon, Link1Icon } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@formscale/ui/components";
 
 import { FormatCell, FormatDate, SortButton, StatusBadge } from "@/app/(dashboard)/components/table/columns";
 import { DeleteDialog } from "@/components/default-dialog";

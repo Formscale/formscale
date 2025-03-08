@@ -1,9 +1,9 @@
 import CodeSwitcher from "@/components/code-switcher";
 import Bento from "@/components/home/bento";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { DotPattern } from "@/components/ui/dot-pattern";
 import { cn } from "@/lib/utils";
+import { Button } from "@formscale/ui/components";
 import { TriangleRightIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import Link from "next/link";

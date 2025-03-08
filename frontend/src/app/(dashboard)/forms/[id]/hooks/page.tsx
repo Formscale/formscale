@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@formscale/ui/components";
 import { DiscordLogoIcon, EnvelopeOpenIcon, Link1Icon, LinkBreak2Icon, Pencil1Icon } from "@radix-ui/react-icons";
 
 import { DialogSkeleton } from "@/components/default-dialog";
