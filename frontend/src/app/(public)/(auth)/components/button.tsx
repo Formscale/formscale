@@ -1,4 +1,4 @@
-import { Button, ButtonProps } from "@/components/ui/button";
+import { Button, ButtonProps } from "@formscale/ui/components";
 import { TriangleRightIcon } from "@radix-ui/react-icons";
 
 export default function AuthButton({ text, props }: { text: string; props?: ButtonProps }) {

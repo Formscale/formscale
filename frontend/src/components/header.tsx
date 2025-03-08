@@ -1,10 +1,10 @@
+import { Button } from "@formscale/ui/components";
 import Link from "next/link";
 import { FaDiscord, FaGithub } from "react-icons/fa";
 import { FeedbackForm } from "./contact";
 import { DevSwitcher } from "./dev-switcher";
 import { HeaderDashButtons } from "./header-buttons";
 import Logo from "./logo";
-import { Button } from "./ui/button";
 import { SidebarTrigger } from "./ui/sidebar";
 
 const socialLinks = [

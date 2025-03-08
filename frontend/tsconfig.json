@@ -20,7 +20,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@formscale/ui/*": ["../packages/ui/src/*"]
     },
     "types": ["@cloudflare/workers-types/2023-07-01"]
   },
