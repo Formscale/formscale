@@ -1,9 +1,9 @@
 "use client";
 
 import { useUser } from "@/providers";
+import { Button } from "@formscale/ui/components";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Button } from "./ui/button";
 
 export function HeaderDashButtons() {
   const { user } = useUser();

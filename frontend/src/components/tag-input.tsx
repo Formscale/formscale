@@ -1,5 +1,4 @@
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+import { Badge, Input } from "@formscale/ui/components";
 import { X } from "lucide-react";
 
 interface TagInputProps {

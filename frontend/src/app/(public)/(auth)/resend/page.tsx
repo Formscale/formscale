@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 import FormPart from "@/components/form-part";
-import { Form } from "@/components/ui/form";
+import { Form } from "@formscale/ui/components";
 import { useFetch } from "@/hooks/fetch";
 import { useError } from "@/providers";
 import { useAuth } from "@/providers/auth";

@@ -1,8 +1,14 @@
 "use client";
 
-import { Progress, ProgressVariant } from "@/components/ui/progress";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import {
+  Progress,
+  ProgressVariant,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@formscale/ui/components";
 
 export interface Limits {
   name: string;

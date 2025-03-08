@@ -10,10 +10,10 @@ import { Button } from "@formscale/ui/components";
 
 import { DeleteDialog } from "@/components/default-dialog";
 import { DropdownItem, DropdownSkeleton } from "@/components/default-dropdown";
-import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { useDelete } from "@/hooks/use-delete";
 import { handleCopy } from "@/lib/utils";
 import { useForms } from "@/providers";
+import { DropdownMenuSeparator } from "@formscale/ui/components";
 import DashBadge from "../components/badge";
 import { FormatDate, FormatNumber, SortButton } from "../components/table/columns";
 

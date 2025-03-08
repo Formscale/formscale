@@ -1,5 +1,5 @@
-import { Checkbox } from "@/components/ui/checkbox";
-import { Table, Row } from "@tanstack/react-table";
+import { Checkbox } from "@formscale/ui/components";
+import { Row, Table } from "@tanstack/react-table";
 
 export default function CheckboxColumn<T>() {
   return {

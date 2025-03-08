@@ -2,15 +2,15 @@
 
 import FormPart from "@/components/form-part";
 import {
+  Button,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Form } from "@/components/ui/form";
-import { Button } from "@formscale/ui/components";
+  Form,
+} from "@formscale/ui/components";
 import { DialogProps } from "@radix-ui/react-dialog";
 import { XIcon } from "lucide-react";
 import { FieldValues, UseFormReturn } from "react-hook-form";

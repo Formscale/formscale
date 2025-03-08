@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@formscale/ui/components";
 
 export function DashCardSkeleton({ children }: { children?: React.ReactNode }) {
   return <Card className="w-full flex flex-col min-h-[300px] justify-center items-center shadow-sm">{children}</Card>;

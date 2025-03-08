@@ -9,10 +9,10 @@ import { Button } from "@formscale/ui/components";
 import { FormatCell, FormatDate, SortButton, StatusBadge } from "@/app/(dashboard)/components/table/columns";
 import { DeleteDialog } from "@/components/default-dialog";
 import { DropdownItem, DropdownSkeleton } from "@/components/default-dropdown";
-import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { useDelete } from "@/hooks/use-delete";
 import { handleCopy } from "@/lib/utils";
 import { useForm } from "@/providers";
+import { DropdownMenuSeparator } from "@formscale/ui/components";
 import { uppercase } from "@formscale/utils";
 import { exportData } from "./export-button";
 

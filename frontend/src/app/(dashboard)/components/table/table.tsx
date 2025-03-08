@@ -16,7 +16,7 @@ import {
   VisibilityState,
 } from "@tanstack/react-table";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@formscale/ui/components";
 
 import { DashCardHeader } from "../card";
 import { Filter, FilterGroup } from "./filter";

@@ -1,6 +1,6 @@
 "use client";
 
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@formscale/ui/components";
 import { Bar, BarChart, XAxis, YAxis } from "recharts";
 
 export interface ChartDataPoint {

@@ -1,8 +1,8 @@
 import { AppSidebar } from "@/components/app-sidebar";
 import { HeaderDashboard } from "@/components/header";
 import SuspenseWrapper from "@/components/suspense-wrapper";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { FormsProvider, LogsProvider } from "@/providers";
+import { SidebarInset, SidebarProvider } from "@formscale/ui/components";
 
 // export const runtime = "edge";
 

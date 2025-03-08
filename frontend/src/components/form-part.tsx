@@ -1,18 +1,30 @@
 "use client";
 
-import { Checkbox } from "@/components/ui/checkbox";
-import { FormControl, FormDescription, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
+import {
+  Button,
+  Checkbox,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormMessage,
+  Input,
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Switch,
+  Textarea,
+} from "@formscale/ui/components";
 import { uppercase } from "@formscale/utils";
 import { TrashIcon, UploadIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { FieldValues, Path, UseFormReturn } from "react-hook-form";
 import TagInput from "./tag-input";
-import { Button } from "./ui/button";
-import { Textarea } from "./ui/textarea";
 
 interface FormPartProps<T extends FieldValues> {
   form: UseFormReturn<T>;

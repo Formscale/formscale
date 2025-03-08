@@ -1,8 +1,8 @@
 import { CalendarIcon, FileTextIcon } from "@radix-ui/react-icons";
 import { BellIcon, Share2Icon } from "lucide-react";
 
-import { BentoCard, BentoGrid } from "../ui/bento-grid";
-import { Globe } from "../ui/globe";
+import { BentoCard, BentoGrid } from "../magic/bento-grid";
+import { Globe } from "../magic/globe";
 import BeamOutput from "./beam-output";
 import CircleOrbit from "./circle-orbit";
 import ListAnimate from "./list-animate";

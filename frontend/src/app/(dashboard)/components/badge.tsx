@@ -1,4 +1,4 @@
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@formscale/ui/components";
 
 export default function DashBadge({
   variant = "default",
