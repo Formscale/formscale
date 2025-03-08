@@ -1,7 +1,6 @@
 "use client";
 
-import FormPart from "@/components/form-part";
-import { Button, Card, CardContent, CardFooter, CardHeader, CardTitle, Form } from "@formscale/ui/components";
+import { Button, Card, CardContent, CardFooter, CardHeader, CardTitle, Form, FormPart } from "@formscale/ui/components";
 import { FieldValues, UseFormReturn } from "react-hook-form";
 
 import { DefaultFormProps } from "@/components/default-dialog";

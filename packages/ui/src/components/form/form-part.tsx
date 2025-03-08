@@ -1,30 +1,16 @@
-"use client";
-
-import {
-  Button,
-  Checkbox,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormMessage,
-  Input,
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  Switch,
-  Textarea,
-} from "@formscale/ui/components";
 import { uppercase } from "@formscale/utils";
 import { TrashIcon, UploadIcon } from "@radix-ui/react-icons";
-import Link from "next/link";
 import { FieldValues, Path, UseFormReturn } from "react-hook-form";
-import TagInput from "./tag-input";
+import { Button } from "../ui/button";
+import { Checkbox } from "../ui/checkbox";
+import { FormControl, FormDescription, FormField, FormItem, FormMessage } from "../ui/form";
+import { Input } from "../ui/input";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { Switch } from "../ui/switch";
+import { Textarea } from "../ui/textarea";
+
+import { TagInput } from "./tag-input";
 
 interface FormPartProps<T extends FieldValues> {
   form: UseFormReturn<T>;
@@ -74,7 +60,7 @@ export function DefaultSelect({
   );
 }
 
-export default function FormPart<T extends FieldValues>({
+export function FormPart<T extends FieldValues>({
   form,
   name,
   type = "text",
@@ -148,9 +134,9 @@ export default function FormPart<T extends FieldValues>({
             />
 
             {typeof field.value === "string" && field.value && (
-              <Link href={field.value} target="_blank" className="underline">
+              <a href={field.value} target="_blank" className="underline">
                 {field.value.split("/").pop()}
-              </Link>
+              </a>
             )}
 
             <Button
@@ -219,6 +205,7 @@ export default function FormPart<T extends FieldValues>({
         <FormItem>
           <Wrapper type={type}>
             {description && (
+              // change to FormLabel & rename to label
               <FormDescription className={muted ? "text-muted-foreground text-xs" : "text-foreground"}>
                 {description}
               </FormDescription>

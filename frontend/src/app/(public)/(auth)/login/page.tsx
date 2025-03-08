@@ -6,11 +6,10 @@ import { Login, LoginSchema, User } from "@formscale/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import FormPart from "@/components/form-part";
 import { useFetch } from "@/hooks/fetch";
 import { useError } from "@/providers";
 import { useAuth } from "@/providers/auth";
-import { Form } from "@formscale/ui/components";
+import { Form, FormPart } from "@formscale/ui/components";
 import Link from "next/link";
 import AuthButton from "../components/button";
 import AuthHeader from "../components/header";

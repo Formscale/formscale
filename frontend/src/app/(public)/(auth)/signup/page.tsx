@@ -9,7 +9,7 @@ import { Signup, SignupSchema } from "@formscale/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import FormPart from "@/components/form-part";
+import FormPart from "@formscale/ui/components";
 import { useAuth } from "@/providers/auth";
 import { Form } from "@formscale/ui/components";
 import AuthButton from "../components/button";

@@ -5,8 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
-import FormPart from "@/components/form-part";
-import { Form } from "@formscale/ui/components";
+import { Form, FormPart } from "@formscale/ui/components";
 import { useFetch } from "@/hooks/fetch";
 import { useError } from "@/providers";
 import { useAuth } from "@/providers/auth";

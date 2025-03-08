@@ -1,5 +1,6 @@
-import { Badge, Input } from "@formscale/ui/components";
 import { X } from "lucide-react";
+import { Badge } from "../ui/badge";
+import { Input } from "../ui/input";
 
 interface TagInputProps {
   field: {
@@ -9,7 +10,7 @@ interface TagInputProps {
   placeholder: string;
 }
 
-export default function TagInput({ field, placeholder }: TagInputProps) {
+export function TagInput({ field, placeholder }: TagInputProps) {
   return (
     <div className="flex flex-wrap gap-2 max-w-xl items-center justify-start rounded-md border border-input bg-transparent px-3 py-0 text-xs shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
       {Array.isArray(field.value) &&

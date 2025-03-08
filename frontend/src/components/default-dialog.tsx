@@ -1,6 +1,5 @@
 "use client";
 
-import FormPart from "@/components/form-part";
 import {
   Button,
   Dialog,
@@ -10,6 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
   Form,
+  FormPart,
 } from "@formscale/ui/components";
 import { DialogProps } from "@radix-ui/react-dialog";
 import { XIcon } from "lucide-react";
