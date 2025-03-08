@@ -1,4 +1,4 @@
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@formscale/ui/components";
 
 export interface DefaultSheetProps<TData extends { id: string }, TValue> {
   trigger: React.ReactNode;

@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { useFetch } from "@/hooks/fetch";
+import { Button } from "@formscale/ui/components";
 import { TriangleLeftIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 

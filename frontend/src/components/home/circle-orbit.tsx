@@ -1,4 +1,4 @@
-import { OrbitingCircles } from "@/components/ui/orbiting-circles";
+import { OrbitingCircles } from "@/components/magic/orbiting-circles";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 export default function CircleOrbit({ className }: { className?: string }) {

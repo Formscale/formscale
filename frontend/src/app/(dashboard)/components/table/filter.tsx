@@ -1,6 +1,6 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
+import { Input } from "@formscale/ui/components";
 import { Table } from "@tanstack/react-table";
 import { useState } from "react";
 import { Dropdown, DropdownSelect } from "./dropdown";

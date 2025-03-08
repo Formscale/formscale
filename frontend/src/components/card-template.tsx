@@ -1,7 +1,7 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { DotPattern } from "@/components/ui/dot-pattern";
+import { DotPattern } from "@/components/magic/dot-pattern";
 import Watermark from "@/components/watermark";
 import { cn } from "@/lib/utils";
+import { Card, CardContent } from "@formscale/ui/components";
 
 export default function CardTemplate({
   Icon,

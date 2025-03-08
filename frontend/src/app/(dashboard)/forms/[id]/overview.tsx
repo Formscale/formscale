@@ -9,8 +9,8 @@ import DashTitle from "@/app/(dashboard)/components/title";
 import Loading from "@/components/loading";
 import SuspenseWrapper from "@/components/suspense-wrapper";
 import Tabs from "@/components/tabs";
-import { Button } from "@/components/ui/button";
 import { useForm } from "@/providers/form";
+import { Button } from "@formscale/ui/components";
 import { TriangleLeftIcon } from "@radix-ui/react-icons";
 
 export default function FormLayoutContent({ children, id }: { children: React.ReactNode; id: string }) {

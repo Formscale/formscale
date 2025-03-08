@@ -1,11 +1,10 @@
 import { DataCardSkeleton } from "@/app/(dashboard)/components/data-card";
 import { DeleteDialog } from "@/components/default-dialog";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { useFetch } from "@/hooks/fetch";
 import { useDelete } from "@/hooks/use-delete";
 import { useError, useForms, useLogs, useUser } from "@/providers";
 import { EditUser, Form } from "@formscale/types";
+import { Button, Dialog, DialogTrigger } from "@formscale/ui/components";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 

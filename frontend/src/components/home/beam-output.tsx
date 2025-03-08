@@ -3,7 +3,7 @@
 import React, { forwardRef, useRef } from "react";
 
 import Loading from "@/components/loading";
-import { AnimatedBeam } from "@/components/ui/animated-beam";
+import { AnimatedBeam } from "@/components/magic/animated-beam";
 import { cn } from "@/lib/utils";
 import { PersonIcon } from "@radix-ui/react-icons";
 import Image from "next/image";

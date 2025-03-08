@@ -1,14 +1,15 @@
 import React from "react";
 
+import { cn } from "@/lib/utils";
 import {
+  Dialog,
+  DialogTrigger,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@formscale/ui/components";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 
 /* this code is cooked */
 

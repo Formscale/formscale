@@ -6,12 +6,12 @@ import { Form, Log, SubmissionSent } from "@formscale/types";
 import { DotsHorizontalIcon, EnvelopeClosedIcon, LayersIcon, Link1Icon, TokensIcon } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@formscale/ui/components";
 
 import { DropdownItem, DropdownSkeleton } from "@/components/default-dropdown";
-import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { handleCopy } from "@/lib/utils";
 import { useForms } from "@/providers";
+import { DropdownMenuSeparator } from "@formscale/ui/components";
 import { uppercase } from "@formscale/utils";
 import DashBadge from "../components/badge";
 import { FormatDate, SortButton } from "../components/table/columns";

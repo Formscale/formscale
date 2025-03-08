@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { uppercase } from "@formscale/utils";
 import Image from "next/image";
 import Link from "next/link";
-import { DotPattern } from "./ui/dot-pattern";
+import { DotPattern } from "./magic/dot-pattern";
 
 const links = {
   product: [

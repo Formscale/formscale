@@ -7,12 +7,10 @@ import DashCard from "@/app/(dashboard)/components/card";
 import { DataCardButton, DataCardSkeleton } from "@/app/(dashboard)/components/data-card";
 import Metric from "@/app/(dashboard)/components/metric";
 import { Limits, UsageSection } from "@/app/(dashboard)/components/usage-item";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { handleCopy } from "@/lib/utils";
 import { useForm } from "@/providers/form";
+import { Button, CardTitle, Input } from "@formscale/ui/components";
 import { LinkNone2Icon } from "@radix-ui/react-icons";
-import { CardTitle } from "../../../../components/ui/card";
 
 const filterStatus = (submissions: SubmissionSent[], status: string) => {
   return submissions.filter((submission) => submission.status === status);

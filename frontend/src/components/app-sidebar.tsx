@@ -32,7 +32,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
+} from "@formscale/ui/components";
 
 import DefaultDropdown from "@/components/default-dropdown";
 import { useUser } from "@/providers/user";

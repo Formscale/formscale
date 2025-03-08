@@ -1,5 +1,5 @@
 import DefaultDropdown from "@/components/default-dropdown";
-import { Button } from "@/components/ui/button";
+import { Button } from "@formscale/ui/components";
 import { DownloadIcon } from "@radix-ui/react-icons";
 
 import { Form, SubmissionSent } from "@formscale/types";

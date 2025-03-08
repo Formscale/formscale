@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
 import { useError } from "@/providers";
+import { Button } from "@formscale/ui/components";
 import { ReloadIcon } from "@radix-ui/react-icons";
 
 export default function RefreshButton({ refresh, type }: { refresh: () => void | Promise<void>; type?: string }) {

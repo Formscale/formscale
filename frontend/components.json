@@ -5,7 +5,7 @@
   "tsx": true,
   "tailwind": {
     "config": "tailwind.config.ts",
-    "css": "src/app/globals.css",
+    "css": "@formscale/ui/globals.css",
     "baseColor": "zinc",
     "cssVariables": true,
     "prefix": ""
@@ -13,7 +13,7 @@
   "aliases": {
     "components": "@/components",
     "utils": "@/lib/utils",
-    "ui": "@/components/ui",
+    "ui": "@formscale/ui/components",
     "lib": "@/lib",
     "hooks": "@/hooks"
   },

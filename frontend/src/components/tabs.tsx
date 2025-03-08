@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@formscale/ui/components";
 import { usePathname, useRouter } from "next/navigation";
 
 interface TabProps {

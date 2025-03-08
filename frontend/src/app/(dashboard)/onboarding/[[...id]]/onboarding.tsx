@@ -2,11 +2,10 @@
 
 import CodeSwitcher from "@/components/code-switcher";
 import FormButton from "@/components/form-button";
-import { DefaultSelect } from "@/components/form-part";
 import Loading from "@/components/loading";
-import { Button } from "@/components/ui/button";
 import { useForms } from "@/providers";
 import { Form } from "@formscale/types";
+import { Button, DefaultSelect } from "@formscale/ui/components";
 import { RocketIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

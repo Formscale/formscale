@@ -1,7 +1,7 @@
 import Footer from "@/components/footer";
 import { Header } from "@/components/header";
 import Loading from "@/components/loading";
-import { Button } from "@/components/ui/button";
+import { Button } from "@formscale/ui/components";
 import { TriangleLeftIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 

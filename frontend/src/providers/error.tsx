@@ -1,6 +1,6 @@
 "use client";
 
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster } from "@formscale/ui/components";
 import { createContext, useContext } from "react";
 import { toast } from "sonner";
 

@@ -2,11 +2,11 @@
 
 import { useError, useForms, useLogs, useUser } from "@/providers";
 import { EditUser } from "@formscale/types";
+import { Button } from "@formscale/ui/components";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { usePathname, useRouter } from "next/navigation";
 import { useLayoutEffect, useState } from "react";
 import DefaultDropdown from "./default-dropdown";
-import { Button } from "./ui/button";
 
 export function DevBadge({ current = "dev" }: { current?: string }) {
   const bg = current === "dev" ? "bg-formscale/80" : "bg-success";
