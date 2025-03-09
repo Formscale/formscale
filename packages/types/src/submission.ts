@@ -2,7 +2,7 @@ import { z } from "zod";
 import { IdSchema } from "./form";
 import { LogSchema } from "./logs";
 
-export const SubmissionStatusSchema = z.enum(["pending", "completed", "blocked", "failed"]);
+export const SubmissionStatusSchema = z.enum(["pending", "completed", "blocked", "failed"]).default("pending");
 
 export const SubmissionSchema = z.object({
   id: IdSchema,
@@ -17,7 +17,7 @@ export const SubmissionSentSchema = z.object({
   id: z.string().min(1),
   formId: IdSchema,
   data: z.any().optional().default({}),
-  status: SubmissionStatusSchema.default("pending"),
+  status: SubmissionStatusSchema,
   location: z.string().optional().default("Unknown"),
   site: z.string().url().optional(),
   logs: z.array(LogSchema).optional(),

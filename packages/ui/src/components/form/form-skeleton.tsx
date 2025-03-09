@@ -1,28 +1,9 @@
-import { FieldValues, UseFormReturn } from "react-hook-form";
+import { FormField, FormSkeletonProps } from "@formscale/types";
+import { FieldValues } from "react-hook-form";
 import { cn } from "../../lib/utils";
 import { Button } from "../ui/button";
-import { Form, FormField } from "../ui/form";
+import { Form } from "../ui/form";
 import { FormPart } from "./form-part";
-
-interface FormField {
-  name: string;
-  description?: string;
-  placeholder: string;
-  type: string;
-  options?: string[];
-}
-
-interface FormSkeletonProps<T extends FieldValues> {
-  form: UseFormReturn<T>;
-  onSubmitAction?: (values: T) => void | Promise<void>;
-  fields: FormField[];
-  buttonText?: string;
-  button?: React.ReactNode;
-  disabled?: boolean;
-  ignoreDirty?: boolean;
-  children?: React.ReactNode;
-  className?: string;
-}
 
 export function FormSkeleton<T extends FieldValues>({
   form,
@@ -51,11 +32,25 @@ export function FormSkeleton<T extends FieldValues>({
         {button ? (
           button
         ) : (
-          <Button type="submit" variant="action" className="text-xs font-bold" disabled={disabled || !isDirty}>
+          <SubmitButton disabled={disabled} isDirty={isDirty}>
             {buttonText || "Submit"}
-          </Button>
+          </SubmitButton>
         )}
       </form>
     </Form>
+  );
+}
+
+interface SubmitButtonProps {
+  disabled?: boolean;
+  isDirty?: boolean;
+  children: React.ReactNode;
+}
+
+export function SubmitButton({ disabled, isDirty, children }: SubmitButtonProps) {
+  return (
+    <Button type="submit" variant="default" className="text-xs font-bold" disabled={disabled || !isDirty}>
+      {children}
+    </Button>
   );
 }

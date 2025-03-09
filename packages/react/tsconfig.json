@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"],
+  "moduleResolution": "bundler",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@formscale/ui/*": ["../ui/src/*"]
+    },
+    "jsx": "react-jsx"
+  }
+}

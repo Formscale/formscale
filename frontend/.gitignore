@@ -43,3 +43,6 @@ next-env.d.ts
 # wrangler files
 .wrangler
 .dev.vars
+
+# local
+/src/components/ui

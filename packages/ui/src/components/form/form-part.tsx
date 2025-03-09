@@ -1,6 +1,6 @@
 import { uppercase } from "@formscale/utils";
 import { TrashIcon, UploadIcon } from "@radix-ui/react-icons";
-import { FieldValues, Path, UseFormReturn } from "react-hook-form";
+import { FieldValues, Path } from "react-hook-form";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import { FormControl, FormDescription, FormField, FormItem, FormMessage } from "../ui/form";
@@ -10,20 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Switch } from "../ui/switch";
 import { Textarea } from "../ui/textarea";
 
+import { FormPartProps } from "@formscale/types";
 import { TagInput } from "./tag-input";
-
-interface FormPartProps<T extends FieldValues> {
-  form: UseFormReturn<T>;
-  name: string;
-  type: string;
-  description?: string;
-  placeholder: string;
-  muted?: boolean;
-  disabled?: boolean;
-  className?: string;
-  children?: React.ReactNode;
-  options?: string[];
-}
 
 function Wrapper({ children, type }: { children: React.ReactNode; type: string }) {
   if (["switch", "checkbox"].includes(type)) {
@@ -212,6 +200,7 @@ export function FormPart<T extends FieldValues>({
             )}
             <FormControl>{renderInput({ field })}</FormControl>
           </Wrapper>
+          {/* add description here */}
           {children && <div className="flex pt-1">{children}</div>}
           <FormMessage className="text-xs" />
         </FormItem>

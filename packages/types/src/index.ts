@@ -1,6 +1,6 @@
 export * from "./auth";
 export * from "./contact";
-export * from "./form";
+export * from "./form-part";
 export * from "./logs";
 export * from "./submission";
 export * from "./subscription";

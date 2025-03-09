@@ -1,21 +1,23 @@
 {
-  "name": "@formscale/types",
+  "name": "@formscale/react",
   "version": "0.0.1",
   "private": true,
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
     "dist/**"
   ],
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
+    "build": "tsup src/index.ts --dts",
+    "dev": "tsup src/index.ts --watch",
     "lint": "eslint src/",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "devDependencies": {
-    "tsup": "^8.0.2",
+    "@formscale/ui": "workspace:*",
+    "@formscale/types": "workspace:*",
+    "esbuild": "^0.25.0",
+    "tsup": "^8.3.6",
     "typescript": "^5.3.3",
     "zod": "^3.22.4"
   },
@@ -23,6 +25,8 @@
     "zod": "^3.22.4"
   },
   "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2"
   }
 }
