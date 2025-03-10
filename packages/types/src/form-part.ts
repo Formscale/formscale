@@ -27,7 +27,6 @@ export interface FormField {
   disabled?: boolean;
   className?: string;
   children?: React.ReactNode;
-  options?: string[];
   min?: number | "";
   max?: number | "";
   minSelected?: number;
