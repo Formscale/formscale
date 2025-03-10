@@ -24,9 +24,9 @@ export function FormSkeleton<T extends FieldValues>({
         onSubmit={onSubmitAction ? form.handleSubmit(onSubmitAction) : undefined}
         className={cn("w-full flex flex-col gap-4", className)}
       >
-        {fields.map((field: FormField) => (
-          <FormPart key={field.name} form={form} {...field} />
-        ))}
+        {fields &&
+          fields.length > 0 &&
+          fields.map((field: FormField) => <FormPart key={field.name} form={form} {...field} />)}
         {children}
 
         {button ? (

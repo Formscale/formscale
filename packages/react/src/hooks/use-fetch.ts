@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { config } from "../config";
 
 export interface Endpoints {
   "s/:id": {
@@ -23,7 +24,7 @@ export function useFetch() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const apiUrl = "https://api.formscale.dev";
+  const apiUrl = config.apiUrl || "https://api.formscale.dev";
 
   const fetchData = async <TEndpoint extends keyof Endpoints>(
     endpoint: TEndpoint,

@@ -32,7 +32,7 @@ function SocialLinks() {
 
 export function HeaderDashboard() {
   return (
-    <div className="z-50 w-full bg-background overflow-hidden p-3 px-4 border-b-[0.5px] border-border">
+    <div className="z-40 w-full bg-background overflow-hidden p-3 px-4 border-b-[0.5px] border-border">
       <div className="flex flex-row items-center justify-between mx-auto">
         <div className="flex flex-row items-center justify-center gap-3">
           <SidebarTrigger />
@@ -61,7 +61,7 @@ export function HeaderDashboard() {
 
 export function Header() {
   return (
-    <div className="z-50 fixed top-0 left-0 w-full bg-background overflow-hidden p-3 px-4 border-b-[0.5px] border-border">
+    <div className="z-40 fixed top-0 left-0 w-full bg-background overflow-hidden p-3 px-4 border-b-[0.5px] border-border">
       <div className="flex flex-row items-center justify-between max-w-6xl mx-auto">
         <Logo />
 

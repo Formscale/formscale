@@ -19,12 +19,25 @@ export interface FormField {
   placeholder: string;
   type: string;
   options?: string[];
+
+  id?: string;
+  required?: boolean;
+  multiple?: boolean;
+  muted?: boolean;
+  disabled?: boolean;
+  className?: string;
+  children?: React.ReactNode;
+  options?: string[];
+  min?: number | "";
+  max?: number | "";
+  minSelected?: number;
+  maxSelected?: number;
 }
 
 export interface FormSkeletonProps<T extends FieldValues> {
   form: UseFormReturn<T>;
   onSubmitAction?: (values: T) => void | Promise<void>;
-  fields: FormField[];
+  fields?: FormField[];
   buttonText?: string;
   button?: React.ReactNode;
   disabled?: boolean;
