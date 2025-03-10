@@ -1,8 +1,8 @@
 import { Providers } from "@/components/providers";
-import "@formscale/ui/globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import localFont from "next/font/local";
+import "./globals.css";
 
 const headingPro = localFont({
   src: [
