@@ -11,7 +11,7 @@ export function exportData(type: "csv" | "json", formSubmissions?: SubmissionSen
   if (submissions.length === 0) return;
 
   const headers = ["id", "createdAt", "status", ...getDataFields(submissions)];
-  const data = submissions.map((sub) => ({
+  const data = submissions.map((sub: SubmissionSent) => ({
     id: sub.id,
     status: sub.status,
     ...sub.data,
@@ -30,7 +30,9 @@ export function exportData(type: "csv" | "json", formSubmissions?: SubmissionSen
   } else {
     const csv = [
       headers.join(","),
-      ...data.map((row) => headers.map((header) => JSON.stringify(row[header as keyof typeof row] ?? "")).join(",")),
+      ...data.map((row: Record<string, string>) =>
+        headers.map((header) => JSON.stringify(row[header as keyof typeof row] ?? "")).join(",")
+      ),
     ].join("\n");
 
     const blob = new Blob([csv], { type: "text/csv" });

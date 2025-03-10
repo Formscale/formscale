@@ -1,8 +1,8 @@
 import CodeSwitcher from "@/components/code-switcher";
 import Bento from "@/components/home/bento";
+import { DotPattern } from "@/components/magic/dot-pattern";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { DotPattern } from "@/components/ui/dot-pattern";
 import { cn } from "@/lib/utils";
 import { TriangleRightIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
@@ -50,8 +50,8 @@ export default function Home() {
             size="lg"
             asChild
           >
-            <Link href="/forms">
-              Try for Free
+            <Link href="/demo">
+              Book a Demo
               {/* Join the Waitlist */}
               <TriangleRightIcon className="-mr-1 group-hover:translate-x-0.5 transition-transform duration-300" />
             </Link>

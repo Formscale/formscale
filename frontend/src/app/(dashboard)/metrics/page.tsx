@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import Loading from "@/components/loading";
 import { useForms } from "@/providers";
+import { SubmissionSent } from "@formscale/types";
 import { DashCardSkeleton } from "../components/card";
 import Chart, { ChartDataPoint } from "../components/chart/chart";
 import { Filter, Filters } from "../components/chart/filter";
@@ -23,7 +24,7 @@ export default function MetricsPage() {
     if (!forms || forms.length === 0) return;
 
     const submissions = forms
-      .flatMap((form) => form.submissions?.map((sub) => ({ ...sub, formId: form.id })) || [])
+      .flatMap((form) => form.submissions?.map((sub: SubmissionSent) => ({ ...sub, formId: form.id })) || [])
       .reduce(
         (acc, submission) => {
           if (!submission) return acc;
@@ -39,19 +40,21 @@ export default function MetricsPage() {
         {} as Record<string, ChartDataPoint>
       );
 
-    const sortedData = Object.values(submissions).sort((a, b) => a.date.localeCompare(b.date));
-    setChartData(sortedData);
+    const sortedData = Object.values(submissions).sort((a, b) =>
+      (a as ChartDataPoint).date.localeCompare((b as ChartDataPoint).date)
+    );
+    setChartData(sortedData as ChartDataPoint[]);
   }, [forms]);
 
   useEffect(() => {
     if (!forms || forms.length === 0) return;
 
     let filteredSubmissions = forms.flatMap(
-      (form) => form.submissions?.map((sub) => ({ ...sub, formId: form.id })) || []
+      (form) => form.submissions?.map((sub: SubmissionSent) => ({ ...sub, formId: form.id })) || []
     );
 
     if (filters.formId) {
-      filteredSubmissions = filteredSubmissions.filter((sub) => sub.formId === filters.formId);
+      filteredSubmissions = filteredSubmissions.filter((sub: SubmissionSent) => sub.formId === filters.formId);
     }
 
     const now = new Date();
@@ -111,7 +114,7 @@ export default function MetricsPage() {
       if (!submission) return;
       const dateKey = formatDateKey(new Date(submission.createdAt));
       if (allDates[dateKey]) {
-        allDates[dateKey][submission.status]++;
+        allDates[dateKey][submission.status as keyof ChartDataPoint]++;
       }
     });
 

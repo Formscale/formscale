@@ -142,7 +142,7 @@ export default function HooksPage() {
                   ...formEdit.settings,
                   webhooks:
                     service.type === "webhook" || service.type === "discord"
-                      ? formEdit.settings.webhooks.filter((webhook) => webhook.type !== service.type)
+                      ? formEdit.settings.webhooks.filter((webhook: Webhook) => webhook.type !== service.type)
                       : formEdit.settings.webhooks,
                   emailSettings: service.type === "email" ? {} : formEdit.settings.emailSettings,
                 },

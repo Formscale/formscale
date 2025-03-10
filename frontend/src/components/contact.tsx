@@ -45,8 +45,8 @@ export function FeedbackForm({ children }: { children: React.ReactNode }) {
       method: "POST",
       body: (() => {
         const formData = new FormData();
-        Object.entries(values).forEach(([key, value]) => {
-          formData.append(key, value.toString());
+        (Object.entries(values) as [keyof Feedback, string | boolean | undefined][]).forEach(([key, value]) => {
+          formData.append(key as string, String(value));
         });
         return formData;
       })(),

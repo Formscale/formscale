@@ -101,7 +101,7 @@ export function AppSidebar() {
   ];
 
   return (
-    <Sidebar variant="sidebar">
+    <Sidebar variant="sidebar" className="z-50">
       <SidebarHeader className="p-3 px-4 mt-1">
         <Logo />
       </SidebarHeader>

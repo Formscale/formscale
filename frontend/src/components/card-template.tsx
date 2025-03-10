@@ -1,5 +1,5 @@
+import { DotPattern } from "@/components/magic/dot-pattern";
 import { Card, CardContent } from "@/components/ui/card";
-import { DotPattern } from "@/components/ui/dot-pattern";
 import Watermark from "@/components/watermark";
 import { cn } from "@/lib/utils";
 

@@ -18,7 +18,7 @@ export async function updateWebhook(
     ...formEdit,
     settings: {
       ...formEdit.settings,
-      webhooks: [...formEdit.settings.webhooks.filter((w) => w.type !== webhook.type), webhook],
+      webhooks: [...formEdit.settings.webhooks.filter((w: Webhook) => w.type !== webhook.type), webhook],
     },
   };
 

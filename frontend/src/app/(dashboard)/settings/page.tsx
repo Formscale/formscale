@@ -4,7 +4,7 @@ import { DataCardSkeleton } from "@/app/(dashboard)/components/data-card";
 import { UsageSection } from "@/app/(dashboard)/components/usage-item";
 import { Button } from "@/components/ui/button";
 import { useForms, useUser } from "@/providers";
-import { SubscriptionTier, TierLimits, Usage } from "@formscale/types";
+import { Admin, SubscriptionTier, TierLimits, Usage } from "@formscale/types";
 
 export default function UsagePage() {
   const { forms } = useForms();
@@ -15,10 +15,10 @@ export default function UsagePage() {
   const usage: Usage = {
     forms: forms.length,
     submissions: forms.reduce((acc, form) => acc + (form.submissions?.length ?? 0), 0),
-    members: new Set(forms.flatMap((form) => form.settings.admins?.map((admin) => admin.email) || [])).size,
-    maxForms: TierLimits[currentTier]?.maxForms ?? 0,
-    maxSubmissionsPerMonth: TierLimits[currentTier]?.maxSubmissionsPerMonth ?? 0,
-    maxMembers: TierLimits[currentTier]?.maxMembers ?? 0,
+    members: new Set(forms.flatMap((form) => form.settings.admins?.map((admin: Admin) => admin.email) || [])).size,
+    maxForms: TierLimits[currentTier as keyof typeof TierLimits]?.maxForms ?? 0,
+    maxSubmissionsPerMonth: TierLimits[currentTier as keyof typeof TierLimits]?.maxSubmissionsPerMonth ?? 0,
+    maxMembers: TierLimits[currentTier as keyof typeof TierLimits]?.maxMembers ?? 0,
   };
 
   const limits = [

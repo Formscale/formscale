@@ -51,7 +51,7 @@ export function useValidation(formId: string) {
     async (field: Field) => {
       if (!form) return null;
 
-      const existingFieldIndex = form.settings.validation.fields.findIndex((f) => f.id === field.id);
+      const existingFieldIndex = form.settings.validation.fields.findIndex((f: Field) => f.id === field.id);
 
       const fields = [...form.settings.validation.fields];
 
@@ -70,7 +70,7 @@ export function useValidation(formId: string) {
     async (fieldId: string) => {
       if (!form) return null;
 
-      const fields = form.settings.validation.fields.filter((field) => field.id !== fieldId);
+      const fields = form.settings.validation.fields.filter((field: Field) => field.id !== fieldId);
 
       return updateValidation(fields);
     },

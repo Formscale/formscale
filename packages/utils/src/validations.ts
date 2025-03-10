@@ -21,7 +21,7 @@ export function fieldToZodSchema(field: Field): z.ZodType {
       let schema = z.string().email();
       if (field.allowedDomains?.length) {
         schema = schema.refine(
-          (email) => field.allowedDomains!.some((domain) => email.endsWith(`@${domain}`)),
+          (email: string) => field.allowedDomains!.some((domain: string) => email.endsWith(`@${domain}`)),
           "Email domain not allowed"
         ) as unknown as z.ZodString;
       }
@@ -39,7 +39,7 @@ export function fieldToZodSchema(field: Field): z.ZodType {
       let schema = z.string().url();
       if (field.allowedDomains?.length) {
         schema = schema.refine(
-          (url) => field.allowedDomains!.some((domain) => url.includes(domain)),
+          (url: string) => field.allowedDomains!.some((domain: string) => url.includes(domain)),
           "URL domain not allowed"
         ) as unknown as z.ZodString;
       }
@@ -53,7 +53,7 @@ export function fieldToZodSchema(field: Field): z.ZodType {
       }
       if (field.allowedCountries?.length) {
         schema = schema.refine(
-          (tel) => field.allowedCountries!.some((country) => tel.startsWith(country)),
+          (tel: string) => field.allowedCountries!.some((country: string) => tel.startsWith(country)),
           "Phone number country code not allowed"
         ) as unknown as z.ZodString;
       }
@@ -87,7 +87,7 @@ export function fieldToZodSchema(field: Field): z.ZodType {
       }
       if (field.acceptedTypes?.length) {
         schema = schema.refine(
-          (file) => field.acceptedTypes!.some((type) => file.type.match(type)),
+          (file: File) => field.acceptedTypes!.some((type: string) => file.type.match(type)),
           "File type not allowed"
         );
       }

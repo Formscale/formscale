@@ -41,7 +41,7 @@ interface SubmissionSheetProps {
 }
 
 export default function SubmissionSheet({ trigger, submission, form, open, setOpen }: SubmissionSheetProps) {
-  const index = form.submissions?.findIndex((s) => s.id === submission.id) || 0;
+  const index = form.submissions?.findIndex((s: SubmissionSent) => s.id === submission.id) || 0;
 
   return (
     <DefaultSheet

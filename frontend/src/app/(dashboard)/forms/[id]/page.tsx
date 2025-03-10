@@ -75,7 +75,8 @@ function FormInsights({ form }: { form: Form }) {
           range="last 30 days"
           value={
             form.submissions?.filter(
-              (submission) => new Date(submission.createdAt) >= new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+              (submission: SubmissionSent) =>
+                new Date(submission.createdAt) >= new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
             ).length || 0
           }
         />

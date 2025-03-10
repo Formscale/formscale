@@ -20,7 +20,7 @@ import TextDialog from "./fields/text";
 import ValidationCard from "./validation";
 
 function getFieldWithDefaults(type: string, id: string = "", validations: Validation) {
-  const field = validations?.fields?.find((f) => f.type === type && (id ? f.id === id : true));
+  const field = validations?.fields?.find((f: Field) => f.type === type && (id ? f.id === id : true));
 
   const defaults = {
     type,
@@ -60,7 +60,7 @@ export default function BuilderPage() {
       description: "Set a minimum and maximum length.",
       dialog: (
         <TextDialog
-          {...(validations?.fields?.find((field) => field.type === "text") || {
+          {...(validations?.fields?.find((field: Field) => field.type === "text") || {
             type: "text",
             required: false,
             name: "",
@@ -212,7 +212,7 @@ export default function BuilderPage() {
               </Link>
             </span>
           </div>
-          {validations?.fields?.map((item, index) => {
+          {validations?.fields?.map((item: Field, index: number) => {
             const matchingItem = items.find((i) => i.type === item.type)!;
             return (
               <Item

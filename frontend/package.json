@@ -4,8 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev --port 3000",
+    "dev:clean": "pnpm clean && pnpm dev",
     "build": "next build",
+    "build:errors": "tsc --noEmit; next build",
     "start": "next start",
+    "clean": "rm -rf node_modules && rm -rf .next && rm -rf .turbo",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
     "pages:build": "pnpm next-on-pages",

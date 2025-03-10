@@ -24,7 +24,7 @@ export default function Submissions({ id }: { id?: string }) {
 
   useEffect(() => {
     if (id && form?.submissions) {
-      const submission = form.submissions.find((s) => s.id == id);
+      const submission = form.submissions.find((s: SubmissionSent) => s.id == id);
       if (submission) {
         setSelectedSubmission(submission);
         setIsSheetOpen(true);
