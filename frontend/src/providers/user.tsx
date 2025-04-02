@@ -23,20 +23,21 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const fetchUser = async () => {
-      if (Auth.getToken()) {
-        try {
-          setIsLoading(true);
-          const response = await get("user/profile");
-
-          if (response.data?.user) {
-            setUser(response.data.user);
-          }
-        } catch (error) {
-          handleError({ message: "Error fetching user", description: (error as Error).message });
+      try {
+        if (!Auth.getToken()) {
+          setIsLoading(false);
+          return;
         }
-      }
 
-      setIsLoading(false);
+        const response = await get("user/profile");
+        if (response.data?.user) {
+          setUser(response.data.user);
+        }
+      } catch (error) {
+        handleError({ message: "Error fetching user", description: (error as Error).message });
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     fetchUser();
@@ -48,7 +49,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         setIsLoading(true);
         const response = await put("user/edit", user);
 
-        if (response.success && response.data?.user) {
+        if (response.success && response.data?.user && response.data?.token) {
           setUser(response.data.user);
           Auth.setToken(response.data.token);
 

@@ -17,15 +17,15 @@ const links = {
     { label: "Contact", href: "/contact" },
   ],
   resources: [
-    { label: "Docs", href: "/docs" },
-    { label: "Changelog", href: "/changelog" },
+    // { label: "Docs", href: "/docs" },
+    // { label: "Changelog", href: "/changelog" },
     { label: "GitHub", href: "https://github.com/Formscale/formscale" },
     { label: "Discord", href: "https://discord.gg/wwSujZF69Y" },
   ],
   social: [
-    { label: "LinkedIn", href: "https://www.linkedin.com/company/formscale" },
-    { label: "Instagram", href: "https://www.instagram.com/formscale" },
-    { label: "YouTube", href: "https://www.youtube.com/@formscale" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/company/formscale-dev" },
+    // { label: "Instagram", href: "https://www.instagram.com/formscale" },
+    // { label: "YouTube", href: "https://www.youtube.com/@formscale" },
   ],
 };
 

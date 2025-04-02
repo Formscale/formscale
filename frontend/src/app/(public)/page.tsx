@@ -36,10 +36,10 @@ export default function Home() {
           </Link>
         </Badge>
         <h1 className="text-4xl md:text-6xl font-bold leading-tight md:leading-tight">
-          A Better Way <br /> To Build Forms.
+          Forms For <br /> <span className="italic">Fast-Moving</span> Devs.
         </h1>
         <p className="text-sm text-muted-foreground/80 leading-relaxed">
-          With Formscale, create & manage scalable forms
+          With Formscale, build & deploy scalable forms
           <br className="hidden md:block" /> in minutes - not days - from static sites to full-stack-apps.
         </p>
 
@@ -50,8 +50,8 @@ export default function Home() {
             size="lg"
             asChild
           >
-            <Link href="/demo">
-              Book a Demo
+            <Link href="/signup" target="_blank">
+              Get Started For Free
               {/* Join the Waitlist */}
               <TriangleRightIcon className="-mr-1 group-hover:translate-x-0.5 transition-transform duration-300" />
             </Link>
@@ -63,7 +63,7 @@ export default function Home() {
 
         <div className="flex flex-col gap-4 items-center mt-10 md:mt-12">
           <span className="text-xs text-muted-foreground/80">Tested by top engineering teams at</span>
-          <div className="flex flex-wrap md:flex-nowrap w-full justify-center md:justify-between gap-8 cursor-pointer">
+          <div className="flex flex-wrap md:flex-nowrap w-full max-w-2xl mx-auto justify-center md:justify-between gap-8 cursor-pointer">
             {logos.map((logo, index) => (
               <Image
                 key={index}
@@ -111,7 +111,7 @@ export default function Home() {
             <br className="hidden md:block" /> Form Builder & Management Tool.
           </h2> */}
           <h2 className="text-3xl md:text-4xl font-bold leading-tight md:leading-tight">
-            Build <span className="hidden sm:inline">Forms</span> Faster <br className="hidden md:block" />
+            Deploy <span className="hidden sm:inline">Forms</span> Faster <br className="hidden md:block" />
             Than Pressing Submit.
           </h2>
           <p className="text-sm text-muted-foreground/80 leading-relaxed max-w-xl">
@@ -128,28 +128,31 @@ export default function Home() {
           /> */}
         </div>
 
-        <div className="w-full max-w-7xl flex flex-col md:flex-row items-center justify-between gap-12 mt-24 relative">
-          <div className="flex flex-col gap-4 items-start text-left w-full max-w-lg">
-            <h2 className="text-3xl md:text-4xl font-bold leading-tight md:leading-tight">
-              Production-Ready <br className="hidden md:block" />
-              in &lt;5 Minutes.
-            </h2>
-            <p className="text-sm text-muted-foreground/80 leading-relaxed">
-              Start from concept to live form in under 5 minutes
-              <br className="hidden md:block" /> with minimal code - zero backend work needed.
-            </p>
-          </div>
-
-          <div className="flex w-full max-w-3xl text-left">
-            <CodeSwitcher demo />
-          </div>
-
-          {/* <DotPattern
-            width={16}
-            height={16}
-            className={cn("opacity-60", "[mask-image:radial-gradient(800px_circle_at_right,white,transparent)]")}
-          /> */}
+        <div className="flex flex-col gap-4 items-center mt-20 scroll-mt-24 text-left sm:text-center w-full max-w-5xl">
+          <h2 className="text-3xl md:text-4xl font-bold leading-tight md:leading-tight">
+            Production-Ready Forms&nbsp;
+            <br className="hidden md:block" />
+            in Under 5 Minutes.
+          </h2>
+          <p className="text-sm text-muted-foreground/80 leading-relaxed">
+            Start from concept to live contact, feedback, or waitlist form <br className="hidden md:block" /> in &lt;5
+            minutes
+            <span className="italic"> - zero backend work needed.</span>
+          </p>
         </div>
+
+        <div className="flex w-full max-w-4xl text-left mt-6 relative z-20">
+          <CodeSwitcher demo />
+        </div>
+
+        <DotPattern
+          width={16}
+          height={16}
+          className={cn(
+            "fill-formscale",
+            "[mask-image:radial-gradient(800px_circle_at_bottom_right,black,transparent)]"
+          )}
+        />
 
         {/* <div className="flex flex-col gap-4 items-center mt-24">
           <h2 className="text-3xl md:text-4xl font-bold leading-tight md:leading-tight">

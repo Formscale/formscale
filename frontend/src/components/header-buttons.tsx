@@ -6,7 +6,11 @@ import { usePathname } from "next/navigation";
 import { Button } from "./ui/button";
 
 export function HeaderDashButtons() {
-  const { user } = useUser();
+  const { user, isLoading } = useUser();
+
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <>
@@ -17,7 +21,9 @@ export function HeaderDashButtons() {
           </Button>
           <Button variant="action" size="sm" className="font-bold hidden sm:flex" asChild>
             {/* <Link href="/signup">Get Started</Link> */}
-            <Link href="/demo">Book Demo</Link>
+            <Link href="/signup" target="_blank">
+              Get Started
+            </Link>
           </Button>
         </>
       ) : (

@@ -45,6 +45,7 @@ export default function LoginPage() {
 
       if (data.success && data.data?.token) {
         login(data.data.token, data.data.user as User);
+        router.push("/forms");
       }
     } catch (error) {
       if ((error as any).status === 403) {

@@ -1,4 +1,5 @@
 import { Providers } from "@/components/providers";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import localFont from "next/font/local";
@@ -56,14 +57,14 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Formscale - Create & Manage Custom Forms",
+  title: "Formscale - Forms For Developers",
   description:
-    "Build forms in minutes with Formscale, from static sites to full-stack-apps, with minimal code. The best form builder for websites, apps, and businesses of all sizes.",
+    "Build and deploy scalable forms in minutes with Formscale, from static sites to full-stack-apps, with minimal code. The best form builder for websites, apps, and businesses of all sizes.",
   keywords: ["form builder", "custom forms", "form management", "online forms", "form creation tool"],
   openGraph: {
-    title: "Formscale - Create & Manage Custom Forms | The Most Powerful Form Builder",
+    title: "Formscale - Forms For Devs | Create & Manage Custom Forms",
     description:
-      "Build and manage scalable forms in minutes with Formscale. The most powerful form builder for websites, apps, and businesses of all sizes.",
+      "Build and deploy scalable forms in minutes with Formscale, from static sites to full-stack-apps, with minimal code. The best form builder for websites, apps, and businesses of all sizes.",
     url: "https://formscale.dev",
     siteName: "Formscale",
     images: [
@@ -71,7 +72,7 @@ export const metadata: Metadata = {
         url: "https://formscale.dev/assets/images/formscale-og.png",
         width: 1200,
         height: 630,
-        alt: "Formscale - The Most Powerful Form Builder & Management Tool",
+        alt: "Formscale - Forms For Devs",
       },
     ],
     locale: "en_US",
@@ -79,8 +80,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Formscale - Create & Manage Custom Forms",
-    description: "Build and manage scalable forms in minutes with Formscale.",
+    title: "Formscale - Forms For Devs",
+    description: "Build and deploy scalable forms in minutes with Formscale.",
     images: ["https://formscale.dev/assets/images/formscale-og.png"],
   },
 };
@@ -96,6 +97,7 @@ export default function RootLayout({
     <html lang="en" className={`${headingPro.variable} ${inter.variable} antialiased`}>
       <body className="font-heading-pro bg-background text-foreground relative tracking-tight w-full min-h-screen">
         <Providers>{children}</Providers>
+        <GoogleAnalytics gaId="G-004N9K41ML" />
       </body>
     </html>
   );

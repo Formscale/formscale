@@ -36,8 +36,6 @@ export function FeedbackForm({ children }: { children: React.ReactNode }) {
     }
   }, [user, form]);
 
-  // console.log(form.formState.errors);
-
   async function onSubmit(values: Feedback) {
     setIsLoading(true);
 
@@ -45,8 +43,8 @@ export function FeedbackForm({ children }: { children: React.ReactNode }) {
       method: "POST",
       body: (() => {
         const formData = new FormData();
-        (Object.entries(values) as [keyof Feedback, string | boolean | undefined][]).forEach(([key, value]) => {
-          formData.append(key as string, String(value));
+        Object.entries(values).forEach(([key, value]) => {
+          formData.append(key, String(value));
         });
         return formData;
       })(),
