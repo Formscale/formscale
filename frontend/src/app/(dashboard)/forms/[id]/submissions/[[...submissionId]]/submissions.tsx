@@ -47,16 +47,16 @@ export default function Submissions({ id }: { id?: string }) {
     select: true,
     children: <ExportButton form={form} />,
     items: [
-      // {
-      //   itemColumn: "status",
-      //   items: [
-      //     { title: "All statuses", value: undefined },
-      //     { title: "Completed", value: "completed" },
-      //     { title: "Pending", value: "pending" },
-      //     { title: "Blocked", value: "blocked" },
-      //     { title: "Failed", value: "failed" },
-      //   ],
-      // },
+      {
+        itemColumn: "status",
+        items: [
+          { title: "All statuses", value: undefined },
+          { title: "Completed", value: "completed" },
+          { title: "Pending", value: "pending" },
+          { title: "Blocked", value: "blocked" },
+          { title: "Failed", value: "failed" },
+        ],
+      },
       {
         itemColumn: "updatedAt",
         items: [

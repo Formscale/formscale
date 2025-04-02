@@ -21,9 +21,7 @@ export function HeaderDashButtons() {
           </Button>
           <Button variant="action" size="sm" className="font-bold hidden sm:flex" asChild>
             {/* <Link href="/signup">Get Started</Link> */}
-            <Link href="/signup" target="_blank">
-              Get Started
-            </Link>
+            <Link href="/signup">Get Started</Link>
           </Button>
         </>
       ) : (

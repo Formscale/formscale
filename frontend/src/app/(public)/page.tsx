@@ -50,7 +50,7 @@ export default function Home() {
             size="lg"
             asChild
           >
-            <Link href="/signup" target="_blank">
+            <Link href="/signup">
               Get Started For Free
               {/* Join the Waitlist */}
               <TriangleRightIcon className="-mr-1 group-hover:translate-x-0.5 transition-transform duration-300" />
